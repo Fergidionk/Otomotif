@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('beranda');
 });
-Route::get('/sign-up', function () {
-    return view('sign-up');
+
+Route::get('/daftar', function () {
+    return view('daftar');
+});
+
+Route::get('/masuk', function () {
+    return view('masuk');
 });

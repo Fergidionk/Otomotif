@@ -10,8 +10,8 @@
             </ul>
         </div>
         <div class="flex space-x-4">
-            <a href="/sign-up" class="hover:bg-[#F1F1F3] text-gray-800 py-2 px-4 rounded-[8px]">Sign Up</a>
-            <button class="bg-[#445FB5] hover:bg-[#364b8f] text-white py-2 px-4 rounded-[8px]">Sign In</button>
+            <a href="/daftar" class="hover:bg-[#F1F1F3] text-gray-800 py-2 px-4 rounded-[8px]">Daftar</a>
+            <a href="/masuk" class="bg-[#445FB5] hover:bg-[#364b8f] text-white py-2 px-4 rounded-[8px]">Masuk</a>
         </div>
     </div>
 </nav>

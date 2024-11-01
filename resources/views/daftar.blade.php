@@ -34,39 +34,28 @@
                 </div>
             </div>
             <div class="bg-white p-4 rounded-lg shadow-md">
-                <h2 class="text-3xl font-bold text-center mb-4">Sign In</h2>
+                <h2 class="text-3xl font-bold text-center mb-4">Mendaftar</h2>
                 <div class="text-center text-sm text-[#4C4C4D]">Buat akun sebelum mendaftar kursus</div>
                 <form>
                     <label for="email" class="block mb-2 text-sm font-bold">Nama</label>
                     <input type="email" id="email"
                         class="w-full mb-1 p-2 pl-10 text-sm text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Masukkan Nama">
+                        placeholder="Masukkan Nama Panjang">
 
                     <label for="email" class="block mb-2 text-sm font-bold">Email</label>
                     <input type="email" id="email"
                         class="w-full mb-1 p-2 pl-10 text-sm text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="example@gmail.com">
+                        placeholder="contoh@gmail.com">
 
                     <label for="password" class="block mb-2 text-sm font-bold">Password</label>
                     <input type="password" id="password"
-                        class="w-full p-2 pl-10 text-sm mb-2 text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        class="w-full p-2 pl-10 text-sm mb-4 text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="Password">
-                    {{-- chech box --}}
-                    <div class="flex items-center my-2">
-                        <input id="link-checkbox" type="checkbox" value=""
-                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                        <label for="link-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">I agree
-                            with Terms of Use and Privacy Policy.</label>
-                    </div>
-                    <button class="bg-[#445FB5] hover:bg-[#354a8f] text-white font-bold py-2 px-4 rounded w-full">Sign
-                        In</button>
+                    <button class="bg-[#445FB5] hover:bg-[#354a8f] text-white font-bold py-2 px-4 rounded w-full">Daftar</button>
                 </form>
-                <p class="text-gray-600 text-sm mt-4">Don't have an account? <a
-                        href="#"class="text-[#445FB5] hover:text-[#354a8f]">Sign Up</a></p>
-
                 <div class="flex items-center justify-center">
                     <hr class="border-t border-gray-300 w-full">
-                    <span class="mx-2 text-gray-500">or</span>
+                    <span class="mx-2 text-gray-500">atau</span>
                     <hr class="border-t border-gray-300 w-full">
                 </div>
 
@@ -74,9 +63,10 @@
                 <button
                     class="flex items-center justify-center px-6 py-2 rounded-md w-full bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-opacity-50">
                     <i class="fa-brands fa-google"></i>
-                    <span class="ml-2">Sign Up with Google</span>
+                    <span class="ml-2">Daftar Menggunakan Google</span>
                 </button>
-
+                <p class="text-gray-600 text-sm mt-4">Sudah mempunyai akun? <a
+                    href="/masuk"class="text-[#445FB5] hover:text-[#354a8f]">Masuk</a></p>
             </div>
         </div>
     </div>
