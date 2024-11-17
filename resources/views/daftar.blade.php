@@ -1,73 +1,75 @@
 @extends('components.app')
 @section('content')
-    <div class="container-fluid mx-auto py-28 px-20 bg-[#F7F7F8]">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div>
-                <h2 class="text-2xl font-bold mb-4">Testimoni Siswa</h2>
-                <p class="mb-4 text-sm text-gray-600">Pengalaman nyata dari siswa-siswi kami yang telah berhasil menguasai
-                    ketrampilan IT
-                    yang mereka inginkan. Mulai dari yang awalnya ragu hingga akhirnya percaya diri di jalan yang mereka
-                    pilih, testimoni ini adalah bukti nyata dedikasi kami dalam memberikan layanan karir yang
-                    menjanjikan untuk lebih baik.</p>
-                <div class="bg-white p-8 rounded-lg shadow-md">
-                    <p class="text-gray-600">"Saya tadinya takut karena nggak pernah tau model sama sekali. Tapi,
-                        alhamdulillah, berkat Kursus Online ini saya bisa belajar dengan tenang.
-                        Instruktur-instrukturnya ramah dan ngasih arahan yang jelas."</p>
-                    <div class="flex items-center mt-4">
-                        <img src="https://via.placeholder.com/40" alt="Profile Picture" class="w-10 h-10 rounded-full mr-2">
-                        <p class="font-medium">Reedy Prasetio</p>
+<div class="container bg-[#F7F7F8] mx-auto px-4 py-20">
+    <div class="max-w-6xl mx-auto bg-[#F1F1F1] p-6 rounded-lg">
+        <h1 class="text-4xl font-bold text-center mb-8">Daftar Kursus Online</h1>
+        <p class="text-center text-gray-600 mb-8">Isi form berikut ini dan bertemu oleh konsultan belajar di</p>
+        
+        <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow">
+            <form action="" method="POST">
+                @csrf
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Nama Lengkap</label>
+                        <input type="text" class="w-full px-3 py-2 border rounded" placeholder="Masukkan Nama Lengkap">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Tempat Lahir</label>
+                        <input type="text" class="w-full px-3 py-2 border rounded" placeholder="Masukkan Tempat Lahir">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Tanggal Lahir</label>
+                        <input type="date" class="w-full px-3 py-2 border rounded" placeholder="Masukkan Tanggal Lahir">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Jenis Kelamin</label>
+                        <input type="text" class="w-full px-3 py-2 border rounded" placeholder="Pilih Jenis Kelamin">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Jurusan</label>
+                        <input type="text" class="w-full px-3 py-2 border rounded" placeholder="Mengamati">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Pendidikan Terakhir</label>
+                        <input type="text" class="w-full px-3 py-2 border rounded" placeholder="Pilih jenis Kelamin">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Alamat Tempat Tinggal</label>
+                        <input type="text" class="w-full px-3 py-2 border rounded" placeholder="Masukkan Alamat">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">No Telepon</label>
+                        <input type="tel" class="w-full px-3 py-2 border rounded" placeholder="Masukkan No Telepon">
                     </div>
                 </div>
-                <div class="flex justify-between mt-4">
-                    <button class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                        </svg>
-                    </button>
-                    <button class="bg-[#445FB5] hover:bg-[#445FB5] text-white font-bold py-2 px-4 rounded">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            <div class="bg-white p-4 rounded-lg shadow-md">
-                <h2 class="text-3xl font-bold text-center mb-4">Mendaftar</h2>
-                <div class="text-center text-sm text-[#4C4C4D]">Buat akun sebelum mendaftar kursus</div>
-                <form>
-                    <label for="email" class="block mb-2 text-sm font-bold">Nama</label>
-                    <input type="email" id="email"
-                        class="w-full mb-1 p-2 pl-10 text-sm text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Masukkan Nama Panjang">
 
-                    <label for="email" class="block mb-2 text-sm font-bold">Email</label>
-                    <input type="email" id="email"
-                        class="w-full mb-1 p-2 pl-10 text-sm text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="contoh@gmail.com">
-
-                    <label for="password" class="block mb-2 text-sm font-bold">Password</label>
-                    <input type="password" id="password"
-                        class="w-full p-2 pl-10 text-sm mb-4 text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Password">
-                    <button class="bg-[#445FB5] hover:bg-[#354a8f] text-white font-bold py-2 px-4 rounded w-full">Daftar</button>
-                </form>
-                <div class="flex items-center justify-center">
-                    <hr class="border-t border-gray-300 w-full">
-                    <span class="mx-2 text-gray-500">atau</span>
-                    <hr class="border-t border-gray-300 w-full">
+                <div class="mt-6">
+                    <label class="block text-gray-700 mb-2">Unggah Berkas</label>
+                    <p class="text-sm text-gray-600 mb-2">Review unggah file dalam format PDF yang berisi foto KTP (terpaut), foto, Self statement & sertifikat, dan berkas lainnya dalam satu file. Pastikan semua dokumen terlampir sebelum dikirimkan.</p>
+                    <div class="flex items-center space-x-2">
+                        <button type="button" class="px-4 py-2 border rounded flex items-center text-blue-600 border-blue-600">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                            </svg>
+                            Unggah Berkas
+                        </button>
+                    </div>
                 </div>
 
-                {{-- google --}}
-                <button
-                    class="flex items-center justify-center px-6 py-2 rounded-md w-full bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-opacity-50">
-                    <i class="fa-brands fa-google"></i>
-                    <span class="ml-2">Daftar Menggunakan Google</span>
-                </button>
-                <p class="text-gray-600 text-sm mt-4">Sudah mempunyai akun? <a
-                    href="/masuk"class="text-[#445FB5] hover:text-[#354a8f]">Masuk</a></p>
-            </div>
+                <div class="mt-8">
+                    <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+                        Daftar Sekarang
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 @endsection

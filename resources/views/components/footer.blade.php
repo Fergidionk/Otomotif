@@ -3,7 +3,7 @@
             <!-- Kolom Logo dan Kontak -->
             <div class="md:col-span-5 space-y-4 px-4">
                 <div>
-                    <img src="img/logo.png" alt="Your Logo" class="h-14 w-auto mr-4">
+                    <img src="images/logo.png" alt="Your Logo" class="h-14 w-auto mr-4">
                 </div>
                 <ul class="space-y-3 text-lg">
                     <li><i class="fa-solid fa-envelope text-xl mr-2"></i> <a href="mailto:email@company.com"

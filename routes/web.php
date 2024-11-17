@@ -21,6 +21,14 @@ Route::get('/daftar', function () {
     return view('daftar');
 });
 
-Route::get('/masuk', function () {
-    return view('masuk');
+Route::get('/tentang-kami', function () {
+    return view('tentang-kami');
+});
+
+Route::get('/sign-up', function () {
+    return view('sign-up');
+});
+
+Route::get('/sign-in', function () {
+    return view('sign-in');
 });
