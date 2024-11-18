@@ -37,7 +37,6 @@
                     <h2 class="text-2xl font-semibold">Fasilitas</h2>
                     <p class="text-gray-600 mt-2">Kami menyediakan berbagai fasilitas modern untuk mendukung proses belajar mengemudi Anda</p>
                 </div>
-                <button class="bg-white hover:bg-gray-200 text-black py-2 px-4 rounded-[8px]">Lihat Semua</button>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-5">
                 <div class="bg-white p-6 rounded-lg shadow-md">
@@ -87,8 +86,8 @@
                     <div class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full w-fit mb-3">
                         Pemula
                     </div>
-                    <h4 class="text-lg font-semibold mb-2">Pengenalan Dasar Berkendara</h4>
-                    <p class="text-gray-600 mb-4">Pelajari dasar-dasar mengemudi dan peraturan lalu lintas untuk pemula</p>
+                    <h4 class="text-lg font-semibold mb-2">Dasar-Dasar Mengemudi</h4>
+                    <p class="text-gray-600 mb-4">Pelajari dasar-dasar mengemudi, termasuk peraturan lalu lintas dan keselamatan di jalan.</p>
                     <button class="w-full bg-[#F1F1F3] hover:bg-[#E1E1E3] text-black py-2 px-4 rounded-[8px]">Lihat Materi</button>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-md">
@@ -96,7 +95,7 @@
                         Menengah
                     </div>
                     <h4 class="text-lg font-semibold mb-2">Teknik Mengemudi Lanjutan</h4>
-                    <p class="text-gray-600 mb-4">Tingkatkan kemampuan mengemudi Anda dengan teknik-teknik lanjutan</p>
+                    <p class="text-gray-600 mb-4">Pelajari teknik mengemudi lanjutan, termasuk mengemudi di berbagai kondisi jalan dan situasi.</p>
                     <button class="w-full bg-[#F1F1F3] hover:bg-[#E1E1E3] text-black py-2 px-4 rounded-[8px]">Lihat Materi</button>
                 </div>
             </div>
@@ -110,16 +109,16 @@
                     <div class="bg-yellow-100 text-yellow-800 text-sm font-medium px-3 py-1 rounded-full w-fit mb-3">
                         Dasar
                     </div>
-                    <h4 class="text-lg font-semibold mb-2">Praktek Dasar Mengemudi</h4>
-                    <p class="text-gray-600 mb-4">Latihan mengemudi dasar dengan instruktur berpengalaman</p>
+                    <h4 class="text-lg font-semibold mb-2">Mengemudi di Jalan Raya</h4>
+                    <p class="text-gray-600 mb-4">Pelajari cara mengemudi di jalan raya dengan aman dan nyaman.</p>
                     <button class="w-full bg-[#F1F1F3] hover:bg-[#E1E1E3] text-black py-2 px-4 rounded-[8px]">Lihat Materi</button>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <div class="bg-purple-100 text-purple-800 text-sm font-medium px-3 py-1 rounded-full w-fit mb-3">
                         Mahir
                     </div>
-                    <h4 class="text-lg font-semibold mb-2">Praktek Mengemudi Lanjutan</h4>
-                    <p class="text-gray-600 mb-4">Latihan mengemudi di berbagai kondisi jalan dan situasi</p>
+                    <h4 class="text-lg font-semibold mb-2">Mengemudi di Berbagai Kondisi</h4>
+                    <p class="text-gray-600 mb-4">Pelajari cara mengemudi di berbagai kondisi jalan dan cuaca.</p>
                     <button class="w-full bg-[#F1F1F3] hover:bg-[#E1E1E3] text-black py-2 px-4 rounded-[8px]">Lihat Materi</button>
                 </div>
             </div>
@@ -134,11 +133,10 @@
                     <p class="text-gray-700 mb-6">"saya tadinya takut karena nggak pernah bawa mobil sama sekali. Tapi, alhamdulillah, berkat Kursus Otomotif Wlingi, saya bisa belajar dengan tenang. Instruktur-instrukturnya ramah dan ngasih arahan yang jelas.</p>
                     
                     <div class="flex items-center">
-                        <img src="/images/sarah.jpg" alt="Sarah L" class="w-12 h-12 rounded-full mr-4">
+                        <img src="/images/FotoTestimoni.png" alt="Sarah L" class="w-12 h-12 rounded-full mr-4">
                         <div>
                             <h4 class="font-semibold">Sarah L</h4>
                         </div>
-                        <a href="#" class="ml-auto text-[#445FB5] hover:text-[#364b8f]">Read Full Story</a>
                     </div>
                 </div>
 
@@ -146,11 +144,10 @@
                     <p class="text-gray-700 mb-6">"saya tadinya takut karena nggak pernah bawa mobil sama sekali. Tapi, alhamdulillah, berkat Kursus Otomotif Wlingi, saya bisa belajar dengan tenang. Instruktur-instrukturnya ramah dan ngasih arahan yang jelas.</p>
                     
                     <div class="flex items-center">
-                        <img src="/images/jason.jpg" alt="Jason M" class="w-12 h-12 rounded-full mr-4">
+                        <img src="/images/FotoTestimoni.png" alt="Jason M" class="w-12 h-12 rounded-full mr-4">
                         <div>
                             <h4 class="font-semibold">Jason M</h4>
                         </div>
-                        <a href="#" class="ml-auto text-[#445FB5] hover:text-[#364b8f]">Read Full Story</a>
                     </div>
                 </div>
             </div>
@@ -170,32 +167,53 @@
                         
                         <div class="text-center mb-8">
                             <div class="text-5xl font-bold text-white">
-                                Rp100K<span class="text-base">/jam</span>
+                                Rp100K
                             </div>
                         </div>
                         
-                        <div class="bg-white rounded-lg p-4">
-                            <h4 class="font-medium text-center mb-4">Available Features</h4>
+                        <div class="bg-white rounded-lg p-12">
+                            <h4 class="font-medium text-lg text-center mb-8">Layanan Tersedia</h4>
                             <div class="space-y-4">
-                                <div class="text-center border-b pb-3">
+                                <div class="flex items-center border-b pb-3">
+                                    <div class="bg-[#FFF4E5] p-4 rounded-lg mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                    </div>
                                     <span>Instruktur Berpengalaman</span>
                                 </div>
-                                <div class="text-center border-b pb-3">
+                                <div class="flex items-center border-b pb-3">
+                                    <div class="bg-[#FFF4E5] p-4 rounded-lg mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                    </div>
                                     <span>Simulasi Mengemudi di Jalan Raya</span>
                                 </div>
-                                <div class="text-center border-b pb-3">
+                                <div class="flex items-center border-b pb-3">
+                                    <div class="bg-[#FFF4E5] p-4 rounded-lg mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                    </div>
                                     <span>Latihan Parkir</span>
                                 </div>
-                                <div class="text-center border-b pb-3">
+                                <div class="flex items-center border-b pb-3">
+                                    <div class="bg-[#FFF4E5] p-4 rounded-lg mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                    </div>
                                     <span>Materi Teori Lalu Lintas</span>
                                 </div>
-                                <div class="text-center border-b pb-3">
+                                <div class="flex items-center border-b pb-3">
+                                    <div class="bg-white p-4 rounded-lg mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                    </div>
                                     <span>Ujian Simulasi Ujian SIM</span>
                                 </div>
-                                <div class="text-center border-b pb-3">
+                                <div class="flex items-center">
+                                    <div class="bg-white p-4 rounded-lg mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                    </div>
                                     <span>Dukungan Persiapan Ujian SIM</span>
                                 </div>
-                                <div class="text-center">
+                                <div class="flex items-center">
+                                    <div class="bg-white p-4 rounded-lg mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                    </div>
                                     <span>Materi Lengkap</span>
                                 </div>
                             </div>
@@ -214,32 +232,53 @@
                         
                         <div class="text-center mb-8">
                             <div class="text-5xl font-bold text-white">
-                                Rp350K<span class="text-base">/sesi</span>
+                                Rp350K
                             </div>
                         </div>
                         
-                        <div class="bg-white rounded-lg p-4">
-                            <h4 class="font-medium text-center mb-4">Available Features</h4>
+                        <div class="bg-white rounded-lg p-12">
+                            <h4 class="font-medium text-lg text-center mb-8">Layanan Tersedia</h4>
                             <div class="space-y-4">
-                                <div class="text-center border-b pb-3">
+                                <div class="flex items-center border-b pb-3">
+                                    <div class="bg-[#FFF4E5] p-4 rounded-lg mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                    </div>
                                     <span>Instruktur Berpengalaman</span>
                                 </div>
-                                <div class="text-center border-b pb-3">
+                                <div class="flex items-center border-b pb-3">
+                                    <div class="bg-[#FFF4E5] p-4 rounded-lg mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                    </div>
                                     <span>Simulasi Mengemudi di Jalan Raya</span>
                                 </div>
-                                <div class="text-center border-b pb-3">
+                                <div class="flex items-center border-b pb-3">
+                                    <div class="bg-[#FFF4E5] p-4 rounded-lg mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                    </div>
                                     <span>Latihan Parkir</span>
                                 </div>
-                                <div class="text-center border-b pb-3">
+                                <div class="flex items-center border-b pb-3">
+                                    <div class="bg-[#FFF4E5] p-4 rounded-lg mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                    </div>
                                     <span>Materi Teori Lalu Lintas</span>
                                 </div>
-                                <div class="text-center border-b pb-3">
+                                <div class="flex items-center border-b pb-3">
+                                    <div class="bg-[#FFF4E5] p-4 rounded-lg mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                    </div>
                                     <span>Ujian Simulasi Ujian SIM</span>
                                 </div>
-                                <div class="text-center border-b pb-3">
+                                <div class="flex items-center">
+                                    <div class="bg-white p-4 rounded-lg mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                    </div>
                                     <span>Dukungan Persiapan Ujian SIM</span>
                                 </div>
-                                <div class="text-center">
+                                <div class="flex items-center">
+                                    <div class="bg-white p-4 rounded-lg mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                    </div>
                                     <span>Materi Menengah</span>
                                 </div>
                             </div>
@@ -258,32 +297,53 @@
                         
                         <div class="text-center mb-8">
                             <div class="text-5xl font-bold text-white">
-                                Rp650K<span class="text-base">/hari</span>
+                                Rp650K
                             </div>
                         </div>
                         
-                        <div class="bg-white rounded-lg p-4">
-                            <h4 class="font-medium text-center mb-4">Available Features</h4>
+                        <div class="bg-white rounded-lg p-12">
+                            <h4 class="font-medium text-lg text-center mb-8">Layanan Tersedia</h4>
                             <div class="space-y-4">
-                                <div class="text-center border-b pb-3">
+                                <div class="flex items-center border-b pb-3">
+                                    <div class="bg-[#FFF4E5] p-4 rounded-lg mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                    </div>
                                     <span>Instruktur Berpengalaman</span>
                                 </div>
-                                <div class="text-center border-b pb-3">
+                                <div class="flex items-center border-b pb-3">
+                                    <div class="bg-[#FFF4E5] p-4 rounded-lg mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                    </div>
                                     <span>Simulasi Mengemudi di Jalan Raya</span>
                                 </div>
-                                <div class="text-center border-b pb-3">
+                                <div class="flex items-center border-b pb-3">
+                                    <div class="bg-[#FFF4E5] p-4 rounded-lg mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                    </div>
                                     <span>Latihan Parkir</span>
                                 </div>
-                                <div class="text-center border-b pb-3">
+                                <div class="flex items-center border-b pb-3">
+                                    <div class="bg-[#FFF4E5] p-4 rounded-lg mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                    </div>
                                     <span>Materi Teori Lalu Lintas</span>
                                 </div>
-                                <div class="text-center border-b pb-3">
+                                <div class="flex items-center border-b pb-3">
+                                    <div class="bg-[#FFF4E5] p-4 rounded-lg mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                    </div>
                                     <span>Ujian Simulasi Ujian SIM</span>
                                 </div>
-                                <div class="text-center border-b pb-3">
+                                <div class="flex items-center">
+                                    <div class="bg-[#FFF4E5] p-4 rounded-lg mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                    </div>
                                     <span>Dukungan Persiapan Ujian SIM</span>
                                 </div>
-                                <div class="text-center">
+                                <div class="flex items-center">
+                                    <div class="bg-[#FFF4E5] p-4 rounded-lg mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                    </div>
                                     <span>Materi Expert</span>
                                 </div>
                             </div>
