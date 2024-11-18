@@ -32,3 +32,7 @@ Route::get('/sign-up', function () {
 Route::get('/sign-in', function () {
     return view('sign-in');
 });
+
+Route::get('/profile', function () {
+    return view('profile');
+});
