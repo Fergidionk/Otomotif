@@ -13,26 +13,42 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// authentication
+Route::get('/daftar', function () {
+    return view('daftar');
+});
+
+Route::get('/masuk', function () {
+    return view('masuk');
+});
+
+// User Page
 Route::get('/', function () {
     return view('beranda');
 });
 
-Route::get('/daftar', function () {
-    return view('daftar');
+Route::get('/daftar-kursus', function () {
+    return view('daftar-kursus');
 });
 
 Route::get('/tentang-kami', function () {
     return view('tentang-kami');
 });
 
-Route::get('/sign-up', function () {
-    return view('sign-up');
+Route::get('/kontak', function () {
+    return view('kontak');
 });
 
-Route::get('/sign-in', function () {
-    return view('sign-in');
+Route::get('/kursus', function () {
+    return view('kursus');
 });
 
-Route::get('/profile', function () {
-    return view('profile');
+Route::get('/profil-siswa', function () {
+    return view('profil-siswa');
+
+
+// Admin page
+
+
+
 });
