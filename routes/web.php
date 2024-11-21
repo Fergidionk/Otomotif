@@ -15,36 +15,36 @@ use Illuminate\Support\Facades\Route;
 
 // authentication
 Route::get('/daftar', function () {
-    return view('daftar');
+    return view('authentication/daftar');
 });
 
 Route::get('/masuk', function () {
-    return view('masuk');
+    return view('authentication/masuk');
 });
 
 // User Page
 Route::get('/', function () {
-    return view('beranda');
+    return view('user/beranda');
 });
 
 Route::get('/daftar-kursus', function () {
-    return view('daftar-kursus');
+    return view('user/daftar-kursus');
 });
 
 Route::get('/tentang-kami', function () {
-    return view('tentang-kami');
+    return view('user/tentang-kami');
 });
 
 Route::get('/kontak', function () {
-    return view('kontak');
+    return view('user/kontak');
 });
 
 Route::get('/kursus', function () {
-    return view('kursus');
+    return view('user/kursus');
 });
 
 Route::get('/profil-siswa', function () {
-    return view('profil-siswa');
+    return view('user/profil-siswa');
 
 
 // Admin page
