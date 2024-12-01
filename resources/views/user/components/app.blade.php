@@ -7,9 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Otomotif</title>
     <style>
-        html,body {
+        html,
+        body {
             height: 100%;
-            
+
         }
     </style>
     @vite('resources/css/app.css')
@@ -21,15 +22,16 @@
 
 <body class="font-bevietnam">
     <header>
-        @include('components.navbar')
+        @include('user/components.navbar')
     </header>
     <div class="flex flex-col min-h-screen">
-        <main class="flex-grow">
+        <main class="flex-grow bg-[#F7F7F8]">
             @yield('content')
         </main>
     </div>
 
-    @include('components.footer')
+
+    @include('user/components.footer')
 
     <script src="https://kit.fontawesome.com/61dd260dcf.js" crossorigin="anonymous"></script>
 

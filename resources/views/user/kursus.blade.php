@@ -1,4 +1,4 @@
-@extends('components.app')
+@extends('user/components.app')
 @section('content')
 
 @endsection

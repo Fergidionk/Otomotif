@@ -1,6 +1,6 @@
 @extends('components.app')
 @section('content')
-    <div class="container-fluid mx-auto py-28 px-20 bg-[#F7F7F8]">
+    <div class="container-fluid mx-auto py-28 px-20">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div>
                 <h2 class="text-2xl font-bold mb-4">Testimoni Siswa</h2>

@@ -1,6 +1,6 @@
-@extends('components.app')
+@extends('user/components.app')
 @section('content')
-    <div class="container bg-[#F7F7F8] mx-auto px-4 py-8">
+    <div class="container mx-auto px-4 py-8">
         <div class="flex flex-row justify-between py-8 px-32">
             <div class="w-3/5 text-center mt-4">
                 <h1 class="text-3xl font-bold">Kontak Kami</h1>

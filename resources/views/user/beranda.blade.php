@@ -1,6 +1,6 @@
-@extends('components.app')
+@extends('user/components.app')
 @section('content')
-    <div class="bg-[#F7F7F8] p-8">
+    <div class="p-8">
         <section id="hero" class=" p-20 text-center">
             <h1 class="text-4xl font-bold bg-white inline-block"><span class="text-[#445FB5]">Latih</span> Kemampuan Menyetirmu</h1>
             <h2 class="text-3xl mt-4">Dengan <span class="text-[#445FB5]">OTOMOTIF</span> Kursus Mengemudi Wlingi</h2>

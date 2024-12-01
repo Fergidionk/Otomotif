@@ -1,6 +1,6 @@
-@extends('components.app')
+@extends('user/components.app')
 @section('content')
-    <div class="container bg-[#F7F7F8] mx-auto px-24 py-12">
+    <div class="container mx-auto px-24 py-12">
         <!-- Section Tentang Otomotif -->
         <div class="text-center mb-36 px-20">
             <h1 class="text-3xl font-bold mt-8 mb-20">Tentang Otomotif</h1>

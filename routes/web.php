@@ -45,10 +45,28 @@ Route::get('/kursus', function () {
 
 Route::get('/profil-siswa', function () {
     return view('user/profil-siswa');
-
+});
 
 // Admin page
 
-
-
+Route::get('/admin/', function () {
+    return view('admin/dashboard');
 });
+Route::get('/admin/siswa', function () {
+    return view('admin/siswa');
+});
+Route::get('/admin/pendaftar', function () {
+    return view('admin/pendaftar');
+});
+Route::get('/admin/paket', function () {
+    return view('admin/paket');
+});
+Route::get('/admin/jadwal', function () {
+    return view('admin/jadwal');
+});
+Route::get('/admin/user', function () {
+    return view('admin/user');
+});
+
+
+

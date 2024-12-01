@@ -1,6 +1,6 @@
-@extends('components.app')
+@extends('user/components.app')
 @section('content')
-<div class="container bg-[#F7F7F8] mx-auto px-4 py-20">
+<div class="container mx-auto px-4 py-20">
     <div class="max-w-6xl mx-auto bg-[#F1F1F1] p-6 rounded-lg">
         <h1 class="text-4xl font-bold text-center mb-8">Daftar Kursus Online</h1>
         <p class="text-center text-gray-600 mb-8">Isi form berikut ini dan bertemu oleh konsultan belajar di</p>
