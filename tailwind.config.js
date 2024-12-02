@@ -10,6 +10,13 @@ module.exports = {
       fontFamily: {
         bevietnam: ['"Be Vietnam Pro"', 'sans-serif'],
       },
+      colors: {
+        biru: '#0D92F4', // Biru agak gelap
+        birumud:'#77CDFF', //Biru terang
+        birucard:'#B7E0FF',
+        putih:'#FBFBFB',
+        oren:'#FFDDAE',
+      },
     },
   },
   plugins: [],
