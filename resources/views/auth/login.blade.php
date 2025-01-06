@@ -1,6 +1,6 @@
 @extends('components.app')
 @section('content')
-    <div class="container-fluid mx-auto py-28 px-20">
+    <div class="container-fluid mx-auto py-28 px-4 md:px-20">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div>
                 <h2 class="text-2xl font-bold mb-4">Testimoni Siswa</h2>
@@ -34,28 +34,25 @@
                 </div>
             </div>
             <div class="bg-white p-4 rounded-lg shadow-md">
-                <h2 class="text-3xl font-bold text-center mb-4">Mendaftar</h2>
-                <div class="text-center text-sm text-[#4C4C4D]">Buat akun sebelum mendaftar kursus</div>
-                <form>
-                    <label for="email" class="block mb-2 text-sm font-bold">Nama</label>
-                    <input type="email" id="email"
+                <h2 class="text-3xl font-bold text-center mb-4">Masuk</h2>
+                <div class="text-center text-sm text-[#4C4C4D]">Masukkan akun yang sudah di daftarkan</div>
+                <form action="{{ route('login') }}" method="POST">
+                    @csrf
+                    <label for="username" class="block mb-2 text-sm font-bold">Username (Email atau Nama)</label>
+                    <input type="text" name="username" id="username" required
                         class="w-full mb-1 p-2 pl-10 text-sm text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Masukkan Nama Panjang">
-
-                    <label for="email" class="block mb-2 text-sm font-bold">Email</label>
-                    <input type="email" id="email"
-                        class="w-full mb-1 p-2 pl-10 text-sm text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="contoh@gmail.com">
+                        placeholder="Masukkan Email atau Nama">
 
                     <label for="password" class="block mb-2 text-sm font-bold">Password</label>
-                    <input type="password" id="password"
+                    <input type="password" name="password" id="password" required
                         class="w-full p-2 pl-10 text-sm mb-4 text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="Password">
-                    <button class="bg-[#445FB5] hover:bg-[#354a8f] text-white font-bold py-2 px-4 rounded w-full">Daftar</button>
+                    
+                    <button type="submit" class="bg-[#445FB5] hover:bg-[#354a8f] text-white font-bold py-2 px-4 rounded w-full">Masuk</button>
                 </form>
                 <div class="flex items-center justify-center">
                     <hr class="border-t border-gray-300 w-full">
-                    <span class="mx-2 text-gray-500">atau</span>
+                    <span class="mx-2 text-gray-500">or</span>
                     <hr class="border-t border-gray-300 w-full">
                 </div>
 
@@ -63,10 +60,11 @@
                 <button
                     class="flex items-center justify-center px-6 py-2 rounded-md w-full bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-opacity-50">
                     <i class="fa-brands fa-google"></i>
-                    <span class="ml-2">Daftar Menggunakan Google</span>
+                    <span class="ml-2">Sign Up with Google</span>
                 </button>
-                <p class="text-gray-600 text-sm mt-4">Sudah mempunyai akun? <a
-                    href="/masuk"class="text-[#445FB5] hover:text-[#354a8f]">Masuk</a></p>
+                <p class="text-gray-600 text-sm mt-4">Belum mempunyai akun? <a
+                    href="/daftar" class="text-[#445FB5] hover:text-[#354a8f]">Daftar</a></p>
+
             </div>
         </div>
     </div>

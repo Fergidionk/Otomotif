@@ -28,12 +28,18 @@
         <div class="flex items-center space-x-4">
             <!-- Desktop Buttons -->
             <div class="hidden md:flex space-x-4">
-                <a href="/daftar" class="hover:bg-[#F1F1F3] text-gray-800 py-2 px-4 rounded-md">Daftar</a>
-                <a href="/masuk" class="bg-[#445FB5] hover:bg-[#364b8f] text-white py-2 px-4 rounded-md">Masuk</a>
-                <a href="/profil-siswa"
-                    class="bg-[#F1F1F3] hover:bg-[#E1E1E3] text-white py-2 px-4 rounded-full w-10 h-10 flex items-center justify-center">
-                    <i class="fa fa-user text-black"></i>
-                </a>
+                @if (Auth::check())
+                    <a href="/profil-siswa" class="bg-[#F1F1F3] hover:bg-[#E1E1E3] text-black py-2 px-4 rounded-full w-10 h-10 flex items-center justify-center">
+                        <img src="{{ Auth::user()->profile_picture }}" alt="Profile Picture" class="w-10 h-10 rounded-full">
+                    </a>
+                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit" class="hover:bg-[#F1F1F3] text-gray-800 py-2 px-4 rounded-md">Logout</button>
+                    </form>
+                @else
+                    <a href="{{ route('register') }}" class="hover:bg-[#F1F1F3] text-gray-800 py-2 px-4 rounded-md">Register</a>
+                    <a href="{{ route('login') }}" class="bg-[#445FB5] hover:bg-[#364b8f] text-white py-2 px-4 rounded-md">Login</a>
+                @endif
             </div>
             <!-- Mobile Hamburger -->
             <button id="menu-toggle" class="block md:hidden text-gray-800">
@@ -48,8 +54,20 @@
             <li><a href="/tentang-kami" class="block px-3 py-2 rounded-md hover:bg-[#F1F1F3]">Tentang Kami</a></li>
             <li><a href="/kontak" class="block px-3 py-2 rounded-md hover:bg-[#F1F1F3]">Kontak</a></li>
             <li><a href="/daftar-kursus" class="block px-3 py-2 rounded-md hover:bg-[#F1F1F3]">Daftar Kursus</a></li>
-            <li><a href="/daftar" class="block px-3 py-2 rounded-md hover:bg-[#F1F1F3]">Daftar</a></li>
-            <li><a href="/masuk" class="block px-3 py-2 rounded-md bg-[#445FB5] text-white">Masuk</a></li>
+            @if (Auth::check())
+                <li>
+                    <a href="/profil-siswa" class="block px-3 py-2 rounded-md hover:bg-[#F1F1F3]">Profil</a>
+                </li>
+                <li>
+                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit" class="block px-3 py-2 rounded-md hover:bg-[#F1F1F3]">Logout</button>
+                    </form>
+                </li>
+            @else
+                <li><a href="/register" class="block px-3 py-2 rounded-md hover:bg-[#F1F1F3]">Register</a></li>
+                <li><a href="/login" class="block px-3 py-2 rounded-md hover:bg-[#F1F1F3]">Login</a></li>
+            @endif
         </ul>
     </div>
 </nav>

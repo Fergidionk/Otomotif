@@ -69,37 +69,34 @@
         <!-- Tables -->
         <li class="menu-header small text-uppercase"><span class="menu-header-text"> Tables</span></li>
         <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-table"></i>
-                <div data-i18n="Form Elements">Tables</div>
+            <a href="/admin/siswa" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div data-i18n="Tables">Siswa</div>
             </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="/admin/siswa" class="menu-link">
-                        <div data-i18n="Tables">Siswa</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="tables-basic.html" class="menu-link">
-                        <div data-i18n="Tables">Pendaftaran</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="tables-basic.html" class="menu-link">
-                        <div data-i18n="Tables">Paket</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="tables-basic.html" class="menu-link">
-                        <div data-i18n="Tables">Jadwal</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="tables-basic.html" class="menu-link">
-                        <div data-i18n="Tables">User</div>
-                    </a>
-                </li>
-            </ul>
+        </li>
+        <li class="menu-item">
+            <a href="/admin/pendaftaran" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-file"></i>
+                <div data-i18n="Tables">Pendaftaran</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="/admin/paket" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-package"></i>
+                <div data-i18n="Tables">Paket</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="/admin/jadwal" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-calendar"></i>
+                <div data-i18n="Tables">Jadwal</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="/admin/user" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user-circle"></i>
+                <div data-i18n="Tables">User</div>
+            </a>
         </li>
     </ul>
 </aside>

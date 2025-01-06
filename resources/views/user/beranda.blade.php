@@ -1,7 +1,7 @@
 @extends('user/components.app')
 @section('content')
     <div class="p-8">
-        <section id="hero" class=" p-20 text-center">
+        <section id="hero" class="p-5 md:p-20 text-center">
             <h1 class="text-4xl font-bold bg-white inline-block"><span class="text-[#445FB5]">Latih</span> Kemampuan Menyetirmu</h1>
             <h2 class="text-3xl mt-4">Dengan <span class="text-[#445FB5]">OTOMOTIF</span> Kursus Mengemudi Wlingi</h2>
             <p class="mt-4">Belajar dari para ahli untuk meningkatkan keterampilan mengemudi Anda.</p>
@@ -31,7 +31,7 @@
             </div>
         </section>
 
-        <section id="fasilitas" class="p-8">
+        <section id="fasilitas" class="p-5 md:p-8">
             <div class="flex justify-between items-center mb-4">
                 <div>
                     <h2 class="text-2xl font-semibold">Fasilitas</h2>
@@ -69,7 +69,7 @@
             </div>
         </section>
 
-        <section id="kursus-kami" class="p-8">
+        <section id="kursus-kami" class="p-5 md:p-8">
             <div class="flex justify-between items-center mb-4">
                 <div>
                     <h2 class="text-2xl font-semibold">Kursus Kami</h2>
@@ -79,7 +79,7 @@
 
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-semibold">Teori</h3>
-                <button class="bg-white hover:bg-gray-200 text-black py-2 px-4 rounded-[8px]">Lihat Semua</button>
+                <button onclick="location.href='{{ url('/kursus?materi=Dasar-Dasar-Mengemudi') }}'" class="bg-white hover:bg-gray-200 text-black py-2 px-4 rounded-[8px]">Lihat Semua</button>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="bg-white p-6 rounded-lg shadow-md">
@@ -88,7 +88,7 @@
                     </div>
                     <h4 class="text-lg font-semibold mb-2">Dasar-Dasar Mengemudi</h4>
                     <p class="text-gray-600 mb-4">Pelajari dasar-dasar mengemudi, termasuk peraturan lalu lintas dan keselamatan di jalan.</p>
-                    <button class="w-full bg-[#F1F1F3] hover:bg-[#E1E1E3] text-black py-2 px-4 rounded-[8px]">Lihat Materi</button>
+                    <button onclick="location.href='{{ url('/kursus?materi=Dasar-Dasar-Mengemudi') }}'" class="w-full bg-[#F1F1F3] hover:bg-[#E1E1E3] text-black py-2 px-4 rounded-[8px]">Lihat Materi</button>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <div class="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full w-fit mb-3">
@@ -96,35 +96,35 @@
                     </div>
                     <h4 class="text-lg font-semibold mb-2">Teknik Mengemudi Lanjutan</h4>
                     <p class="text-gray-600 mb-4">Pelajari teknik mengemudi lanjutan, termasuk mengemudi di berbagai kondisi jalan dan situasi.</p>
-                    <button class="w-full bg-[#F1F1F3] hover:bg-[#E1E1E3] text-black py-2 px-4 rounded-[8px]">Lihat Materi</button>
+                    <button onclick="location.href='{{ url('/kursus?materi=Teknik-Mengemudi-Lanjutan') }}'" class="w-full bg-[#F1F1F3] hover:bg-[#E1E1E3] text-black py-2 px-4 rounded-[8px]">Lihat Materi</button>
                 </div>
             </div>
 
             <div class="flex justify-between items-center mb-4 mt-8">
                 <h3 class="text-xl font-semibold">Praktek</h3>
-                <button class="bg-white hover:bg-gray-200 text-black py-2 px-4 rounded-[8px]">Lihat Semua</button>
+                <button onclick="location.href='{{ url('/kursus?materi=Praktek-Mengemudi') }}'" class="bg-white hover:bg-gray-200 text-black py-2 px-4 rounded-[8px]">Lihat Semua</button>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <div class="bg-yellow-100 text-yellow-800 text-sm font-medium px-3 py-1 rounded-full w-fit mb-3">
                         Dasar
                     </div>
-                    <h4 class="text-lg font-semibold mb-2">Mengemudi di Jalan Raya</h4>
+                    <h4 class="text-lg font-semibold mb-2">Praktek Dasar Mengemudi</h4>
                     <p class="text-gray-600 mb-4">Pelajari cara mengemudi di jalan raya dengan aman dan nyaman.</p>
-                    <button class="w-full bg-[#F1F1F3] hover:bg-[#E1E1E3] text-black py-2 px-4 rounded-[8px]">Lihat Materi</button>
+                    <button onclick="location.href='{{ url('/kursus?materi=Praktek-Dasar-Mengemudi') }}'" class="w-full bg-[#F1F1F3] hover:bg-[#E1E1E3] text-black py-2 px-4 rounded-[8px]">Lihat Materi</button>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <div class="bg-purple-100 text-purple-800 text-sm font-medium px-3 py-1 rounded-full w-fit mb-3">
                         Mahir
                     </div>
-                    <h4 class="text-lg font-semibold mb-2">Mengemudi di Berbagai Kondisi</h4>
+                    <h4 class="text-lg font-semibold mb-2">Praktek Teknik Mengemudi Lanjutan</h4>
                     <p class="text-gray-600 mb-4">Pelajari cara mengemudi di berbagai kondisi jalan dan cuaca.</p>
-                    <button class="w-full bg-[#F1F1F3] hover:bg-[#E1E1E3] text-black py-2 px-4 rounded-[8px]">Lihat Materi</button>
+                    <button onclick="location.href='{{ url('/kursus?materi=Praktek-Teknik-Mengemudi-Lanjutan') }}'" class="w-full bg-[#F1F1F3] hover:bg-[#E1F1E3] text-black py-2 px-4 rounded-[8px]">Lihat Materi</button>
                 </div>
             </div>
         </section>
 
-        <section id="testimoni" class="p-8">
+        <section id="testimoni" class="p-5 md:p-8">
             <h2 class="text-2xl font-semibold">Testimoni</h2>
             <p class="text-gray-600 mt-2 mb-8">Lihat apa kata siswa kursus kami tentang pengalaman belajar mengemudi bersama instruktur profesional!</p>
             
@@ -153,12 +153,12 @@
             </div>
         </section>
 
-        <section id="paket-kursus" class="p-8">
+        <section id="paket-kursus" class="p-5 md:p-8">
             <h2 class="text-2xl font-semibold">Paket Kursus</h2>
             <p class="text-gray-600 mt-2 mb-8">Pilih paket kursus sesuai kebutuhan Anda, lengkap dengan sesi praktik dan teori bersama instruktur berpengalaman.</p>
             
-            <div class="bg-white p-20 rounded-lg shadow-md">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div class="bg-white p-5 md:p-20 rounded-lg shadow-md">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
                     <!-- Paket 1 -->
                     <div class="bg-[#8B9FDB] p-4 rounded-lg">
                         <div class="bg-white rounded-lg p-3 text-center mb-8">

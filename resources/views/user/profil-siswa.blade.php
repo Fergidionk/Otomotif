@@ -2,16 +2,18 @@
 @section('content')
     <div class="container p-8 px-20 h-screen">
         <div class="grid grid-cols-2 gap-4 mt-8">
-            <div class="text-gray-800 mb-12"><span class="text-5xl font-bold">Nama Siswa</span><small> Pertemuan
-                    ke-$</small></div>
+            <div class="text-gray-800 mb-12">
+                <span class="text-5xl font-bold">Nama Siswa</span>
+                <small> Pertemuan ke-$</small>
+            </div>
             <div class="text-center">
                 <p class="text-gray-900 font-medium mt-4 mb-2 text-lg">Paket Y</p>
             </div>
         </div>
-        <hr class=" border-b border-[#E4E4E7] w-full">
+        <hr class="border-b border-[#E4E4E7] w-full">
 
         <div class="mt-8">
-            <table class="min-w-full ">
+            <table class="min-w-full">
                 <tbody>
                     <tr>
                         <td class="py-2 px-4 border-b">Tempat Tanggal Lahir</td>

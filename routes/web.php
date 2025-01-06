@@ -1,6 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\PendaftaranController;
+use App\Http\Controllers\PaketController;
+use App\Http\Controllers\JadwalController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,13 +20,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 // authentication
-Route::get('/daftar', function () {
-    return view('authentication/daftar');
-});
-
-Route::get('/masuk', function () {
-    return view('authentication/masuk');
-});
+Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
 
 // User Page
 Route::get('/', function () {
@@ -55,8 +58,8 @@ Route::get('/admin/', function () {
 Route::get('/admin/siswa', function () {
     return view('admin/siswa');
 });
-Route::get('/admin/pendaftar', function () {
-    return view('admin/pendaftar');
+Route::get('/admin/pendaftaran', function () {
+    return view('admin/pendaftaran');
 });
 Route::get('/admin/paket', function () {
     return view('admin/paket');
@@ -67,6 +70,12 @@ Route::get('/admin/jadwal', function () {
 Route::get('/admin/user', function () {
     return view('admin/user');
 });
+
+Route::resource('siswa', SiswaController::class);
+Route::resource('pendaftaran', PendaftaranController::class);
+Route::resource('paket', PaketController::class);
+Route::resource('jadwal', JadwalController::class);
+Route::resource('users', UserController::class);
 
 
 

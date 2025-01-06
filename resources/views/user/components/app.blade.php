@@ -10,7 +10,6 @@
         html,
         body {
             height: 100%;
-
         }
     </style>
     @vite('resources/css/app.css')
@@ -29,7 +28,6 @@
             @yield('content')
         </main>
     </div>
-
 
     @include('user/components.footer')
 
