@@ -29,13 +29,6 @@
                 <h2 class="text-2xl font-semibold">Praktek Teknik Mengemudi Lanjutan</h2>
                 <p>Latihan praktek teknik mengemudi lanjutan, termasuk manuver di jalan raya dan parkir. Materi ini akan membantu Anda untuk meningkatkan keterampilan mengemudi Anda dalam berbagai situasi yang lebih kompleks. Praktek teknik mengemudi lanjutan ini akan membantu Anda untuk meningkatkan keterampilan mengemudi Anda dalam berbagai situasi yang lebih kompleks. Dengan demikian, Anda akan lebih siap untuk menghadapi berbagai tantangan di jalan. Materi ini juga akan membahas tentang cara mengemudi di jalan yang berliku, termasuk cara mengatur kecepatan, menggunakan rem, dan mengatur posisi kendaraan di jalan. Selain itu, materi ini juga akan membahas tentang cara mengemudi di malam hari, termasuk cara menggunakan lampu, mengatur kecepatan, dan menghadapi situasi yang tidak terduga. Di samping itu, materi ini juga akan membahas tentang cara mengemudi dalam kondisi cuaca yang tidak stabil, seperti hujan, kabut, atau salju. Dengan demikian, Anda akan lebih siap untuk menghadapi berbagai situasi yang tidak terduga di jalan.</p>
             `,
-            'Mengemudi-Di-Kota': `
-                <h2 class="text-2xl font-semibold">Mengemudi Di Kota</h2>
-                <p>Pelajari cara mengemudi di kota, termasuk mengemudi di jalan yang sempit, menghadapi lalu lintas yang padat, serta mengemudi di area yang rawan kecelakaan. Materi ini akan membantu Anda untuk meningkatkan keterampilan mengemudi Anda dalam menghadapi berbagai situasi yang unik di kota. Dengan demikian, Anda akan lebih siap untuk menghadapi berbagai tantangan di kota. Materi ini juga akan membahas tentang cara mengemudi di jalan yang sempit, termasuk cara mengatur kecepatan, menggunakan rem, dan mengatur posisi kendaraan di jalan. Selain itu, materi ini juga akan membahas tentang cara menghadapi lalu lintas yang padat, termasuk cara mengatur kecepatan, menggunakan lampu, dan menghadapi situasi yang tidak terduga. Di samping itu, materi ini juga akan membahas tentang cara mengemudi di area yang rawan kecelakaan, seperti persimpangan, bundaran, dan jalan yang berliku. Dengan demikian, Anda akan lebih siap untuk menghadapi berbagai situasi yang tidak terduga di kota.</p>
-            `,
-            'Mengemudi-Di-Jalan-Tol': `
-                <h2 class="text-2xl font-semibold">Mengemudi Di Jalan Tol</h2>
-            `
         };
 
         // Tampilkan konten sesuai materi

@@ -52,30 +52,14 @@ Route::get('/profil-siswa', function () {
 
 // Admin page
 
-Route::get('/admin/', function () {
-    return view('admin/dashboard');
-});
-Route::get('/admin/siswa', function () {
-    return view('admin/siswa');
-});
-Route::get('/admin/pendaftaran', function () {
-    return view('admin/pendaftaran');
-});
-Route::get('/admin/paket', function () {
-    return view('admin/paket');
-});
-Route::get('/admin/jadwal', function () {
-    return view('admin/jadwal');
-});
-Route::get('/admin/user', function () {
-    return view('admin/user');
+Route::get('/admin', function () {
+    return view('/admin/dashboard');
 });
 
-Route::resource('siswa', SiswaController::class);
-Route::resource('pendaftaran', PendaftaranController::class);
-Route::resource('paket', PaketController::class);
-Route::resource('jadwal', JadwalController::class);
-Route::resource('users', UserController::class);
-
+Route::resource('admin/siswa', SiswaController::class);
+Route::resource('admin/pendaftaran', PendaftaranController::class);
+Route::resource('admin/paket', PaketController::class);
+Route::resource('admin/jadwal', JadwalController::class);
+Route::resource('admin/users', UserController::class);
 
 

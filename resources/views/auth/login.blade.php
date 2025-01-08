@@ -1,4 +1,4 @@
-@extends('components.app')
+@extends('user/components.app')
 @section('content')
     <div class="container-fluid mx-auto py-28 px-4 md:px-20">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -44,9 +44,14 @@
                         placeholder="Masukkan Email atau Nama">
 
                     <label for="password" class="block mb-2 text-sm font-bold">Password</label>
-                    <input type="password" name="password" id="password" required
-                        class="w-full p-2 pl-10 text-sm mb-4 text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Password">
+                    <div class="relative">
+                        <input type="password" name="password" id="password" required
+                            class="w-full p-2 pl-10 text-sm mb-4 text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Password">
+                        <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 flex items-center pr-3">
+                            <i id="eyeIcon" class="fas fa-eye"></i>
+                        </button>
+                    </div>
                     
                     <button type="submit" class="bg-[#445FB5] hover:bg-[#354a8f] text-white font-bold py-2 px-4 rounded w-full">Masuk</button>
                 </form>
@@ -63,9 +68,20 @@
                     <span class="ml-2">Sign Up with Google</span>
                 </button>
                 <p class="text-gray-600 text-sm mt-4">Belum mempunyai akun? <a
-                    href="/daftar" class="text-[#445FB5] hover:text-[#354a8f]">Daftar</a></p>
+                    href="/register" class="text-[#445FB5] hover:text-[#354a8f]">Daftar</a></p>
 
             </div>
         </div>
     </div>
+
+    <script>
+        // Fungsi untuk toggle password visibility
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.querySelector('svg').classList.toggle('hidden');
+        });
+    </script>
 @endsection

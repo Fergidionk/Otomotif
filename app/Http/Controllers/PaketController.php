@@ -33,10 +33,22 @@ class PaketController extends Controller
             return redirect()->route('paket.index')->with('success', 'Paket berhasil ditambahkan.');
         }
     }
+    
+    public function update(Request $request, Paket $paket)
+    {
+        $request->validate([
+            'nama_paket' => 'required',
+            'harga_paket' => 'required',
+        ]);
+
+        $paket->update($request->all());
+        return redirect()->route('paket.index')->with('success', 'Paket berhasil diperbarui.');
+    }
 
     public function destroy(Paket $paket)
     {
         $paket->delete();
         return redirect()->route('paket.index')->with('success', 'Paket berhasil dihapus.');
     }
+
 }

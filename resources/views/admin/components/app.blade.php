@@ -108,9 +108,12 @@
 
     <script src="../assets/vendor/js/menu.js"></script>
     <!-- endbuild -->
+    <script src="https://kit.fontawesome.com/61dd260dcf.js" crossorigin="anonymous"></script>
 
     <!-- Vendors JS -->
     <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Main JS -->
     <script src="../assets/js/main.js"></script>
