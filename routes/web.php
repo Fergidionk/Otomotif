@@ -1,12 +1,14 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\SiswaController;
-use App\Http\Controllers\PendaftaranController;
-use App\Http\Controllers\PaketController;
-use App\Http\Controllers\JadwalController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PaketController;
+use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\JadwalController;
+use App\Http\Controllers\PendaftaranController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +21,7 @@ use App\Http\Controllers\UserController;
 |
 */
 
+
 // authentication
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
@@ -30,6 +33,11 @@ Route::get('/', function () {
     return view('user/beranda');
 });
 
+
+Route::middleware(['auth'])->group(function(){
+    Route::get('/profil-siswa', [SiswaController::class, 'masuk']);
+    
+});
 Route::get('/daftar-kursus', function () {
     return view('user/daftar-kursus');
 });
@@ -46,9 +54,7 @@ Route::get('/kursus', function () {
     return view('user/kursus');
 });
 
-Route::get('/profil-siswa', function () {
-    return view('user/profil-siswa');
-});
+
 
 // Admin page
 
@@ -63,3 +69,14 @@ Route::resource('admin/jadwal', JadwalController::class);
 Route::resource('admin/users', UserController::class);
 
 
+
+
+
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

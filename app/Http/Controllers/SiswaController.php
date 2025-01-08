@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class SiswaController extends Controller
 {
+    public function masuk()
+    {
+        return view('user/profil-siswa');
+    }
     public function index()
     {
         $siswa = Siswa::all();

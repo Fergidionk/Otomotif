@@ -38,8 +38,8 @@
                 <div class="text-center text-sm text-[#4C4C4D]">Masukkan akun yang sudah di daftarkan</div>
                 <form action="{{ route('login') }}" method="POST">
                     @csrf
-                    <label for="username" class="block mb-2 text-sm font-bold">Username (Email atau Nama)</label>
-                    <input type="text" name="username" id="username" required
+                    <label for="username" class="block mb-2 text-sm font-bold">Email</label>
+                    <input type="email" name="email" id="email" required
                         class="w-full mb-1 p-2 pl-10 text-sm text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="Masukkan Email atau Nama">
 
@@ -68,7 +68,7 @@
                     <span class="ml-2">Sign Up with Google</span>
                 </button>
                 <p class="text-gray-600 text-sm mt-4">Belum mempunyai akun? <a
-                    href="/register" class="text-[#445FB5] hover:text-[#354a8f]">Daftar</a></p>
+                    href="/register" class="text-[#445FB5] hover:text-[#354a8f]" type="submit">Daftar</a></p>
 
             </div>
         </div>
