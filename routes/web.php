@@ -9,6 +9,7 @@ use App\Http\Controllers\PaketController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\PendaftaranController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,10 +35,24 @@ Route::get('/', function () {
 });
 
 
+
 Route::middleware(['auth'])->group(function(){
     Route::get('/profil-siswa', [SiswaController::class, 'masuk']);
-    
 });
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/dashboard', [AdminController::class, 'masuk'])->name('admin.dashboard');
+    Route::resource('admin/siswa', SiswaController::class);
+    Route::resource('admin/pendaftaran', PendaftaranController::class);
+    Route::resource('admin/paket', PaketController::class);
+    Route::resource('admin/jadwal', JadwalController::class);
+    Route::resource('admin/users', UserController::class);
+});
+
+
+
+
 Route::get('/daftar-kursus', function () {
     return view('user/daftar-kursus');
 });
@@ -58,15 +73,6 @@ Route::get('/kursus', function () {
 
 // Admin page
 
-Route::get('/admin', function () {
-    return view('/admin/dashboard');
-});
-
-Route::resource('admin/siswa', SiswaController::class);
-Route::resource('admin/pendaftaran', PendaftaranController::class);
-Route::resource('admin/paket', PaketController::class);
-Route::resource('admin/jadwal', JadwalController::class);
-Route::resource('admin/users', UserController::class);
 
 
 

@@ -81,24 +81,49 @@ class AuthController extends Controller
     /**
      * Show the form for signing in.
      */
+
+    // public function login(Request $request)
+    // {
+    //     $credentials = $request->validate([
+    //         'username' => 'required|string',
+    //         'password' => 'required|string',
+    //     ]);
+
+    //     // Mencari pengguna berdasarkan username
+    //     $user = User::where('email', $credentials['username'])->orWhere('name', $credentials['username'])->first();
+
+    //     if ($user && Auth::attempt(['email' => $user->email, 'password' => $credentials['password']])) {
+    //         $request->session()->regenerate();
+    //         return redirect()->intended('/admin'); // Redirect ke halaman admin
+    //     }
+
+    //     return back()->withErrors([
+    //         'username' => 'The provided credentials do not match our records.',
+    //     ]);
+    // }
+
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
+        // Validasi input login
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:6',
         ]);
 
-        // Mencari pengguna berdasarkan username
-        $user = User::where('email', $credentials['username'])->orWhere('name', $credentials['username'])->first();
+        // Coba login dengan kredensial
+        if (Auth::attempt($request->only('email', 'password'))) {
+            $user = Auth::user(); // Mendapatkan pengguna yang login
 
-        if ($user && Auth::attempt(['email' => $user->email, 'password' => $credentials['password']])) {
-            $request->session()->regenerate();
-            return redirect()->intended('/admin'); // Redirect ke halaman admin
+            // Redirect berdasarkan role
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            } elseif ($user->role === 'user') {
+                return redirect()->route('user.home');
+            }
         }
 
-        return back()->withErrors([
-            'username' => 'The provided credentials do not match our records.',
-        ]);
+        // Jika gagal login
+        return back()->withErrors(['email' => 'Email atau password salah!']);
     }
 
     // Admin Login
