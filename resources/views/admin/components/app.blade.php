@@ -73,7 +73,7 @@
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
         <!-- Header -->
-            @include('admin/components.header')
+            @include('admin.components.header')
         <!-- / Header -->
 
           <!-- Content wrapper -->
@@ -83,7 +83,7 @@
             <!-- / Content -->
 
             <!-- Footer -->
-                @include('admin/components.footer')
+                @include('admin.components.footer')
             <!-- / Footer -->
 
             <div class="content-backdrop fade"></div>
@@ -100,6 +100,7 @@
 
 
     <!-- Core JS -->
+
     <!-- build:js assets/vendor/js/core.js -->
     <script src="../assets/vendor/libs/jquery/jquery.js"></script>
     <script src="../assets/vendor/libs/popper/popper.js"></script>
