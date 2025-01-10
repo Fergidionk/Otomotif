@@ -9,20 +9,22 @@ class Pendaftaran extends Model
 {
     use HasFactory;
 
-    // Tentukan nama tabel jika tidak sesuai dengan konvensi Laravel
-    protected $table = 'tb_pendaftaran';
-
-    // Tentukan kolom yang dapat diisi
+    protected $table = 'tb_pendaftar';
     protected $fillable = [
-        'nama',
-        'email',
-        'no_hp',
-        'alamat',
-        'tanggal_lahir',
-        'jenis_kelamin',
+        'siswa_id',
+        'tanggal_daftar',
         'paket_id',
+        'metode_pembayaran',
+        'status_pembayaran',
     ];
 
-    // Jika Anda ingin menambahkan relasi, Anda bisa menambahkannya di sini
-    // Contoh: public function paket() { return $this->belongsTo(Paket::class); }
+    public function siswa()
+    {
+        return $this->belongsTo(Siswa::class, 'siswa_id');
+    }
+
+    public function paket()
+    {
+        return $this->belongsTo(Paket::class, 'paket_id');
+    }
 }

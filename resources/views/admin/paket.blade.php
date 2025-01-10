@@ -1,7 +1,7 @@
 @extends('admin/components.app')
 @section('content')
     <div class="container">
-        <h4 class="fw-bold my-4 text-xl"><span class="text-muted fw-light">Modal /</span> Paket</h4>
+        <h4 class="fw-bold my-4 text-xl"><span class="text-muted fw-light">Data </span> Paket</h4>
         <div class="my-4">
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPaketModal">Tambah Paket</button>
         </div>
@@ -13,6 +13,7 @@
                             <th>No</th>
                             <th>Nama Paket</th>
                             <th>Harga Paket</th>
+                            <th>Jumlah Pertemuan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -22,11 +23,13 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $p->nama_paket }}</td>
                                 <td>Rp {{ $p->harga_paket }}</td>
+                                <td>{{ $p->jumlah_pertemuan }} Pertemuan</td>
                                 <td>
                                     <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editPaketModal"
                                         data-id="{{ $p->id }}"
                                         data-nama="{{ $p->nama_paket }}"
-                                        data-harga="{{ $p->harga_paket }}">
+                                        data-harga="{{ $p->harga_paket }}"
+                                        data-jumlah="{{ $p->jumlah_pertemuan }}"> 
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </button>
                                 <button class="btn btn-sm btn-danger delete-btn" data-id="{{ $p->id }}">
@@ -59,6 +62,10 @@
                         <div class="mb-3">
                             <label for="addPaketPrice" class="form-label">Harga Paket</label>
                             <input type="number" id="addPaketPrice" name="harga_paket" class="form-control" placeholder="Masukkan Harga Paket" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editPaketJumlah" class="form-label">Jumlah Pertemuan</label>
+                            <input type="number" id="editPaketJumlah" name="jumlah_pertemuan" class="form-control" placeholder="Masukkan Jumlah Pertemuan" required>
                         </div>
                         <div class="alert alert-info">
                             Pastikan Anda mengisi semua field dengan benar.
@@ -93,6 +100,10 @@
                             <label for="editPaketPrice" class="form-label">Harga Paket</label>
                             <input type="number" id="editPaketPrice" name="harga_paket" class="form-control" placeholder="Masukkan Harga Paket" required>
                         </div>
+                        <div class="mb-3">
+                            <label for="editPaketJumlah" class="form-label">Jumlah Pertemuan</label>
+                            <input type="number" id="editPaketJumlah" name="jumlah_pertemuan" class="form-control" placeholder="Masukkan Jumlah Pertemuan" required>
+                        </div>
                         <div class="alert alert-info">
                             Pastikan Anda mengisi semua field dengan benar.
                         </div>
@@ -107,7 +118,13 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.tailwindcss.com/"></script>
     <script src="https://cdn.datatables.net/2.2.0/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.2.0/js/dataTables.tailwindcss.js"></script>
+
+    <script>
+        new DataTable('#paketTable');
+    </script>
 
     <script>
         const editPaketModal = document.getElementById('editPaketModal');
@@ -116,15 +133,18 @@
             const id = button.getAttribute('data-id');
             const nama = button.getAttribute('data-nama');
             const harga = button.getAttribute('data-harga');
+            const jumlah = button.getAttribute('data-jumlah');
 
             const modalTitle = editPaketModal.querySelector('.modal-title');
             modalTitle.textContent = 'Edit Paket: ' + nama;
 
             const editPaketName = document.getElementById('editPaketName');
             const editPaketPrice = document.getElementById('editPaketPrice');
+            const editPaketJumlah = document.getElementById('editPaketJumlah');
 
             editPaketName.value = nama;
             editPaketPrice.value = harga;
+            editPaketJumlah.value = jumlah;
 
             const form = document.getElementById('editPaketForm');
             form.action = '/admin/paket/' + id;

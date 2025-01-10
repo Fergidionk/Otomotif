@@ -3,13 +3,15 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PaketController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\AdminController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -43,10 +45,12 @@ Route::middleware(['auth'])->group(function(){
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/dashboard', [AdminController::class, 'masuk'])->name('admin.dashboard');
+    Route::resource('admin/dashboard', DashboardController::class);
     Route::resource('admin/siswa', SiswaController::class);
     Route::resource('admin/pendaftaran', PendaftaranController::class);
     Route::resource('admin/paket', PaketController::class);
     Route::resource('admin/jadwal', JadwalController::class);
+    Route::resource('admin/absensi', AbsensiController::class);
     Route::resource('admin/users', UserController::class);
 });
 

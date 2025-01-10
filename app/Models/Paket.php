@@ -13,10 +13,7 @@ class Paket extends Model
     protected $table = 'tb_paket';
 
     // Tentukan kolom yang dapat diisi
-    protected $fillable = [
-        'nama_paket',
-        'harga_paket',
-    ];
+    protected $guarded = [];
 
     // Jika Anda ingin menambahkan relasi, Anda bisa menambahkannya di sini
     // Contoh: public function pendaftar() { return $this->hasMany(Pendaftaran::class); }

@@ -3,19 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pendaftaran;
+use App\Models\Siswa;
+use App\Models\Paket;
 use Illuminate\Http\Request;
 
 class PendaftaranController extends Controller
 {
     public function index()
     {
-        $pendaftaran = Pendaftaran::all();
-        return view('admin.pendaftaran.index', compact('pendaftaran'));
-    }
-
-    public function create()
-    {
-        return view('admin.pendaftaran.create');
+        // Mengambil semua pendaftaran dengan data siswa dan paket yang terkait
+        $pendaftaran = Pendaftaran::with(['siswa', 'paket'])->get();
+        $siswa = Siswa::all();  // Ambil data siswa untuk dipilih dalam modal
+        $paket = Paket::all();  // Ambil data paket untuk dipilih dalam modal
+        return view('admin.pendaftaran', compact('pendaftaran', 'siswa', 'paket'));
     }
 
     public function store(Request $request)
@@ -28,13 +28,9 @@ class PendaftaranController extends Controller
             'status_pembayaran' => 'required',
         ]);
 
+        // Simpan data pendaftaran
         Pendaftaran::create($request->all());
         return redirect()->route('pendaftaran.index')->with('success', 'Pendaftaran berhasil ditambahkan.');
-    }
-
-    public function edit(Pendaftaran $pendaftaran)
-    {
-        return view('admin.pendaftaran.edit', compact('pendaftaran'));
     }
 
     public function update(Request $request, Pendaftaran $pendaftaran)

@@ -13,14 +13,7 @@ class Siswa extends Model
     protected $table = 'tb_siswa';
 
     // Tentukan kolom yang dapat diisi
-    protected $fillable = [
-        'nama',
-        'email',
-        'no_hp',
-        'alamat',
-        'tanggal_lahir',
-        'jenis_kelamin',
-    ];
+    protected $guarded = [''];
 
     // Jika Anda ingin menambahkan relasi, Anda bisa menambahkannya di sini
     // Contoh: public function pendaftaran() { return $this->hasMany(Pendaftaran::class); }

@@ -9,31 +9,39 @@ class JadwalController extends Controller
 {
     public function index()
     {
-        $jadwal = Jadwal::all();
+        $jadwal = Jadwal::with('pendaftar')->get();
         return view('admin.jadwal', compact('jadwal'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'pendaftar_id' => 'required',
-            'hari' => 'required',
-            'jam_pelatihan' => 'required',
+        $validated = $request->validate([
+            'pendaftar_id' => 'required|exists:pendaftar,id',
+            'hari' => 'required|string',
+            'jam_pelatihan' => 'required|date_format:H:i',
         ]);
 
-        if ($request->has('jadwalId') && $request->jadwalId != '') {
-            $jadwal = Jadwal::find($request->jadwalId);
-            $jadwal->update($request->all());
-            return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil diperbarui.');
-        } else {
-            Jadwal::create($request->all());
-            return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil ditambahkan.');
-        }
+        Jadwal::create($validated);
+        return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil ditambahkan!');
     }
 
-    public function destroy(Jadwal $jadwal)
+    public function update(Request $request, $id)
     {
+        $validated = $request->validate([
+            'pendaftar_id' => 'required|exists:pendaftar,id',
+            'hari' => 'required|string',
+            'jam_pelatihan' => 'required|date_format:H:i',
+        ]);
+
+        $jadwal = Jadwal::findOrFail($id);
+        $jadwal->update($validated);
+        return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil diperbarui!');
+    }
+
+    public function destroy($id)
+    {
+        $jadwal = Jadwal::findOrFail($id);
         $jadwal->delete();
-        return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil dihapus.');
+        return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil dihapus!');
     }
 }

@@ -29,6 +29,7 @@ class PaketController extends Controller
         $validatedData = $request->validate([
             'nama_paket' => 'required',
             'harga_paket' => 'required|numeric',
+            'jumlah_pertemuan' => 'required|numeric',
         ]);
 
         Paket::create($validatedData);
@@ -48,6 +49,7 @@ class PaketController extends Controller
         $validatedData = $request->validate([
             'nama_paket' => 'required',
             'harga_paket' => 'required|numeric',
+            'jumlah_pertemuan' => 'required|numeric',
         ]);
 
         $paket->update($validatedData);

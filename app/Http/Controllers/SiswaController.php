@@ -7,24 +7,26 @@ use Illuminate\Http\Request;
 
 class SiswaController extends Controller
 {
-    public function masuk()
-    {
-        return view('user/profil-siswa');
-    }
+    /**
+     * Menampilkan daftar siswa.
+     * 
+     * Fungsi ini mengambil semua data siswa dari database dan menampilkannya di halaman siswa.
+     */
     public function index()
     {
         $siswa = Siswa::all();
-        return view('admin.siswa.index', compact('siswa'));
+        return view('admin.siswa', compact('siswa'));
     }
 
-    public function create()
-    {
-        return view('admin.siswa.create');
-    }
-
+    /**
+     * Menyimpan siswa baru ke dalam penyimpanan.
+     * 
+     * Fungsi ini memvalidasi data input, membuat record siswa baru di database,
+     * dan mengarahkan pengguna kembali ke halaman daftar siswa dengan pesan sukses.
+     */
     public function store(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'nama_siswa' => 'required',
             'alamat_siswa' => 'required',
             'jenis_kelamin' => 'required',
@@ -34,18 +36,21 @@ class SiswaController extends Controller
             'pendidikan_terakhir' => 'required',
         ]);
 
-        Siswa::create($request->all());
+        Siswa::create($validatedData);
         return redirect()->route('siswa.index')->with('success', 'Siswa berhasil ditambahkan.');
     }
 
-    public function edit(Siswa $siswa)
+    /**
+     * Memperbarui siswa tertentu dalam penyimpanan.
+     * 
+     * Fungsi ini mencari siswa berdasarkan ID, memvalidasi data input baru,
+     * memperbarui record siswa di database, dan mengarahkan pengguna kembali
+     * ke halaman daftar siswa dengan pesan sukses.
+     */
+    public function update(Request $request, $id)
     {
-        return view('admin.siswa.edit', compact('siswa'));
-    }
-
-    public function update(Request $request, Siswa $siswa)
-    {
-        $request->validate([
+        $siswa = Siswa::findOrFail($id);
+        $validatedData = $request->validate([
             'nama_siswa' => 'required',
             'alamat_siswa' => 'required',
             'jenis_kelamin' => 'required',
@@ -55,10 +60,16 @@ class SiswaController extends Controller
             'pendidikan_terakhir' => 'required',
         ]);
 
-        $siswa->update($request->all());
+        $siswa->update($validatedData);
         return redirect()->route('siswa.index')->with('success', 'Siswa berhasil diperbarui.');
     }
 
+    /**
+     * Menghapus siswa tertentu dari penyimpanan.
+     * 
+     * Fungsi ini mencari siswa berdasarkan ID, menghapusnya dari database,
+     * dan mengarahkan pengguna kembali ke halaman daftar siswa dengan pesan sukses.
+     */
     public function destroy(Siswa $siswa)
     {
         $siswa->delete();
