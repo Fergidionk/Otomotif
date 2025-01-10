@@ -86,20 +86,61 @@
             <div class="navbar-nav align-items-center">
                 <div class="nav-item d-flex align-items-center">
                     <i class="bx bx-search fs-4 lh-0"></i>
-                    <input type="text" class="form-control border-0 shadow-none" placeholder="Search..."
-                        aria-label="Search..." />
+                    <input type="text" id="searchInput" class="form-control border-0 shadow-none" placeholder="Cari..."
+                        aria-label="Search..." autocomplete="off"/>
+                    <div id="searchResults" class="dropdown-menu" style="display: none; position: absolute; top: 100%; width: 100%;">
+                        <a href="/admin/siswa" class="dropdown-item search-item" data-table="siswa">
+                            <i class="bx bx-user me-2"></i>Data Siswa
+                        </a>
+                        <a href="/admin/pendaftaran" class="dropdown-item search-item" data-table="pendaftaran">
+                            <i class="bx bx-file me-2"></i>Data Pendaftaran
+                        </a>
+                        <a href="/admin/paket" class="dropdown-item search-item" data-table="paket">
+                            <i class="bx bx-package me-2"></i>Data Paket
+                        </a>
+                        <a href="/admin/jadwal" class="dropdown-item search-item" data-table="jadwal">
+                            <i class="bx bx-calendar me-2"></i>Data Jadwal
+                        </a>
+                        <a href="/admin/absensi" class="dropdown-item search-item" data-table="absensi">
+                            <i class="bx bx-calendar-check me-2"></i>Data Absensi
+                        </a>
+                    </div>
                 </div>
             </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const searchInput = document.getElementById('searchInput');
+                    const searchResults = document.getElementById('searchResults');
+                    const searchItems = document.querySelectorAll('.search-item');
+
+                    searchInput.addEventListener('input', function() {
+                        const searchTerm = this.value.toLowerCase();
+                        
+                        if (searchTerm.length > 0) {
+                            searchResults.style.display = 'block';
+                            searchItems.forEach(item => {
+                                const text = item.textContent.toLowerCase();
+                                if (text.includes(searchTerm)) {
+                                    item.style.display = 'block';
+                                } else {
+                                    item.style.display = 'none';
+                                }
+                            });
+                        } else {
+                            searchResults.style.display = 'none';
+                        }
+                    });
+
+                    document.addEventListener('click', function(e) {
+                        if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                            searchResults.style.display = 'none';
+                        }
+                    });
+                });
+            </script>
             <!-- /Search -->
 
             <ul class="navbar-nav flex-row align-items-center ms-auto">
-                <!-- Place this tag where you want the button to render. -->
-                <li class="nav-item lh-1 me-3">
-                    <a class="github-button" href="https://github.com/themeselection/sneat-html-admin-template-free"
-                        data-icon="octicon-star" data-size="large" data-show-count="true"
-                        aria-label="Star themeselection/sneat-html-admin-template-free on GitHub">Star</a>
-                </li>
-
                 <!-- User -->
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                     <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
@@ -119,7 +160,7 @@
                                         </div>
                                     </div>
                                     <div class="flex-grow-1">
-                                        <span class="fw-semibold d-block">John Doe</span>
+                                        <span class="fw-semibold d-block">{{ Auth::user()->name }}</span>
                                         <small class="text-muted">Admin</small>
                                     </div>
                                 </div>
@@ -131,33 +172,26 @@
                         <li>
                             <a class="dropdown-item" href="#">
                                 <i class="bx bx-user me-2"></i>
-                                <span class="align-middle">My Profile</span>
+                                <span class="align-middle">Profil Saya</span>
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="#">
                                 <i class="bx bx-cog me-2"></i>
-                                <span class="align-middle">Settings</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">
-                                <span class="d-flex align-items-center align-middle">
-                                    <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                                    <span class="flex-grow-1 align-middle">Billing</span>
-                                    <span
-                                        class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                                </span>
+                                <span class="align-middle">Pengaturan</span>
                             </a>
                         </li>
                         <li>
                             <div class="dropdown-divider"></div>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="auth-login-basic.html">
-                                <i class="bx bx-power-off me-2"></i>
-                                <span class="align-middle">Log Out</span>
-                            </a>
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="dropdown-item">
+                                    <i class="bx bx-power-off me-2"></i>
+                                    <span class="align-middle">Keluar</span>
+                                </button>
+                            </form>
                         </li>
                     </ul>
                 </li>
