@@ -18,6 +18,12 @@ class PendaftaranController extends Controller
         return view('admin.pendaftaran', compact('pendaftaran', 'siswa', 'paket'));
     }
 
+    public function create()
+    {
+        $paket = Paket::all();
+        return view('user.daftar-kursus', compact('paket'));
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -57,5 +63,5 @@ class PendaftaranController extends Controller
     {
         $pendaftaran->delete();
         return redirect()->route('pendaftaran.index')->with('success', 'Pendaftaran berhasil dihapus.');
-    }
+    } 
 }

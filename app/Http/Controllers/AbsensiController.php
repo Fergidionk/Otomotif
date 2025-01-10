@@ -17,11 +17,20 @@ class AbsensiController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'jadwal_id' => 'required|exists:jadwal,id',
+            'jadwal_id' => 'required|exists:tb_jadwal,id',
+            'pertemuan_ke' => 'required|integer|min:1',
+            'hadir' => 'required|boolean',
             'tanggal' => 'required|date',
-            'status' => 'required|string',
-            'keterangan' => 'required|string',
+            'keterangan' => 'nullable|string|max:255',
         ]);
+
+        $jadwal = Jadwal::findOrFail($validated['jadwal_id']);
+        $paket = $jadwal->pendaftar->paket;
+
+        // Validasi jumlah pertemuan tidak melebihi paket
+        if ($validated['pertemuan_ke'] > $paket->jumlah_pertemuan) {
+            return back()->with('error', 'Pertemuan melebihi jumlah yang ada di paket');
+        }
 
         Absensi::create($validated);
         return redirect()->route('absensi.index')->with('success', 'Absensi berhasil ditambahkan!');

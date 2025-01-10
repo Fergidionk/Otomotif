@@ -29,8 +29,8 @@
             <!-- Desktop Buttons -->
             <div class="hidden md:flex space-x-4">
                 @if (Auth::check())
-                    <a href="/profil-siswa" class="bg-[#F1F1F3] hover:bg-[#E1E1E3] text-black py-2 px-4 rounded-full w-10 h-10 flex items-center justify-center">
-                        <img src="{{ Auth::user()->profile_picture }}" alt="Profile Picture" class="w-10 h-10 rounded-full">
+                    <a href="{{ route('profil.siswa') }}" class="bg-[#F1F1F3] hover:bg-[#E1E1E3] text-black py-2 px-4 rounded-full w-10 h-10 flex items-center justify-center">
+                        <i class="fas fa-user"></i>
                     </a>
                     <form action="{{ route('logout') }}" method="POST" class="inline">
                         @csrf
@@ -56,17 +56,19 @@
             <li><a href="/daftar-kursus" class="block px-3 py-2 rounded-md hover:bg-[#F1F1F3]">Daftar Kursus</a></li>
             @if (Auth::check())
                 <li>
-                    <a href="/profil-siswa" class="block px-3 py-2 rounded-md hover:bg-[#F1F1F3]">Profil</a>
+                    <a href="{{ route('profil.siswa') }}" class="block px-3 py-2 rounded-md hover:bg-[#F1F1F3]">
+                        <i class="fas fa-user mr-2"></i>Profil
+                    </a>
                 </li>
                 <li>
-                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                    <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button type="submit" class="block px-3 py-2 rounded-md hover:bg-[#F1F1F3]">Logout</button>
+                        <button type="submit" class="block w-full text-left px-3 py-2 rounded-md hover:bg-[#F1F1F3]">Logout</button>
                     </form>
                 </li>
             @else
-                <li><a href="/register" class="block px-3 py-2 rounded-md hover:bg-[#F1F1F3]">Register</a></li>
-                <li><a href="/login" class="block px-3 py-2 rounded-md hover:bg-[#F1F1F3]">Login</a></li>
+                <li><a href="{{ route('register') }}" class="block px-3 py-2 rounded-md hover:bg-[#F1F1F3]">Register</a></li>
+                <li><a href="{{ route('login') }}" class="block px-3 py-2 rounded-md hover:bg-[#F1F1F3]">Login</a></li>
             @endif
         </ul>
     </div>

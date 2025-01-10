@@ -10,7 +10,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('admin.users.index', compact('users'));
+        return view('admin.users', compact('users'));
     }
 
     public function create()
@@ -24,13 +24,15 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
+            'role' => 'required|in:admin,user',
         ]);
 
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->save();
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'role' => $request->role,
+        ]);
 
         return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan.');
     }
@@ -46,15 +48,20 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|min:6',
+            'role' => 'required|in:admin,user',
         ]);
 
-        $user->name = $request->name;
-        $user->email = $request->email;
-        if ($request->password) {
-            $user->password = bcrypt($request->password);
-        }
-        $user->save();
+        $userData = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => $request->role,
+        ];
 
+        if ($request->filled('password')) {
+            $userData['password'] = bcrypt($request->password);
+        }
+
+        $user->update($userData);
         return redirect()->route('users.index')->with('success', 'User berhasil diperbarui.');
     }
 

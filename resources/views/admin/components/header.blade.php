@@ -60,10 +60,10 @@
             </a>
         </li>
         <li class="menu-header small text-uppercase"><span class="menu-header-text"> Management</span></li>
-        <li class="menu-item {{ request()->is('admin/user') ? 'active' : '' }}">
-            <a href="/admin/user" class="menu-link">
+        <li class="menu-item {{ request()->is('admin/users') ? 'active' : '' }}">
+            <a href="/admin/users" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user-circle"></i>
-                <div data-i18n="Tables">User</div>
+                <div data-i18n="Tables">Users</div>
             </a>
         </li>
     </ul>

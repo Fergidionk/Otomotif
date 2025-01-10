@@ -10,21 +10,24 @@ class Pendaftaran extends Model
     use HasFactory;
 
     protected $table = 'tb_pendaftar';
-    protected $fillable = [
-        'siswa_id',
-        'tanggal_daftar',
-        'paket_id',
-        'metode_pembayaran',
-        'status_pembayaran',
+    protected $guarded = [];
+    
+    protected $casts = [
+        'tanggal_daftar' => 'date',
     ];
 
     public function siswa()
     {
-        return $this->belongsTo(Siswa::class, 'siswa_id');
+        return $this->belongsTo(Siswa::class);
     }
 
     public function paket()
     {
-        return $this->belongsTo(Paket::class, 'paket_id');
+        return $this->belongsTo(Paket::class);
+    }
+
+    public function jadwal()
+    {
+        return $this->hasOne(Jadwal::class, 'pendaftar_id');
     }
 }

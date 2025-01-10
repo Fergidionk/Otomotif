@@ -81,6 +81,12 @@
                     </button>
                 </form>
 
+                <div class="flex items-center justify-center">
+                    <hr class="border-t border-gray-300 w-full">
+                    <span class="mx-2 text-gray-500">or</span>
+                    <hr class="border-t border-gray-300 w-full">
+                </div>
+
                 <!-- Alternative Login Option -->
                 <button
                     class="flex items-center justify-center px-6 py-2 rounded-md w-full bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-opacity-50">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -104,26 +105,26 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        // Validasi input login
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:6',
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
         ]);
 
-        // Coba login dengan kredensial
-        if (Auth::attempt($request->only('email', 'password'))) {
-            $user = Auth::user(); // Mendapatkan pengguna yang login
-
-            // Redirect berdasarkan role
-            if ($user->role === 'admin') {
-                return redirect()->route('admin.dashboard');
-            } elseif ($user->role === 'user') {
-                return redirect()->route('user.home');
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            
+            // Redirect khusus untuk admin
+            if($request->email === 'admin@example.com') {
+                return redirect()->intended('admin/dashboard');
             }
+
+            // Redirect default untuk user lain
+            return redirect()->intended('/');
         }
 
-        // Jika gagal login
-        return back()->withErrors(['email' => 'Email atau password salah!']);
+        return back()->withErrors([
+            'email' => 'Email atau password yang dimasukkan salah.',
+        ])->onlyInput('email');
     }
 
     // Admin Login
@@ -166,20 +167,35 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:5|confirmed'
         ]);
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => Hash::make($validatedData['password'])
         ]);
 
+        // Login otomatis setelah register
         Auth::login($user);
+        
+        // Regenerate Session
+        $request->session()->regenerate();
 
-        return redirect('/admin'); // Redirect ke halaman admin setelah pendaftaran
+        // Redirect ke beranda
+        return redirect('/');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        
+        return redirect('/');
     }
 }

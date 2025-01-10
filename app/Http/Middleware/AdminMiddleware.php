@@ -5,23 +5,17 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response;
 
 class AdminMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
-        // Periksa apakah pengguna login dan emailnya adalah admin
+        // Cek apakah user sudah login dan emailnya adalah admin@example.com
         if (Auth::check() && Auth::user()->email === 'admin@example.com') {
-            return $next($request); // Izinkan akses
+            return $next($request);
         }
-
-        // Redirect jika bukan admin
-        return redirect('/')->with('error', 'Access denied.');
+        
+        // Jika bukan admin, redirect ke halaman utama
+        return redirect('/')->with('error', 'Akses ditolak. Anda tidak memiliki izin admin.');
     }
 }

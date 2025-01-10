@@ -44,16 +44,18 @@
                         placeholder="Masukkan Email atau Nama">
 
                     <label for="password" class="block mb-2 text-sm font-bold">Password</label>
-                    <div class="relative">
+                    <div class="relative flex items-center">
                         <input type="password" name="password" id="password" required
-                            class="w-full p-2 pl-10 text-sm mb-4 text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            class="w-full p-2 text-sm text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
                             placeholder="Password">
-                        <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 flex items-center pr-3">
+                        <button type="button" id="togglePassword"
+                            class="absolute inset-y-0 right-0 flex items-center pr-3">
                             <i id="eyeIcon" class="fas fa-eye"></i>
                         </button>
                     </div>
-                    
-                    <button type="submit" class="bg-[#445FB5] hover:bg-[#354a8f] text-white font-bold py-2 px-4 rounded w-full">Masuk</button>
+
+                    <button type="submit"
+                        class="bg-[#445FB5] hover:bg-[#354a8f] text-white font-bold py-2 px-4 rounded w-full">Masuk</button>
                 </form>
                 <div class="flex items-center justify-center">
                     <hr class="border-t border-gray-300 w-full">
@@ -67,8 +69,8 @@
                     <i class="fa-brands fa-google"></i>
                     <span class="ml-2">Sign Up with Google</span>
                 </button>
-                <p class="text-gray-600 text-sm mt-4">Belum mempunyai akun? <a
-                    href="/register" class="text-[#445FB5] hover:text-[#354a8f]" type="submit">Daftar</a></p>
+                <p class="text-gray-600 text-sm mt-4">Belum mempunyai akun? <a href="/register"
+                        class="text-[#445FB5] hover:text-[#354a8f]" type="submit">Daftar</a></p>
 
             </div>
         </div>

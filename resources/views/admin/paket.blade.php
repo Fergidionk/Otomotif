@@ -100,8 +100,8 @@
                             <input type="number" id="addPaketPrice" name="harga_paket" class="form-control" placeholder="Masukkan Harga Paket" required>
                         </div>
                         <div class="mb-3">
-                            <label for="editPaketJumlah" class="form-label">Jumlah Pertemuan</label>
-                            <input type="number" id="editPaketJumlah" name="jumlah_pertemuan" class="form-control" placeholder="Masukkan Jumlah Pertemuan" required>
+                            <label for="addPaketJumlah" class="form-label">Jumlah Pertemuan</label>
+                            <input type="number" id="addPaketJumlah" name="jumlah_pertemuan" class="form-control" placeholder="Masukkan Jumlah Pertemuan" required>
                         </div>
                         <div class="alert alert-info">
                             Pastikan Anda mengisi semua field dengan benar.
@@ -189,13 +189,9 @@
             const modalTitle = editPaketModal.querySelector('.modal-title');
             modalTitle.textContent = 'Edit Paket: ' + nama;
 
-            const editPaketName = document.getElementById('editPaketName');
-            const editPaketPrice = document.getElementById('editPaketPrice');
-            const editPaketJumlah = document.getElementById('editPaketJumlah');
-
-            editPaketName.value = nama;
-            editPaketPrice.value = harga;
-            editPaketJumlah.value = jumlah;
+            document.getElementById('editPaketName').value = nama;
+            document.getElementById('editPaketPrice').value = harga;
+            document.getElementById('editPaketJumlah').value = jumlah;
 
             const form = document.getElementById('editPaketForm');
             form.action = '/admin/paket/' + id;

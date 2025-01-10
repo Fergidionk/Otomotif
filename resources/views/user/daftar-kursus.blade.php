@@ -131,62 +131,129 @@
                                     file:text-sm file:font-medium
                                     file:bg-blue-600 file:text-white
                                     hover:file:bg-blue-700
-                                    cursor-pointer" required>
+                                    cursor-pointer"
+                                        required>
                                 </div>
                             </div>
                     </form>
                 </div>
 
                 <div class="mt-6 flex justify-center">
-                    <button type="button" id="lanjutkanBtn" onclick="validateAndShowNext()" disabled
-                        class="px-6 py-2 text-sm font-medium rounded-full text-white bg-gray-400 cursor-not-allowed transition-all duration-300">
-                        Lanjutkan
+                    <button type="submit" form="dataDiriForm" 
+                        class="px-6 py-2 text-sm font-medium rounded-full text-white bg-blue-600 hover:bg-blue-700 transition-all duration-300">
+                        Simpan
                     </button>
                 </div>
 
                 <div id="nextForm" class="hidden mt-6 transition-all duration-300">
-                    <!-- Form content remains the same -->
+                    <div class="bg-white shadow-lg rounded-2xl p-6">
+                        <div class="border-b pb-3 mb-4">
+                            <h2 class="text-xl font-semibold text-gray-800">Data Pendaftaran</h2>
+                            <p class="text-gray-600 text-sm mt-1">Silakan pilih paket kursus dan metode pembayaran</p>
+                        </div>
+                        <form action="{{ route('pendaftaran.store') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="space-y-6">
+                                <div class="mb-4">
+                                    <label class="block text-gray-700 font-medium mb-2">Pilih Paket Kursus *</label>
+                                    <select name="paket_id" id="paket_id"
+                                        class="block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base py-2 px-3"
+                                        required>
+                                        <option value="">-- Pilih Paket Kursus --</option>
+                                        @foreach ($paket as $p)
+                                            <option value="{{ $p->id }}">{{ $p->nama_paket }} - Rp
+                                                {{ number_format($p->harga, 0, ',', '.') }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="block text-gray-700 font-medium mb-2">Metode Pembayaran *</label>
+                                    <select name="metode_pembayaran" id="metode_pembayaran"
+                                        class="block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base py-2 px-3"
+                                        onchange="handlePaymentMethod(this.value)" required>
+                                        <option value="">-- Pilih Metode Pembayaran --</option>
+                                        <option value="UangTunai">Uang Tunai</option>
+                                    </select>
+                                </div>
+
+                                <input type="hidden" name="tanggal_daftar" value="{{ date('Y-m-d') }}">
+                                <input type="hidden" name="status_pembayaran" value="BelumDibayar">
+
+                                <div class="flex justify-center mt-6">
+                                    <button type="button" onclick="handleDaftar()"
+                                        class="px-6 py-2 text-sm font-medium rounded-full text-white bg-blue-600 hover:bg-blue-700 transition-all duration-300">
+                                        Daftar Sekarang
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+            </div>
+
+            <!-- Modal Konfirmasi Pembayaran Tunai -->
+            <div id="modalPembayaranTunai" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+                <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                    <div class="mt-3 text-center">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">Konfirmasi Pembayaran Tunai</h3>
+                        <div class="mt-2 px-7 py-3">
+                            <p class="text-sm text-gray-500">
+                                Silakan datang ke kantor kami untuk melakukan pembayaran kepada pengurus.
+                            </p>
+                        </div>
+                        <div class="items-center px-4 py-3">
+                            <button id="closeModal" class="px-4 py-2 bg-blue-600 text-white rounded-md">OK</button>
+                        </div>
+                    </div>
                 </div>
+            </div>
 
-                <script>
-                    function validateForm() {
-                        const requiredFields = [
-                            'nama_lengkap', 'tempat_lahir', 'tanggal_lahir', 'jenis_kelamin',
-                            'pendidikan_terakhir', 'alamat', 'no_telepon', 'email', 'dokumen'
-                        ];
-                        
-                        const allFilled = requiredFields.every(field => {
-                            const element = document.getElementById(field);
-                            return element && element.value;
-                        });
-                        
-                        const lanjutkanBtn = document.getElementById('lanjutkanBtn');
-                        if (allFilled) {
-                            lanjutkanBtn.disabled = false;
-                            lanjutkanBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-                            lanjutkanBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
-                        } else {
-                            lanjutkanBtn.disabled = true;
-                            lanjutkanBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
-                            lanjutkanBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
-                        }
-                    }
+            <script>
+                function validateForm() {
+                    const requiredFields = [
+                        'nama_lengkap', 'tempat_lahir', 'tanggal_lahir', 'jenis_kelamin',
+                        'pendidikan_terakhir', 'alamat', 'no_telepon', 'email', 'dokumen'
+                    ];
 
-                    document.querySelectorAll('#dataDiriForm input, #dataDiriForm select').forEach(element => {
-                        element.addEventListener('input', validateForm);
+                    const allFilled = requiredFields.every(field => {
+                        const element = document.getElementById(field);
+                        return element && element.value;
                     });
 
-                    function validateAndShowNext() {
-                        const form = document.getElementById('dataDiriForm');
-                        if (form.checkValidity()) {
-                            document.getElementById('nextForm').classList.remove('hidden');
-                            document.getElementById('nextForm').classList.add('animate-fadeIn');
-                        } else {
-                            form.reportValidity();
-                        }
+                    const lanjutkanBtn = document.getElementById('lanjutkanBtn');
+                    if (allFilled) {
+                        lanjutkanBtn.disabled = false;
+                        lanjutkanBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                        lanjutkanBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                    } else {
+                        lanjutkanBtn.disabled = true;
+                        lanjutkanBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+                        lanjutkanBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
                     }
-                </script>
-            </div>
+                }
+
+                document.querySelectorAll('#dataDiriForm input, #dataDiriForm select').forEach(element => {
+                    element.addEventListener('input', validateForm);
+                });
+
+                function handlePaymentMethod(method) {
+                    // Simpan metode pembayaran yang dipilih
+                    window.selectedPaymentMethod = method;
+                }
+
+                function handleDaftar() {
+                    if (window.selectedPaymentMethod === 'UangTunai') {
+                        document.getElementById('modalPembayaranTunai').classList.remove('hidden');
+                    }
+                }
+
+                document.getElementById('closeModal').addEventListener('click', function() {
+                    document.getElementById('modalPembayaranTunai').classList.add('hidden');
+                    document.querySelector('form').submit();
+                });
+            </script>
         </div>
+    </div>
     </div>
 @endsection

@@ -15,6 +15,19 @@ class Siswa extends Model
     // Tentukan kolom yang dapat diisi
     protected $guarded = [''];
 
-    // Jika Anda ingin menambahkan relasi, Anda bisa menambahkannya di sini
-    // Contoh: public function pendaftaran() { return $this->hasMany(Pendaftaran::class); }
+    // Tambahkan relasi
+    public function pendaftaran()
+    {
+        return $this->hasMany(Pendaftaran::class, 'siswa_id');
+    }
+
+    public function jadwal()
+    {
+        return $this->hasManyThrough(Jadwal::class, Pendaftaran::class);
+    }
+
+    public function absensi()
+    {
+        return $this->hasManyThrough(Absensi::class, Jadwal::class);
+    }
 }

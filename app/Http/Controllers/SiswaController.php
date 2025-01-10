@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class SiswaController extends Controller
 {
@@ -89,5 +90,16 @@ class SiswaController extends Controller
 
         $siswa->delete();
         return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil dihapus.');
+    }
+
+    public function showProfile()
+    {
+        $siswa = Auth::user()->siswa;
+        if (!$siswa) {
+            return redirect()->route('daftar.kursus')
+                ->with('error', 'Silakan lengkapi data diri Anda terlebih dahulu.');
+        }
+
+        return view('user.profil-siswa', compact('siswa'));
     }
 }
