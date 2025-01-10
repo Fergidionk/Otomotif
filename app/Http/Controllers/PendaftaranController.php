@@ -47,6 +47,12 @@ class PendaftaranController extends Controller
         return redirect()->route('pendaftaran.index')->with('success', 'Pendaftaran berhasil diperbarui.');
     }
 
+    public function show($id)
+    {
+        $pendaftaran = Pendaftaran::with(['siswa', 'paket'])->findOrFail($id);
+        return view('admin.pendaftaran-detail', compact('pendaftaran'));
+    }
+
     public function destroy(Pendaftaran $pendaftaran)
     {
         $pendaftaran->delete();

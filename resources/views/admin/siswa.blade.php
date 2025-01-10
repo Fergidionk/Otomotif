@@ -18,6 +18,7 @@
                             <th>Tanggal Lahir</th>
                             <th>No HP</th>
                             <th>Pendidikan Terakhir</th>
+                            <th>Berkas</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -33,16 +34,31 @@
                                 <td>{{ $s->no_hp }}</td>
                                 <td>{{ $s->pendidikan_terakhir }}</td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editSiswaModal"
-                                        data-id="{{ $s->id }}"
-                                        data-nama="{{ $s->nama_siswa }}"
-                                        data-alamat="{{ $s->alamat_siswa }}"
-                                        data-jenis_kelamin="{{ $s->jenis_kelamin }}"
-                                        data-tempat="{{ $s->tempat_lahir }}"
-                                        data-tanggal="{{ $s->tanggal_lahir }}"
-                                        data-no_hp="{{ $s->no_hp }}"
+                                    @if ($s->berkas_pdf)
+                                        <a href="{{ asset('storage/' . $s->berkas_pdf) }}" target="_blank"
+                                            class="btn btn-sm btn-info">
+                                            <i class="fa-solid fa-file-pdf"></i>
+                                        </a>
+                                    @else
+                                        <span class="badge bg-warning">Tidak ada berkas</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal" 
+                                        data-bs-target="#detailSiswaModal" data-id="{{ $s->id }}"
+                                        data-nama="{{ $s->nama_siswa }}" data-alamat="{{ $s->alamat_siswa }}"
+                                        data-jenis_kelamin="{{ $s->jenis_kelamin }}" data-tempat="{{ $s->tempat_lahir }}"
+                                        data-tanggal="{{ $s->tanggal_lahir }}" data-no_hp="{{ $s->no_hp }}"
                                         data-pendidikan="{{ $s->pendidikan_terakhir }}">
-                                    <i class="fa-solid fa-pen-to-square"></i>
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#editSiswaModal" data-id="{{ $s->id }}"
+                                        data-nama="{{ $s->nama_siswa }}" data-alamat="{{ $s->alamat_siswa }}"
+                                        data-jenis_kelamin="{{ $s->jenis_kelamin }}" data-tempat="{{ $s->tempat_lahir }}"
+                                        data-tanggal="{{ $s->tanggal_lahir }}" data-no_hp="{{ $s->no_hp }}"
+                                        data-pendidikan="{{ $s->pendidikan_terakhir }}">
+                                        <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
                                     <button class="btn btn-sm btn-danger delete-btn" data-id="{{ $s->id }}">
                                         <i class="fa-solid fa-trash-can"></i>
@@ -52,6 +68,51 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal untuk Detail Siswa -->
+    <div class="modal fade" id="detailSiswaModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailSiswaModalTitle">Detail Siswa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Nama</label>
+                        <p id="detailNamaSiswa"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Alamat</label>
+                        <p id="detailAlamatSiswa"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Jenis Kelamin</label>
+                        <p id="detailJenisKelamin"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Tempat Lahir</label>
+                        <p id="detailTempatLahir"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Tanggal Lahir</label>
+                        <p id="detailTanggalLahir"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">No HP</label>
+                        <p id="detailNoHP"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Pendidikan Terakhir</label>
+                        <p id="detailPendidikan"></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
             </div>
         </div>
     </div>
@@ -69,11 +130,13 @@
                         @csrf
                         <div class="mb-3">
                             <label for="addNamaSiswa" class="form-label">Nama</label>
-                            <input type="text" id="addNamaSiswa" name="nama_siswa" class="form-control" placeholder="Masukkan Nama" required>
+                            <input type="text" id="addNamaSiswa" name="nama_siswa" class="form-control"
+                                placeholder="Masukkan Nama" required>
                         </div>
                         <div class="mb-3">
                             <label for="addAlamatSiswa" class="form-label">Alamat</label>
-                            <input type="text" id="addAlamatSiswa" name="alamat_siswa" class="form-control" placeholder="Masukkan Alamat" required>
+                            <input type="text" id="addAlamatSiswa" name="alamat_siswa" class="form-control"
+                                placeholder="Masukkan Alamat" required>
                         </div>
                         <div class="mb-3">
                             <label for="addJenisKelamin" class="form-label">Jenis Kelamin</label>
@@ -84,7 +147,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="addTempatLahir" class="form-label">Tempat Lahir</label>
-                            <input type="text" id="addTempatLahir" name="tempat_lahir" class="form-control" placeholder="Masukkan Tempat Lahir" required>
+                            <input type="text" id="addTempatLahir" name="tempat_lahir" class="form-control"
+                                placeholder="Masukkan Tempat Lahir" required>
                         </div>
                         <div class="mb-3">
                             <label for="addTanggalLahir" class="form-label">Tanggal Lahir</label>
@@ -92,7 +156,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="addNoHP" class="form-label">No HP</label>
-                            <input type="text" id="addNoHP" name="no_hp" class="form-control" placeholder="Masukkan No HP" required>
+                            <input type="text" id="addNoHP" name="no_hp" class="form-control"
+                                placeholder="Masukkan No HP" required>
                         </div>
                         <div class="mb-3">
                             <label for="addPendidikan" class="form-label">Pendidikan Terakhir</label>
@@ -100,18 +165,24 @@
                                 <option value="TidakBersekolah">Tidak Bersekolah</option>
                                 <option value="SD">SD</option>
                                 <option value="SMP">SMP</option>
-                                <option value="SMA">SMA</option>
+                                <option value="SMA">SMA/SMK</option>
                                 <option value="PerguruanTinggi">Perguruan Tinggi</option>
                             </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addBerkasPDF" class="form-label">Berkas PDF</label>
+                            <input type="file" id="addBerkasPDF" name="berkas_pdf" class="form-control"
+                                accept=".pdf" required>
+                            <small class="text-muted">Upload file PDF (Maks. 5MB)</small>
                         </div>
                         <div class="alert alert-info">
                             Pastikan Anda mengisi semua field dengan benar.
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-primary">Simpan Siswa</button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary">Simpan Siswa</button>
+                </div>
                 </form>
             </div>
         </div>
@@ -131,11 +202,13 @@
                         @method('PUT')
                         <div class="mb-3">
                             <label for="editNamaSiswa" class="form-label">Nama</label>
-                            <input type="text" id="editNamaSiswa" name="nama_siswa" class="form-control" placeholder="Masukkan Nama" required>
+                            <input type="text" id="editNamaSiswa" name="nama_siswa" class="form-control"
+                                placeholder="Masukkan Nama" required>
                         </div>
                         <div class="mb-3">
                             <label for="editAlamatSiswa" class="form-label">Alamat</label>
-                            <input type="text" id="editAlamatSiswa" name="alamat_siswa" class="form-control" placeholder="Masukkan Alamat" required>
+                            <input type="text" id="editAlamatSiswa" name="alamat_siswa" class="form-control"
+                                placeholder="Masukkan Alamat" required>
                         </div>
                         <div class="mb-3">
                             <label for="editJenisKelamin" class="form-label">Jenis Kelamin</label>
@@ -146,15 +219,18 @@
                         </div>
                         <div class="mb-3">
                             <label for="editTempatLahir" class="form-label">Tempat Lahir</label>
-                            <input type="text" id="editTempatLahir" name="tempat_lahir" class="form-control" placeholder="Masukkan Tempat Lahir" required>
+                            <input type="text" id="editTempatLahir" name="tempat_lahir" class="form-control"
+                                placeholder="Masukkan Tempat Lahir" required>
                         </div>
                         <div class="mb-3">
                             <label for="editTanggalLahir" class="form-label">Tanggal Lahir</label>
-                            <input type="date" id="editTanggalLahir" name="tanggal_lahir" class="form-control" required>
+                            <input type="date" id="editTanggalLahir" name="tanggal_lahir" class="form-control"
+                                required>
                         </div>
                         <div class="mb-3">
                             <label for="editNoHP" class="form-label">No HP</label>
-                            <input type="text" id="editNoHP" name="no_hp" class="form-control" placeholder="Masukkan No HP" required>
+                            <input type="text" id="editNoHP" name="no_hp" class="form-control"
+                                placeholder="Masukkan No HP" required>
                         </div>
                         <div class="mb-3">
                             <label for="editPendidikan" class="form-label">Pendidikan Terakhir</label>
@@ -166,14 +242,20 @@
                                 <option value="PerguruanTinggi">Perguruan Tinggi</option>
                             </select>
                         </div>
+                        <div class="mb-3">
+                            <label for="editBerkasPDF" class="form-label">Berkas PDF</label>
+                            <input type="file" id="editBerkasPDF" name="berkas_pdf" class="form-control"
+                                accept=".pdf">
+                            <small class="text-muted">Upload file PDF baru jika ingin mengubah (Maks. 5MB)</small>
+                        </div>
                         <div class="alert alert-info">
                             Pastikan Anda mengisi semua field dengan benar.
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                </div>
                 </form>
             </div>
         </div>
@@ -189,6 +271,29 @@
     </script>
 
     <script>
+        // Detail Modal
+        const detailSiswaModal = document.getElementById('detailSiswaModal');
+        detailSiswaModal.addEventListener('show.bs.modal', function(event) {
+            const button = event.relatedTarget;
+            const nama = button.getAttribute('data-nama');
+            const alamat = button.getAttribute('data-alamat');
+            const jenis_kelamin = button.getAttribute('data-jenis_kelamin');
+            const tempat = button.getAttribute('data-tempat');
+            const tanggal = button.getAttribute('data-tanggal');
+            const no_hp = button.getAttribute('data-no_hp');
+            const pendidikan = button.getAttribute('data-pendidikan');
+
+            // Populate detail modal
+            document.getElementById('detailNamaSiswa').textContent = nama;
+            document.getElementById('detailAlamatSiswa').textContent = alamat;
+            document.getElementById('detailJenisKelamin').textContent = jenis_kelamin;
+            document.getElementById('detailTempatLahir').textContent = tempat;
+            document.getElementById('detailTanggalLahir').textContent = tanggal;
+            document.getElementById('detailNoHP').textContent = no_hp;
+            document.getElementById('detailPendidikan').textContent = pendidikan;
+        });
+
+        // Edit Modal
         const editSiswaModal = document.getElementById('editSiswaModal');
         editSiswaModal.addEventListener('show.bs.modal', function(event) {
             const button = event.relatedTarget;
@@ -200,6 +305,7 @@
             const tanggal = button.getAttribute('data-tanggal');
             const no_hp = button.getAttribute('data-no_hp');
             const pendidikan = button.getAttribute('data-pendidikan');
+            const berkas = button.getAttribute('data-berkas');
 
             // Populate the form with existing data
             const editForm = document.getElementById('editSiswaForm');
@@ -212,6 +318,13 @@
             document.getElementById('editTanggalLahir').value = tanggal;
             document.getElementById('editNoHP').value = no_hp;
             document.getElementById('editPendidikan').value = pendidikan;
+
+            if (berkas) {
+                const berkasInfo = document.createElement('div');
+                berkasInfo.className = 'mt-2 text-sm text-gray-600';
+                berkasInfo.textContent = `Berkas saat ini: ${berkas}`;
+                document.getElementById('editBerkasPDF').parentNode.appendChild(berkasInfo);
+            }
         });
 
         // Delete button functionality with confirmation
@@ -233,14 +346,16 @@
                         fetch(`/admin/siswa/${id}`, {
                             method: 'DELETE',
                             headers: {
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                                'X-CSRF-TOKEN': document.querySelector(
+                                    'meta[name="csrf-token"]').content
                             }
                         }).then(response => {
                             if (response.ok) {
                                 Swal.fire('Berhasil!', 'Data telah dihapus.', 'success')
                                     .then(() => location.reload());
                             } else {
-                                Swal.fire('Gagal!', 'Terjadi kesalahan saat menghapus data.', 'error');
+                                Swal.fire('Gagal!',
+                                    'Terjadi kesalahan saat menghapus data.', 'error');
                             }
                         });
                     }

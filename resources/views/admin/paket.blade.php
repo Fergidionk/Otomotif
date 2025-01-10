@@ -25,21 +25,57 @@
                                 <td>Rp {{ $p->harga_paket }}</td>
                                 <td>{{ $p->jumlah_pertemuan }} Pertemuan</td>
                                 <td>
+                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#detailPaketModal"
+                                        data-id="{{ $p->id }}"
+                                        data-nama="{{ $p->nama_paket }}"
+                                        data-harga="{{ $p->harga_paket }}"
+                                        data-jumlah="{{ $p->jumlah_pertemuan }}">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
                                     <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editPaketModal"
                                         data-id="{{ $p->id }}"
                                         data-nama="{{ $p->nama_paket }}"
                                         data-harga="{{ $p->harga_paket }}"
                                         data-jumlah="{{ $p->jumlah_pertemuan }}"> 
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </button>
-                                <button class="btn btn-sm btn-danger delete-btn" data-id="{{ $p->id }}">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger delete-btn" data-id="{{ $p->id }}">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal untuk Detail Paket -->
+    <div class="modal fade" id="detailPaketModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailPaketModalTitle">Detail Paket</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <label class="col-sm-4 fw-bold">Nama Paket</label>
+                        <div class="col-sm-8" id="detailPaketName"></div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-4 fw-bold">Harga Paket</label>
+                        <div class="col-sm-8" id="detailPaketPrice"></div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-4 fw-bold">Jumlah Pertemuan</label>
+                        <div class="col-sm-8" id="detailPaketJumlah"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
             </div>
         </div>
     </div>
@@ -127,6 +163,21 @@
     </script>
 
     <script>
+        const detailPaketModal = document.getElementById('detailPaketModal');
+        detailPaketModal.addEventListener('show.bs.modal', function(event) {
+            const button = event.relatedTarget;
+            const nama = button.getAttribute('data-nama');
+            const harga = button.getAttribute('data-harga');
+            const jumlah = button.getAttribute('data-jumlah');
+
+            const modalTitle = detailPaketModal.querySelector('.modal-title');
+            modalTitle.textContent = 'Detail Paket: ' + nama;
+
+            document.getElementById('detailPaketName').textContent = nama;
+            document.getElementById('detailPaketPrice').textContent = 'Rp ' + harga;
+            document.getElementById('detailPaketJumlah').textContent = jumlah + ' Pertemuan';
+        });
+
         const editPaketModal = document.getElementById('editPaketModal');
         editPaketModal.addEventListener('show.bs.modal', function(event) {
             const button = event.relatedTarget;

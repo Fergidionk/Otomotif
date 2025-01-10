@@ -30,7 +30,7 @@ class AbsensiController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'jadwal_id' => 'required|exists:jadwal,id', 
+            'jadwal_id' => 'required|exists:jadwal,id',
             'tanggal' => 'required|date',
             'status' => 'required|string',
             'keterangan' => 'required|string',
@@ -39,6 +39,12 @@ class AbsensiController extends Controller
         $absensi = Absensi::findOrFail($id);
         $absensi->update($validated);
         return redirect()->route('absensi.index')->with('success', 'Absensi berhasil diperbarui!');
+    }
+
+    public function show($id)
+    {
+        $absensi = Absensi::with(['jadwal.pendaftar'])->findOrFail($id);
+        return view('admin.absensi-detail', compact('absensi'));
     }
 
     public function destroy($id)

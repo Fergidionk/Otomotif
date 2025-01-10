@@ -38,6 +38,12 @@ class JadwalController extends Controller
         return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil diperbarui!');
     }
 
+    public function show($id)
+    {
+        $jadwal = Jadwal::with(['pendaftar', 'absensi'])->findOrFail($id);
+        return view('admin.jadwal-detail', compact('jadwal'));
+    }
+
     public function destroy($id)
     {
         $jadwal = Jadwal::findOrFail($id);

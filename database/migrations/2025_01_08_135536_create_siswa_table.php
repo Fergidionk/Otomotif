@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('tanggal_lahir');
             $table->string('no_hp', 50);
             $table->enum('pendidikan_terakhir', ['TidakBersekolah', 'SD', 'SMP', 'SMA', 'PerguruanTinggi']);
+            $table->string('berkas_pdf')->nullable(); 
             $table->timestamps();
         });
     }

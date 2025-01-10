@@ -37,6 +37,17 @@
                                 <td>{{ $j->hari }}</td>
                                 <td>{{ $j->jam_pelatihan }}</td>
                                 <td>
+                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal"
+                                        data-bs-target="#detailJadwalModal" data-id="{{ $j->id }}"
+                                        data-siswa="{{ $j->pendaftaran->siswa->nama_lengkap }}"
+                                        data-paket="{{ $j->pendaftaran->paket->nama_paket }}"
+                                        data-tanggal="{{ $j->pendaftaran->tanggal_daftar }}"
+                                        data-metode="{{ $j->pendaftaran->metode_pembayaran }}"
+                                        data-status="{{ $j->pendaftaran->status_pembayaran }}"
+                                        data-hari="{{ $j->hari }}"
+                                        data-jam="{{ $j->jam_pelatihan }}">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
                                     <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#editJadwalModal" data-id="{{ $j->id }}"
                                         data-siswa_id="{{ $j->pendaftaran->siswa_id }}"
@@ -56,6 +67,51 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Jadwal Modal -->
+    <div class="modal fade" id="detailJadwalModal" tabindex="-1" aria-labelledby="detailJadwalModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailJadwalModalLabel">Detail Jadwal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Nama Siswa</label>
+                        <p id="detailSiswa"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Nama Paket</label>
+                        <p id="detailPaket"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Tanggal Daftar</label>
+                        <p id="detailTanggal"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Metode Pembayaran</label>
+                        <p id="detailMetode"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Status Pembayaran</label>
+                        <p id="detailStatus"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Hari Pelatihan</label>
+                        <p id="detailHari"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Jam Pelatihan</label>
+                        <p id="detailJam"></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
             </div>
         </div>
     </div>
@@ -151,6 +207,28 @@
     </script>
 
     <script>
+        // Detail Modal
+        const detailJadwalModal = document.getElementById('detailJadwalModal');
+        detailJadwalModal.addEventListener('show.bs.modal', function(event) {
+            const button = event.relatedTarget;
+            const siswa = button.getAttribute('data-siswa');
+            const paket = button.getAttribute('data-paket');
+            const tanggal = button.getAttribute('data-tanggal');
+            const metode = button.getAttribute('data-metode');
+            const status = button.getAttribute('data-status');
+            const hari = button.getAttribute('data-hari');
+            const jam = button.getAttribute('data-jam');
+
+            document.getElementById('detailSiswa').textContent = siswa;
+            document.getElementById('detailPaket').textContent = paket;
+            document.getElementById('detailTanggal').textContent = tanggal;
+            document.getElementById('detailMetode').textContent = metode;
+            document.getElementById('detailStatus').textContent = status;
+            document.getElementById('detailHari').textContent = hari;
+            document.getElementById('detailJam').textContent = jam;
+        });
+
+        // Edit Modal
         const editJadwalModal = document.getElementById('editJadwalModal');
         editJadwalModal.addEventListener('show.bs.modal', function(event) {
             const button = event.relatedTarget;

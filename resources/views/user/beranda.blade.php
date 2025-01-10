@@ -79,7 +79,6 @@
 
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-semibold">Teori</h3>
-                <button onclick="location.href='{{ url('/kursus?materi=Dasar-Dasar-Mengemudi') }}'" class="bg-white hover:bg-gray-200 text-black py-2 px-4 rounded-[8px]">Lihat Semua</button>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="bg-white p-6 rounded-lg shadow-md">
@@ -102,7 +101,6 @@
 
             <div class="flex justify-between items-center mb-4 mt-8">
                 <h3 class="text-xl font-semibold">Praktek</h3>
-                <button onclick="location.href='{{ url('/kursus?materi=Praktek-Mengemudi') }}'" class="bg-white hover:bg-gray-200 text-black py-2 px-4 rounded-[8px]">Lihat Semua</button>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="bg-white p-6 rounded-lg shadow-md">

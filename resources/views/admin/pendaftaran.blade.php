@@ -33,6 +33,15 @@
                                 <td>{{ $p->metode_pembayaran }}</td>
                                 <td>{{ $p->status_pembayaran }}</td>
                                 <td>
+                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal"
+                                        data-bs-target="#detailPendaftaranModal" data-id="{{ $p->id }}"
+                                        data-siswa_id="{{ $p->siswa_id }}"
+                                        data-paket_id="{{ $p->paket_id }}"
+                                        data-tanggal_daftar="{{ $p->tanggal_daftar }}"
+                                        data-metode_pembayaran="{{ $p->metode_pembayaran }}"
+                                        data-status_pembayaran="{{ $p->status_pembayaran }}">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
                                     <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#editPendaftaranModal" data-id="{{ $p->id }}"
                                         data-siswa_id="{{ $p->siswa_id }}" 
@@ -110,6 +119,48 @@
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Pendaftaran Modal -->
+    <div class="modal fade" id="detailPendaftaranModal" tabindex="-1" aria-labelledby="detailPendaftaranModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailPendaftaranModalLabel">Detail Pendaftaran</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Nama Siswa</label>
+                        <p id="detail_siswa_id" class="form-control-static"></p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Nama Paket</label>
+                        <p id="detail_paket_id" class="form-control-static"></p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Tanggal Daftar</label>
+                        <p id="detail_tanggal_daftar" class="form-control-static"></p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Metode Pembayaran</label>
+                        <p id="detail_metode_pembayaran" class="form-control-static"></p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Status Pembayaran</label>
+                        <p id="detail_status_pembayaran" class="form-control-static"></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
@@ -197,7 +248,7 @@
 
             const modalTitle = editPendaftaranModal.querySelector('.modal-title');
             modalTitle.textContent = 'Edit Pendaftaran - ' +
-                siswa_id; // You can replace this with the actual student name if available
+                siswa_id;
 
             const editSiswaName = document.getElementById('edit_siswa_id');
             const editPaketName = document.getElementById('edit_paket_id');
@@ -213,6 +264,22 @@
 
             const form = document.getElementById('editPendaftaranForm');
             form.action = '/admin/pendaftaran/' + id;
+        });
+
+        const detailPendaftaranModal = document.getElementById('detailPendaftaranModal');
+        detailPendaftaranModal.addEventListener('show.bs.modal', function(event) {
+            const button = event.relatedTarget;
+            const siswa_id = button.getAttribute('data-siswa_id');
+            const paket_id = button.getAttribute('data-paket_id');
+            const tanggal_daftar = button.getAttribute('data-tanggal_daftar');
+            const metode_pembayaran = button.getAttribute('data-metode_pembayaran');
+            const status_pembayaran = button.getAttribute('data-status_pembayaran');
+
+            document.getElementById('detail_siswa_id').textContent = siswa_id;
+            document.getElementById('detail_paket_id').textContent = paket_id;
+            document.getElementById('detail_tanggal_daftar').textContent = tanggal_daftar;
+            document.getElementById('detail_metode_pembayaran').textContent = metode_pembayaran;
+            document.getElementById('detail_status_pembayaran').textContent = status_pembayaran;
         });
 
         document.querySelectorAll('.delete-btn').forEach(button => {

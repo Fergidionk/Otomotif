@@ -32,6 +32,15 @@
                                 <td>{{ $a->hadir ? 'Hadir' : 'Tidak Hadir' }}</td>
                                 <td>{{ $a->created_at->format('d-m-Y') }}</td>
                                 <td>
+                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal" 
+                                        data-bs-target="#detailAbsensiModal" data-id="{{ $a->id }}"
+                                        data-nama="{{ $a->pendaftar->siswa->nama_lengkap }}"
+                                        data-paket="{{ $a->pendaftar->paket->nama_paket }}"
+                                        data-pertemuan="{{ $a->pertemuan_ke }}"
+                                        data-hadir="{{ $a->hadir }}"
+                                        data-tanggal="{{ $a->created_at->format('d-m-Y') }}">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
                                     <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#editAbsensiModal" data-id="{{ $a->id }}"
                                         data-jadwal_id="{{ $a->jadwal_id }}" data-pertemuan_ke="{{ $a->pertemuan_ke }}"
@@ -46,6 +55,43 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+        </div>
+
+        <!-- Detail Absensi Modal -->
+        <div class="modal fade" id="detailAbsensiModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Detail Absensi</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Nama Siswa</label>
+                            <p id="detail_nama" class="form-control"></p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Paket</label>
+                            <p id="detail_paket" class="form-control"></p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Pertemuan Ke</label>
+                            <p id="detail_pertemuan" class="form-control"></p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Status Kehadiran</label>
+                            <p id="detail_hadir" class="form-control"></p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tanggal</label>
+                            <p id="detail_tanggal" class="form-control"></p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -152,6 +198,22 @@
 
         <script>
             new DataTable('#absensiTable');
+
+            const detailAbsensiModal = document.getElementById('detailAbsensiModal');
+            detailAbsensiModal.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+                const nama = button.getAttribute('data-nama');
+                const paket = button.getAttribute('data-paket');
+                const pertemuan = button.getAttribute('data-pertemuan');
+                const hadir = button.getAttribute('data-hadir');
+                const tanggal = button.getAttribute('data-tanggal');
+
+                document.getElementById('detail_nama').textContent = nama;
+                document.getElementById('detail_paket').textContent = paket;
+                document.getElementById('detail_pertemuan').textContent = pertemuan;
+                document.getElementById('detail_hadir').textContent = hadir == 1 ? 'Hadir' : 'Tidak Hadir';
+                document.getElementById('detail_tanggal').textContent = tanggal;
+            });
 
             const editAbsensiModal = document.getElementById('editAbsensiModal');
             editAbsensiModal.addEventListener('show.bs.modal', function(event) {

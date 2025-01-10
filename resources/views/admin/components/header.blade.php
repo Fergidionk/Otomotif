@@ -18,7 +18,7 @@
 
     <ul class="menu-inner py-1">
         <!-- Dashboard -->
-        <li class="menu-item active">
+        <li class="menu-item {{ request()->is('admin/dashboard') ? 'active' : '' }}">
             <a href="/admin/dashboard" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
@@ -27,40 +27,40 @@
 
         <!-- Tables -->
         <li class="menu-header small text-uppercase"><span class="menu-header-text"> Resource</span></li>
-        <li class="menu-item">
+        <li class="menu-item {{ request()->is('admin/siswa') ? 'active' : '' }}">
             <a href="/admin/siswa" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user"></i>
                 <div data-i18n="Tables">Siswa</div>
             </a>
         </li>
-        <li class="menu-item">
+        <li class="menu-item {{ request()->is('admin/pendaftaran') ? 'active' : '' }}">
             <a href="/admin/pendaftaran" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-file"></i>
                 <div data-i18n="Tables">Pendaftaran</div>
             </a>
         </li>
         <li class="menu-header small text-uppercase"><span class="menu-header-text"> Package</span></li>
-        <li class="menu-item">
+        <li class="menu-item {{ request()->is('admin/paket') ? 'active' : '' }}">
             <a href="/admin/paket" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-package"></i>
                 <div data-i18n="Tables">Paket</div>
             </a>
         </li>
         <li class="menu-header small text-uppercase"><span class="menu-header-text"> Schedule</span></li>
-        <li class="menu-item">
+        <li class="menu-item {{ request()->is('admin/jadwal') ? 'active' : '' }}">
             <a href="/admin/jadwal" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-calendar"></i>
                 <div data-i18n="Tables">Jadwal</div>
             </a>
         </li>
-        <li class="menu-item">
+        <li class="menu-item {{ request()->is('admin/absensi') ? 'active' : '' }}">
             <a href="/admin/absensi" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-calendar-check"></i>
                 <div data-i18n="Tables">Absensi</div>
             </a>
         </li>
         <li class="menu-header small text-uppercase"><span class="menu-header-text"> Management</span></li>
-        <li class="menu-item">
+        <li class="menu-item {{ request()->is('admin/user') ? 'active' : '' }}">
             <a href="/admin/user" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user-circle"></i>
                 <div data-i18n="Tables">User</div>
@@ -175,12 +175,7 @@
                                 <span class="align-middle">Profil Saya</span>
                             </a>
                         </li>
-                        <li>
-                            <a class="dropdown-item" href="#">
-                                <i class="bx bx-cog me-2"></i>
-                                <span class="align-middle">Pengaturan</span>
-                            </a>
-                        </li>
+                        
                         <li>
                             <div class="dropdown-divider"></div>
                         </li>

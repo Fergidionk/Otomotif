@@ -56,6 +56,12 @@ class PaketController extends Controller
         return redirect()->route('paket.index')->with('success', 'Paket berhasil diperbarui.');
     }
 
+    public function show($id)
+    {
+        $paket = Paket::findOrFail($id);
+        return view('paket.index', compact('paket'));
+    }
+
     /**
      * Menghapus paket tertentu dari penyimpanan.
      * 
