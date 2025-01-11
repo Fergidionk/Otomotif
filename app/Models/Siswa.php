@@ -13,9 +13,15 @@ class Siswa extends Model
     protected $table = 'tb_siswa';
 
     // Tentukan kolom yang dapat diisi
-    protected $guarded = [''];
+    protected $guarded = [];
 
     // Tambahkan relasi
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function pendaftaran()
     {
         return $this->hasMany(Pendaftaran::class, 'siswa_id');
@@ -29,5 +35,10 @@ class Siswa extends Model
     public function absensi()
     {
         return $this->hasManyThrough(Absensi::class, Jadwal::class);
+    }
+
+    public function paket()
+    {
+        return $this->belongsTo(Paket::class, 'paket_id');
     }
 }

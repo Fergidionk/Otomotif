@@ -34,11 +34,11 @@
                     </a>
                     <form action="{{ route('logout') }}" method="POST" class="inline">
                         @csrf
-                        <button type="submit" class="hover:bg-[#F1F1F3] text-gray-800 py-2 px-4 rounded-md">Logout</button>
+                        <button type="submit" class="hover:bg-[#F1F1F3] text-gray-800 py-2 px-4 rounded-md">Keluar</button>
                     </form>
                 @else
-                    <a href="{{ route('register') }}" class="hover:bg-[#F1F1F3] text-gray-800 py-2 px-4 rounded-md">Register</a>
-                    <a href="{{ route('login') }}" class="bg-[#445FB5] hover:bg-[#364b8f] text-white py-2 px-4 rounded-md">Login</a>
+                    <a href="{{ route('register') }}" class="hover:bg-[#F1F1F3] text-gray-800 py-2 px-4 rounded-md">Daftar</a>
+                    <a href="{{ route('login') }}" class="bg-[#445FB5] hover:bg-[#364b8f] text-white py-2 px-4 rounded-md">Masuk</a>
                 @endif
             </div>
             <!-- Mobile Hamburger -->
@@ -63,12 +63,12 @@
                 <li>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button type="submit" class="block w-full text-left px-3 py-2 rounded-md hover:bg-[#F1F1F3]">Logout</button>
+                        <button type="submit" class="block w-full text-left px-3 py-2 rounded-md hover:bg-[#F1F1F3]">Keluar</button>
                     </form>
                 </li>
             @else
-                <li><a href="{{ route('register') }}" class="block px-3 py-2 rounded-md hover:bg-[#F1F1F3]">Register</a></li>
-                <li><a href="{{ route('login') }}" class="block px-3 py-2 rounded-md hover:bg-[#F1F1F3]">Login</a></li>
+                <li><a href="{{ route('register') }}" class="block px-3 py-2 rounded-md hover:bg-[#F1F1F3]">Daftar</a></li>
+                <li><a href="{{ route('login') }}" class="block px-3 py-2 rounded-md hover:bg-[#F1F1F3]">Masuk</a></li>
             @endif
         </ul>
     </div>

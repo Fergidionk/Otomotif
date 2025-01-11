@@ -15,6 +15,11 @@ class Paket extends Model
     // Tentukan kolom yang dapat diisi
     protected $guarded = [];
 
+    public function siswa()
+    {
+        return $this->hasMany(Siswa::class, 'paket_id');
+    }
+
     // Jika Anda ingin menambahkan relasi, Anda bisa menambahkannya di sini
     // Contoh: public function pendaftar() { return $this->hasMany(Pendaftaran::class); }
 }

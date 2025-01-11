@@ -12,6 +12,7 @@
                         <tr>
                             <th>No</th>
                             <th>Nama</th>
+                            <th>Email User</th>
                             <th>Alamat</th>
                             <th>Jenis Kelamin</th>
                             <th>Tempat Lahir</th>
@@ -27,6 +28,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $s->nama_siswa }}</td>
+                                <td>{{ $s->user->email }}</td>
                                 <td>{{ $s->alamat_siswa }}</td>
                                 <td>{{ $s->jenis_kelamin }}</td>
                                 <td>{{ $s->tempat_lahir }}</td>

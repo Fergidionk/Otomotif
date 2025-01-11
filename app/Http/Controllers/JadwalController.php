@@ -3,21 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Jadwal;
+use App\Models\Pendaftaran;
 use Illuminate\Http\Request;
 
 class JadwalController extends Controller
 {
     public function index()
     {
-        $jadwal = Jadwal::with('pendaftar')->get();
-        return view('admin.jadwal', compact('jadwal'));
+        $jadwal = Jadwal::with(['pendaftaran.siswa', 'pendaftaran.paket'])->get();
+        $pendaftaran = Pendaftaran::with(['siswa', 'paket'])
+            ->whereDoesntHave('jadwal')
+            ->get();
+        
+        return view('admin.jadwal', compact('jadwal', 'pendaftaran'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
             'pendaftar_id' => 'required|exists:pendaftar,id',
-            'hari' => 'required|string',
+            'tanggal' => 'required|date',
             'jam_pelatihan' => 'required|date_format:H:i',
         ]);
 
@@ -29,7 +34,7 @@ class JadwalController extends Controller
     {
         $validated = $request->validate([
             'pendaftar_id' => 'required|exists:pendaftar,id',
-            'hari' => 'required|string',
+            'tanggal' => 'required|date',
             'jam_pelatihan' => 'required|date_format:H:i',
         ]);
 

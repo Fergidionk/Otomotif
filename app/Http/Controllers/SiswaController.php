@@ -43,7 +43,9 @@ class SiswaController extends Controller
             $pdfPath = $request->file('berkas_pdf')->store('public/berkas');
             $validatedData['berkas_pdf'] = str_replace('public/', '', $pdfPath);
         }
-
+        
+        $validatedData['user_id'] = auth()->id();
+        
         Siswa::create($validatedData);
         return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil ditambahkan.');
     }
@@ -90,16 +92,5 @@ class SiswaController extends Controller
 
         $siswa->delete();
         return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil dihapus.');
-    }
-
-    public function showProfile()
-    {
-        $siswa = Auth::user()->siswa;
-        if (!$siswa) {
-            return redirect()->route('daftar.kursus')
-                ->with('error', 'Silakan lengkapi data diri Anda terlebih dahulu.');
-        }
-
-        return view('user.profil-siswa', compact('siswa'));
     }
 }

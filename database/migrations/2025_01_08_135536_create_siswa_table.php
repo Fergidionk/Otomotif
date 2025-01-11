@@ -20,8 +20,10 @@ return new class extends Migration
             $table->date('tanggal_lahir');
             $table->string('no_hp', 50);
             $table->enum('pendidikan_terakhir', ['TidakBersekolah', 'SD', 'SMP', 'SMA', 'PerguruanTinggi']);
-            $table->string('berkas_pdf')->nullable(); 
+            $table->string('berkas_pdf')->nullable();
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
+
         });
     }
 
@@ -31,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('siswa');
+        Schema::dropIfExists('tb_siswa');
     }
 };

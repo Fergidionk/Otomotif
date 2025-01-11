@@ -1,8 +1,9 @@
 @extends('user/components.app')
 @section('content')
-    <div class="container-fluid mx-auto py-28 px-4 md:px-20">
+    <div class="container-fluid mx-auto py-12 md:py-14 px-4 md:px-20">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div>
+            {{-- Testimoni section - hidden pada mobile --}}
+            <div class="hidden md:block">
                 <h2 class="text-2xl font-bold mb-4">Testimoni Siswa</h2>
                 <p class="mb-4 text-sm text-gray-600">Pengalaman nyata dari siswa-siswi kami yang telah berhasil menguasai
                     ketrampilan IT
@@ -18,84 +19,78 @@
                         <p class="font-medium">Reedy Prasetio</p>
                     </div>
                 </div>
-                <div class="flex justify-between mt-4">
-                    <button class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                        </svg>
-                    </button>
-                    <button class="bg-[#445FB5] hover:bg-[#445FB5] text-white font-bold py-2 px-4 rounded">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </button>
-                </div>
             </div>
-            <div class="bg-white p-4 rounded-lg shadow-md">
-                <h2 class="text-3xl font-bold text-center mb-4">Daftar</h2>
-                <div class="text-center text-sm text-[#4C4C4D]">Masukkan akun yang sudah di daftarkan</div>
+
+            {{-- Form register dengan penyesuaian mobile --}}
+            <div class="bg-white p-6 md:p-8 rounded-lg shadow-md md:col-span-1 col-span-1 max-w-md mx-auto w-full">
+                <h2 class="text-2xl md:text-3xl font-bold text-center mb-3">Daftar</h2>
+                <div class="text-center text-sm text-[#4C4C4D] mb-6">Daftarkan akun anda</div>
+
                 <form method="POST" action="{{ route('register') }}">
                     @csrf
-                    <!-- Name Input -->
-                    <label for="name" class="block mb-2 text-sm font-bold">Nama</label>
-                    <input type="text" name="name" id="name" value="{{ old('name') }}" required
-                        class="w-full mb-4 p-2 text-sm text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Nama Lengkap">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="name" class="block mb-1.5 text-sm font-semibold">Nama</label>
+                            <input type="text" name="name" id="name" value="{{ old('name') }}" required
+                                class="w-full p-3 text-sm text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Nama Lengkap">
+                        </div>
 
-                    <!-- Email Input -->
-                    <label for="email" class="block mb-2 text-sm font-bold">Email</label>
-                    <input type="email" name="email" id="email" value="{{ old('email') }}" required
-                        class="w-full mb-4 p-2 text-sm text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="contoh@gmail.com">
+                        <div>
+                            <label for="email" class="block mb-1.5 text-sm font-semibold">Email</label>
+                            <input type="email" name="email" id="email" value="{{ old('email') }}" required
+                                class="w-full p-3 text-sm text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="contoh@gmail.com">
+                        </div>
 
-                    <!-- Password Input -->
-                    <label for="password" class="block mb-2 text-sm font-bold">Password</label>
-                    <div class="relative flex items-center">
-                        <input type="password" name="password" id="password" required
-                            class="w-full p-2 text-sm text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Password">
-                        <button type="button" id="togglePassword"
-                            class="absolute inset-y-0 right-0 flex items-center pr-3">
-                            <i id="eyeIcon" class="fas fa-eye"></i>
+                        <div>
+                            <label for="password" class="block mb-1.5 text-sm font-semibold">Password</label>
+                            <div class="relative">
+                                <input type="password" name="password" id="password" required
+                                    class="w-full p-3 text-sm text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Password">
+                                <button type="button" id="togglePassword"
+                                    class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                                    <i id="eyeIcon" class="fas fa-eye text-gray-400"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="password_confirmation" class="block mb-1.5 text-sm font-semibold">Konfirmasi Password</label>
+                            <div class="relative">
+                                <input type="password" name="password_confirmation" id="password_confirmation" required
+                                    class="w-full p-3 text-sm text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Konfirmasi Password">
+                                <button type="button" id="togglePasswordConfirmation"
+                                    class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                                    <i id="eyeIconConfirmation" class="fas fa-eye text-gray-400"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="submit"
+                            class="w-full bg-[#445FB5] hover:bg-[#354a8f] text-white font-semibold py-3 px-4 rounded-lg transition duration-200">
+                            Daftar
                         </button>
                     </div>
-
-                    <!-- Password Confirmation Input -->
-                    <label for="password_confirmation" class="block mt-4 mb-2 text-sm font-bold">Konfirmasi Password</label>
-                    <div class="relative flex items-center">
-                        <input type="password" name="password_confirmation" id="password_confirmation" required
-                            class="w-full p-2 text-sm text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Konfirmasi Password">
-                        <button type="button" id="togglePasswordConfirmation"
-                            class="absolute inset-y-0 right-0 flex items-center pr-3">
-                            <i id="eyeIconConfirmation" class="fas fa-eye"></i>
-                        </button>
-                    </div>
-
-                    <!-- Submit Button -->
-                    <button type="submit"
-                        class="bg-[#445FB5] hover:bg-[#354a8f] text-white font-bold py-2 px-4 rounded w-full mt-6">
-                        Daftar
-                    </button>
                 </form>
 
-                <div class="flex items-center justify-center">
-                    <hr class="border-t border-gray-300 w-full">
-                    <span class="mx-2 text-gray-500">or</span>
-                    <hr class="border-t border-gray-300 w-full">
+                <div class="flex items-center my-6">
+                    <hr class="flex-1 border-t border-gray-300">
+                    <span class="px-4 text-sm text-gray-500">atau</span>
+                    <hr class="flex-1 border-t border-gray-300">
                 </div>
 
-                <!-- Alternative Login Option -->
                 <button
-                    class="flex items-center justify-center px-6 py-2 rounded-md w-full bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-opacity-50">
-                    <i class="fa-brands fa-google"></i>
-                    <span class="ml-2">Sign Up with Google</span>
+                    class="w-full flex items-center justify-center px-6 py-3 rounded-lg bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 transition duration-200">
+                    <i class="fa-brands fa-google mr-2"></i>
+                    Sign Up with Google
                 </button>
-                <p class="text-gray-600 text-sm mt-4">
-                    Sudah mempunyai akun?
-                    <a href="/login" class="text-[#445FB5] hover:text-[#354a8f]">Masuk</a>
+
+                <p class="text-gray-600 text-sm text-center mt-6">
+                    Sudah mempunyai akun? 
+                    <a href="/login" class="text-[#445FB5] hover:text-[#354a8f] font-medium">Masuk</a>
                 </p>
             </div>
         </div>

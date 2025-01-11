@@ -27,8 +27,8 @@
                         @foreach ($pendaftaran as $p)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $p->siswa->all }}</td>
-                                <td>{{ $p->paket->all }}</td>
+                                <td>{{ $p->siswa->nama_siswa }}</td>
+                                <td>{{ $p->paket->nama_paket }}</td>
                                 <td>{{ $p->tanggal_daftar }}</td>
                                 <td>{{ $p->metode_pembayaran }}</td>
                                 <td>{{ $p->status_pembayaran }}</td>

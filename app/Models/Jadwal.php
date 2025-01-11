@@ -13,12 +13,27 @@ class Jadwal extends Model
 
     protected $fillable = [
         'pendaftar_id',
-        'hari',
+        'tanggal',
         'jam_pelatihan',
     ];
 
     public function pendaftar()
     {
         return $this->belongsTo(Pendaftaran::class);
+    }
+
+    public function getHariAttribute()
+    {
+        $hari = date('l', strtotime($this->tanggal));
+        $hariIndonesia = [
+            'Sunday' => 'Minggu',
+            'Monday' => 'Senin',
+            'Tuesday' => 'Selasa',
+            'Wednesday' => 'Rabu',
+            'Thursday' => 'Kamis',
+            'Friday' => 'Jumat',
+            'Saturday' => 'Sabtu'
+        ];
+        return $hariIndonesia[$hari];
     }
 }

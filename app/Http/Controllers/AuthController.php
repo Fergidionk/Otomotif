@@ -44,7 +44,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect('/admin'); // Redirect ke halaman admin setelah pendaftaran
+        return redirect('/admin');
     }
 
     /**
@@ -106,22 +106,26 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
+            'username' => 'required|string',
+            'password' => 'required|string',
         ]);
-
+        // Validasi input login
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+        ]);
+    
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            
-            // Redirect khusus untuk admin
-            if($request->email === 'admin@example.com') {
+    
+            // Redirect berdasarkan role
+            if ($request->email === 'admin@example.com') {
                 return redirect()->intended('admin/dashboard');
             }
-
-            // Redirect default untuk user lain
+    
             return redirect()->intended('/');
         }
-
+    
         return back()->withErrors([
             'email' => 'Email atau password yang dimasukkan salah.',
         ])->onlyInput('email');

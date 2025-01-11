@@ -50,12 +50,8 @@
                                     </button>
                                     <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#editJadwalModal" data-id="{{ $j->id }}"
-                                        data-siswa_id="{{ $j->pendaftaran->siswa_id }}"
-                                        data-paket_id="{{ $j->pendaftaran->paket_id }}"
-                                        data-tanggal_daftar="{{ $j->pendaftaran->tanggal_daftar }}"
-                                        data-metode_pembayaran="{{ $j->pendaftaran->metode_pembayaran }}"
-                                        data-status_pembayaran="{{ $j->pendaftaran->status_pembayaran }}"
-                                        data-hari="{{ $j->hari }}"
+                                        data-pendaftaran_id="{{ $j->pendaftaran_id }}"
+                                        data-tanggal="{{ $j->tanggal }}"
                                         data-jam_pelatihan="{{ $j->jam_pelatihan }}">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
@@ -131,24 +127,24 @@
                         <div class="mb-3">
                             <label for="pendaftaran_id" class="form-label">Data Pendaftaran</label>
                             <select name="pendaftaran_id" id="pendaftaran_id" class="form-select">
-                                @foreach ($jadwal as $j)
-                                    <option value="{{ $j->$pendaftaran->$id }}">{{ $j->$pendaftaran->siswa->nama_lengkap }} - {{ $j->$pendaftaran->paket->nama_paket }} - {{ $j->$pendaftaran->tanggal_daftar }}</option>
+                                @foreach ($pendaftaran as $p)
+                                    <option value="{{ $p->id }}">{{ $p->siswa->nama_siswa }} - {{ $p->paket->nama_paket }} - {{ date('Y-m-d', strtotime($p->tanggal_daftar)) }}</option>
                                 @endforeach
                             </select>
                         </div>
 
                         <div class="mb-3">
-                            <label for="hari" class="form-label">Hari Pelatihan</label>
-                            <input type="text" name="hari" id="hari" class="form-control">
+                            <label for="tanggal" class="form-label">Tanggal Pelatihan</label>
+                            <input type="date" name="tanggal" id="tanggal" class="form-control">
                         </div>
 
                         <div class="mb-3">
                             <label for="jam_pelatihan" class="form-label">Jam Pelatihan</label>
-                            <input type="text" name="jam_pelatihan" id="jam_pelatihan" class="form-control">
+                            <input type="time" name="jam_pelatihan" id="jam_pelatihan" class="form-control">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>
@@ -161,11 +157,11 @@
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="{{ route('jadwal.update', '') }}" method="POST" id="editPendaftaranForm">
+                <form action="{{ route('jadwal.update', '') }}" method="POST" id="editJadwalForm">
                     @csrf
                     @method('PUT')
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editJadwalModalLabel">Edit Pendaftaran</h5>
+                        <h5 class="modal-title" id="editJadwalModalLabel">Edit Jadwal</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -173,23 +169,23 @@
                             <label for="edit_pendaftaran_id" class="form-label">Data Pendaftaran</label>
                             <select name="pendaftaran_id" id="edit_pendaftaran_id" class="form-select">
                                 @foreach ($jadwal as $j)
-                                    <option value="{{ $p->id }}">{{ $p->siswa->nama_lengkap }} - {{ $p->paket->nama_paket }}</option>
+                                    <option value="{{ $j->pendaftaran->id }}">{{ $j->pendaftaran->siswa->nama_lengkap }} - {{ $j->pendaftaran->paket->nama_paket }}</option>
                                 @endforeach
                             </select>
                         </div>
 
                         <div class="mb-3">
-                            <label for="edit_hari" class="form-label">Hari Pelatihan</label>
-                            <input type="text" name="hari" id="edit_hari" class="form-control">
+                            <label for="edit_tanggal" class="form-label">Tanggal Pelatihan</label>
+                            <input type="date" name="tanggal" id="edit_tanggal" class="form-control">
                         </div>
 
                         <div class="mb-3">
                             <label for="edit_jam_pelatihan" class="form-label">Jam Pelatihan</label>
-                            <input type="text" name="jam_pelatihan" id="edit_jam_pelatihan" class="form-control">
+                            <input type="time" name="jam_pelatihan" id="edit_jam_pelatihan" class="form-control">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                         <button type="submit" class="btn btn-primary">Update</button>
                     </div>
                 </form>
@@ -234,21 +230,21 @@
             const button = event.relatedTarget;
             const id = button.getAttribute('data-id');
             const pendaftaran_id = button.getAttribute('data-pendaftaran_id');
-            const hari = button.getAttribute('data-hari');
+            const tanggal = button.getAttribute('data-tanggal');
             const jam_pelatihan = button.getAttribute('data-jam_pelatihan');
 
             const modalTitle = editJadwalModal.querySelector('.modal-title');
             modalTitle.textContent = 'Edit Jadwal';
 
             const editPendaftaranId = document.getElementById('edit_pendaftaran_id');
-            const editHari = document.getElementById('edit_hari');
+            const editTanggal = document.getElementById('edit_tanggal');
             const editJamPelatihan = document.getElementById('edit_jam_pelatihan');
 
             editPendaftaranId.value = pendaftaran_id;
-            editHari.value = hari;
+            editTanggal.value = tanggal;
             editJamPelatihan.value = jam_pelatihan;
 
-            const form = document.getElementById('editPendaftaranForm');
+            const form = document.getElementById('editJadwalForm');
             form.action = '/admin/jadwal/' + id;
         });
 
