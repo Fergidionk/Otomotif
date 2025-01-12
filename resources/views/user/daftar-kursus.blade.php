@@ -183,21 +183,42 @@
                                 <input type="hidden" name="status_pembayaran" value="Belum Dibayar">
                                 
                                 <div class="mb-4">
+                                    <label class="block text-gray-700 font-medium mb-2">Tanggal Pendaftaran</label>
+                                    <input type="date" name="tanggal_daftar" 
+                                        class="block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base py-2 px-3 bg-gray-100"
+                                        value="{{ date('Y-m-d') }}" readonly>
+                                </div>
+
+                                <div class="mb-4">
                                     <label class="block text-gray-700 font-medium mb-2">Pilih Paket *</label>
-                                    <select name="paket_id" id="paket_id" class="form-select" required>
+                                    <select name="paket_id" id="paket_id"
+                                        class="block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base py-2 px-3"
+                                        required>
                                         <option value="">Pilih Paket</option>
                                         @foreach($paket as $p)
-                                            <option value="{{ $p->id }}">{{ $p->nama_paket }}</option>
+                                            <option value="{{ $p->id }}" 
+                                                data-harga="{{ number_format($p->harga_paket, 0, ',', '.') }}"
+                                                data-pertemuan="{{ $p->jumlah_pertemuan }}">
+                                                {{ $p->nama_paket }}
+                                            </option>
                                         @endforeach
                                     </select>
+
+                                    <!-- Tambahkan div untuk menampilkan detail paket -->
+                                    <div id="detailPaket" class="mt-3 p-4 bg-gray-50 rounded-lg hidden">
+                                        <p class="text-gray-700"><strong>Harga:</strong> <span id="hargaPaket">-</span></p>
+                                        <p class="text-gray-700"><strong>Jumlah Pertemuan:</strong> <span id="pertemuanPaket">-</span> kali</p>
+                                    </div>
                                 </div>
 
                                 <div class="mb-4">
                                     <label class="block text-gray-700 font-medium mb-2">Metode Pembayaran *</label>
-                                    <select name="metode_pembayaran" id="metode_pembayaran" class="form-select" required>
-                                        <option value="">Pilih Metode Pembayaran</option>
+                                    <select name="metode_pembayaran" id="metode_pembayaran"
+                                        class="block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base py-2 px-3"
+                                        required>
+                                        <option value="">-- Pilih Metode Pembayaran --</option>
                                         <option value="Uang Tunai">Uang Tunai</option>
-                                        <option value="Transfer Bank">Transfer Bank</option>
+                                        <option value="Transfer Bank" disabled>Transfer Bank (Tidak Tersedia)</option>
                                     </select>
                                 </div>
 
@@ -220,23 +241,6 @@
                     </div>
                 @endif
 
-            </div>
-
-            <!-- Modal Konfirmasi Pembayaran Tunai -->
-            <div id="modalPembayaranTunai" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
-                <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-                    <div class="mt-3 text-center">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900">Konfirmasi Pembayaran Tunai</h3>
-                        <div class="mt-2 px-7 py-3">
-                            <p class="text-sm text-gray-500">
-                                Silakan datang ke kantor kami untuk melakukan pembayaran kepada pengurus.
-                            </p>
-                        </div>
-                        <div class="items-center px-4 py-3">
-                            <button id="closeModal" class="px-4 py-2 bg-blue-600 text-white rounded-md">OK</button>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <!-- Tambahkan modal sukses setelah modal konfirmasi pembayaran -->
@@ -299,7 +303,7 @@
                 }
 
                 function handleDaftar() {
-                    if (window.selectedPaymentMethod === 'UangTunai') {
+                    if (window.selectedPaymentMethod === 'Uang Tunai') {
                         document.getElementById('modalPembayaranTunai').classList.remove('hidden');
                     }
                 }
@@ -334,23 +338,19 @@
                             
                             const formData = new FormData(this);
                             
-                            // Debug form data
-                            for (let pair of formData.entries()) {
-                                console.log(pair[0] + ': ' + pair[1]);
-                            }
-                            
                             fetch(this.action, {
                                 method: 'POST',
                                 body: formData,
                                 headers: {
-                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                                     'Accept': 'application/json',
                                     'X-Requested-With': 'XMLHttpRequest'
-                                }
+                                },
+                                credentials: 'same-origin'
                             })
                             .then(response => {
                                 if (!response.ok) {
-                                    return response.json().then(err => Promise.reject(err));
+                                    throw new Error('Network response was not ok');
                                 }
                                 return response.json();
                             })
@@ -369,7 +369,7 @@
                             })
                             .catch(error => {
                                 console.error('Error:', error);
-                                alert(error.message || 'Terjadi kesalahan sistem');
+                                alert('Terjadi kesalahan: ' + error.message);
                             });
                         });
                     }

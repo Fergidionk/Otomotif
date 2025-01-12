@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="container mx-auto px-4 py-12">
-        <div class="text-center mb-20">
-            <h1 class="text-3xl font-bold mt-8 mb-4">Profil Siswa</h1>
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold  mb-4">Profil Siswa</h1>
             <p class="text-gray-600">Informasi lengkap tentang data diri, paket, jadwal, dan absensi.</p>
         </div>
 

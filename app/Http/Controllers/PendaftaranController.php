@@ -39,7 +39,7 @@ class PendaftaranController extends Controller
     {
         try {
             // Debug request data
-            \Log::info('Pendaftaran Request:', $request->all());
+            \Illuminate\Support\Facades\Log::info('Pendaftaran Request:', $request->all());
 
             // Validasi request
             $validated = $request->validate([
@@ -57,30 +57,20 @@ class PendaftaranController extends Controller
                 'status_pembayaran' => 'Belum Dibayar'
             ]);
 
-            \Log::info('Pendaftaran berhasil dibuat:', ['id' => $pendaftaran->id]);
+            \Illuminate\Support\Facades\Log::info('Pendaftaran berhasil dibuat:', ['id' => $pendaftaran->id]);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Pendaftaran berhasil! Silakan datang ke kantor kami untuk melakukan pembayaran.',
-                'redirect' => route('beranda')
-            ]);
+            return redirect()->route('beranda')->with('success', 'Pendaftaran berhasil! Silakan datang ke kantor kami untuk melakukan pembayaran.');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
-            \Log::error('Validation error:', ['errors' => $e->errors()]);
-            return response()->json([
-                'success' => false,
-                'message' => 'Data tidak valid: ' . implode(', ', array_flatten($e->errors()))
-            ], 422);
+            \Illuminate\Support\Facades\Log::error('Validation error:', ['errors' => $e->errors()]);
+            return redirect()->route('daftar.kursus')->withErrors($e->errors());
         } catch (\Exception $e) {
-            \Log::error('Pendaftaran error:', [
+            \Illuminate\Support\Facades\Log::error('Pendaftaran error:', [
                 'message' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
             
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan sistem. Silakan coba lagi.'
-            ], 500);
+            return redirect()->route('daftar.kursus')->with('error', 'Terjadi kesalahan sistem. Silakan coba lagi.');
         }
     }
 

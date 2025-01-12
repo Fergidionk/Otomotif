@@ -30,4 +30,9 @@ class Pendaftaran extends Model
     {
         return $this->belongsTo(Paket::class, 'paket_id');
     }
+
+    public function absensi()
+    {
+        return $this->hasMany(Absensi::class, 'pendaftar_id');
+    }
 }

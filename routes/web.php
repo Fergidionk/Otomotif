@@ -40,7 +40,7 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/daftar-kursus', [App\Http\Controllers\PendaftaranController::class, 'create'])
         ->name('daftar.kursus');
-    Route::post('/daftar-kursus/store', [App\Http\Controllers\PendaftaranController::class, 'store'])
+    Route::post('/daftar-kursus', [App\Http\Controllers\PendaftaranController::class, 'store'])
         ->name('daftar.kursus.store');
 });
 
@@ -65,26 +65,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');  
     // Siswa
     Route::resource('siswa', SiswaController::class);
-    // Pendaftaran
-    Route::resource('pendaftaran', App\Http\Controllers\PendaftaranController::class);
-    // Paket
-    Route::resource('paket', PaketController::class);
-    // Jadwal
-    Route::get('jadwal/detail/{pendaftar}', [JadwalController::class, 'getJadwalByPendaftar']);
-    Route::post('/jadwal/create-empty/{pendaftarId}', [JadwalController::class, 'createEmptyJadwal'])->name('jadwal.create-empty');
-    Route::put('jadwal/bulk-update/{pendaftar}', [JadwalController::class, 'bulkUpdate']);
-    Route::resource('jadwal', JadwalController::class);
-    // Absensi
-    Route::get('absensi', [AbsensiController::class, 'index'])->name('absensi.index');
-    Route::get('absensi/create', [AbsensiController::class, 'create'])->name('absensi.create');
-    Route::post('absensi/store', [AbsensiController::class, 'store'])->name('absensi.store');
-    Route::get('absensi/{absensi}', [AbsensiController::class, 'show'])->name('absensi.show');
-    Route::get('absensi/{absensi}/edit', [AbsensiController::class, 'edit'])->name('absensi.edit');
-    Route::put('absensi/{absensi}', [AbsensiController::class, 'update'])->name('absensi.update');
-    Route::delete('absensi/{absensi}', [AbsensiController::class, 'destroy'])->name('absensi.destroy');
-    Route::get('absensi/jadwal/{pendaftar}', [AbsensiController::class, 'getJadwalByPendaftar']);
-    // User
-    Route::resource('users', UserController::class);
 });
 
 // Fallback Route for Admin
@@ -100,8 +80,51 @@ Route::post('/siswa/store', [SiswaController::class, 'store'])
     ->name('siswa.store')
     ->middleware(['auth', 'web']);
 
+// Pendaftaran Routes
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('pendaftaran.')->group(function () {
+    Route::get('/pendaftaran', [PendaftaranController::class, 'index'])->name('index');
+    Route::post('/pendaftaran', [PendaftaranController::class, 'store'])->name('store');
+    Route::get('/pendaftaran/{pendaftaran}', [PendaftaranController::class, 'show'])->name('show');
+    Route::put('/pendaftaran/{pendaftaran}', [PendaftaranController::class, 'update'])->name('update');
+    Route::delete('/pendaftaran/{pendaftaran}', [PendaftaranController::class, 'destroy'])->name('destroy');
+});
 
+// Paket Routes
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('paket.')->group(function () {
+    Route::get('/paket', [PaketController::class, 'index'])->name('index');
+    Route::post('/paket', [PaketController::class, 'store'])->name('store');
+    Route::get('/paket/{paket}', [PaketController::class, 'show'])->name('show');
+    Route::put('/paket/{paket}', [PaketController::class, 'update'])->name('update');
+    Route::delete('/paket/{paket}', [PaketController::class, 'destroy'])->name('destroy');
+});
 
+// Jadwal Routes
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('jadwal.')->group(function () {
+    Route::get('/jadwal', [JadwalController::class, 'index'])->name('index');
+    Route::get('/jadwal/detail/{pendaftar}', [JadwalController::class, 'getJadwalByPendaftar'])->name('detail');
+    Route::post('/jadwal/create-empty/{pendaftarId}', [JadwalController::class, 'createEmptyJadwal'])->name('create-empty');
+    Route::put('/jadwal/bulk-update/{pendaftar}', [JadwalController::class, 'bulkUpdate'])->name('bulk-update');
+    Route::resource('jadwal', JadwalController::class);
+});
 
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('absensi.')->group(function () {
+    // Rute individu untuk absensi
+    Route::get('/absensi', [AbsensiController::class, 'index'])->name('index');
+    Route::get('/absensi/create', [AbsensiController::class, 'create'])->name('create');
+    Route::post('/absensi', [AbsensiController::class, 'store'])->name('store');
+    Route::get('/absensi/{absensi}', [AbsensiController::class, 'show'])->name('show');
+    Route::get('/absensi/{absensi}/edit', [AbsensiController::class, 'edit'])->name('edit');
+    Route::put('/absensi/{absensi}', [AbsensiController::class, 'update'])->name('update');
+    Route::delete('/absensi/{absensi}', [AbsensiController::class, 'destroy'])->name('destroy');
+    Route::get('absensi/jadwal/{pendaftar}', [AbsensiController::class, 'getJadwalByPendaftar'])->name('jadwal');
+});
 
-
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('users.')->group(function () {
+    Route::get('/users', [UserController::class, 'index'])->name('index');
+    Route::get('/users/create', [UserController::class, 'create'])->name('create');
+    Route::post('/users', [UserController::class, 'store'])->name('store');
+    Route::get('/users/{user}', [UserController::class, 'show'])->name('show');
+    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('edit');
+    Route::put('/users/{user}', [UserController::class, 'update'])->name('update');
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('destroy');
+});
