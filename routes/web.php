@@ -37,11 +37,13 @@ Route::get('/', function () {
 })->name('beranda');
 
 // Daftar Kursus
+Route::post('/daftar-kursus', [SiswaController::class, 'store'])
+    ->name('siswa.store')
+    ->middleware(['auth', 'web']);
+
 Route::middleware(['auth'])->group(function () {
-    Route::get('/daftar-kursus', [App\Http\Controllers\PendaftaranController::class, 'create'])
+    Route::get('/daftar-kursus', [PendaftaranController::class, 'create'])
         ->name('daftar.kursus');
-    Route::post('/daftar-kursus', [App\Http\Controllers\PendaftaranController::class, 'store'])
-        ->name('daftar.kursus.store');
 });
 
 // Tentang Kami
@@ -76,9 +78,6 @@ Route::get('/admin', function () {
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::post('/siswa/store', [SiswaController::class, 'store'])
-    ->name('siswa.store')
-    ->middleware(['auth', 'web']);
 
 // Pendaftaran Routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('pendaftaran.')->group(function () {

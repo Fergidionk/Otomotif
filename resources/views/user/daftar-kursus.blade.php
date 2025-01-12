@@ -169,7 +169,7 @@
                                 <p class="text-gray-600"><strong>Jenis Kelamin:</strong> {{ $siswa->jenis_kelamin }}</p>
                             </div>
                             <div>
-                                <p class="text-gray-600"><strong>Pendidikan:</strong> {{ $siswa->pendidikan_terakhir }}</p>
+                                <p class="text-gray-600"><strong>Pendidikan Terakhir :</strong> {{ $siswa->pendidikan_terakhir }}</p>
                                 <p class="text-gray-600"><strong>Alamat:</strong> {{ $siswa->alamat_siswa }}</p>
                                 <p class="text-gray-600"><strong>No. Telepon:</strong> {{ $siswa->no_hp }}</p>
                                 <p class="text-gray-600"><strong>Email:</strong> {{ Auth::user()->email }}</p>
@@ -177,7 +177,7 @@
                         </div>
 
                         <div class="mt-6">
-                            <form id="pendaftaranForm" action="{{ route('daftar.kursus.store') }}" method="POST">
+                            <form id="pendaftaranForm" action="{{ route('daftar.kursus') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="siswa_id" value="{{ $siswa->id }}">
                                 <input type="hidden" name="status_pembayaran" value="Belum Dibayar">
