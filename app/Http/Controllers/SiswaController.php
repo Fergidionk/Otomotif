@@ -31,14 +31,6 @@ class SiswaController extends Controller
      */
     public function store(Request $request)
     {
-        // Pastikan request menerima response JSON
-        if (!$request->wantsJson()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Hanya menerima request JSON'
-            ], 406);
-        }
-
         try {
             // Jika request dari user biasa
             if (auth()->user()->role !== 'admin') {
@@ -69,11 +61,7 @@ class SiswaController extends Controller
                     'berkas_pdf' => $pdfPath ?? null,
                 ]);
 
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Data diri berhasil disimpan',
-                    'data' => $siswa
-                ]);
+                return redirect()->route('daftar.kursus')->with('success', 'Data diri berhasil disimpan');
             } 
             // Jika request dari admin (kode yang sudah ada)
             else {
