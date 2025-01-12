@@ -13,18 +13,18 @@ class ProfilSiswaController extends Controller
      */
     public function index()
     {
-        // $siswa = Siswa::where('user_id', auth()->id())->first();
+        $siswa = Siswa::where('user_id', auth()->id())->first();
         
-        // if (!$siswa) {
-        //     return redirect()->route('daftar.kursus')
-        //                    ->with('error', 'Silakan lengkapi data diri Anda terlebih dahulu');
-        // }
+        if (!$siswa) {
+            return redirect()->route('daftar.kursus')
+                           ->with('showModal', true)
+                           ->with('error', 'Silakan lengkapi data diri dan pendaftaran Anda terlebih dahulu');
+        }
 
-        // return view('user.profilsiswa', compact('siswa'));
-
-        $siswa = Siswa::all();
-        // Kirim data ke view
-        return view('user.profilsiswa', ['siswa' => $siswa]);
+        // Load relasi yang diperlukan
+        $siswa->load(['pendaftaran.paket', 'pendaftaran.jadwal', 'pendaftaran.absensi']);
+        
+        return view('user.profilsiswa', compact('siswa'));
     }
 
     /**

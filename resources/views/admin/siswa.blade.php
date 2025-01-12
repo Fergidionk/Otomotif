@@ -179,10 +179,10 @@
                             <select id="addPendidikan" name="pendidikan_terakhir" class="form-control" required>
                                 <option value="">Pilih Pendidikan Terakhir</option>
                                 <option value="TidakBersekolah">Tidak Bersekolah</option>
-                                <option value="SD">SD/MI</option>
-                                <option value="SMP">SMP/MTs</option>
-                                <option value="SMA">SMA/SMK</option>
-                                <option value="PerguruanTinggi">Perguruan Tinggi/Universitas</option>
+                                <option value="SD">SD/Sederajat</option>
+                                <option value="SMP">SMP/Sederajat</option>
+                                <option value="SMA">SMA/Sederajat</option>
+                                <option value="PerguruanTinggi">Perguruan Tinggi</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -261,10 +261,10 @@
                             <label for="editPendidikan" class="form-label">Pendidikan Terakhir</label>
                             <select id="editPendidikan" name="pendidikan_terakhir" class="form-control" required>
                                 <option value="TidakBersekolah">Tidak Bersekolah</option>
-                                <option value="SD">SD/MI</option>
-                                <option value="SMP">SMP/MTs</option>
-                                <option value="SMA">SMA/SMK</option>
-                                <option value="PerguruanTinggi">Perguruan Tinggi/Universitas</option>
+                                <option value="SD">SD/Sederajat</option>
+                                <option value="SMP">SMP/Sederajat</option>
+                                <option value="SMA">SMA/Sederajat</option>
+                                <option value="PerguruanTinggi">Perguruan Tinggi</option>
                             </select>
                         </div>
                         <div class="mb-3">

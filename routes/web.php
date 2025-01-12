@@ -37,7 +37,12 @@ Route::get('/', function () {
 })->name('beranda');
 
 // Daftar Kursus
-Route::get('/daftar-kursus', [App\Http\Controllers\PendaftaranController::class, 'create'])->name('daftar.kursus');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/daftar-kursus', [App\Http\Controllers\PendaftaranController::class, 'create'])
+        ->name('daftar.kursus');
+    Route::post('/daftar-kursus/store', [App\Http\Controllers\PendaftaranController::class, 'store'])
+        ->name('daftar.kursus.store');
+});
 
 // Tentang Kami
 Route::get('/tentang-kami', function () {
@@ -55,34 +60,32 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Admin Pages (Protected by 'auth' and 'admin' middleware)
-Route::middleware(['auth', 'admin'])->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     // Dashboard
-    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');  
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');  
     // Siswa
-    Route::resource('admin/siswa', SiswaController::class);
+    Route::resource('siswa', SiswaController::class);
     // Pendaftaran
-    Route::resource('admin/pendaftaran', PendaftaranController::class);
+    Route::resource('pendaftaran', App\Http\Controllers\PendaftaranController::class);
     // Paket
-    Route::resource('admin/paket', PaketController::class);
+    Route::resource('paket', PaketController::class);
     // Jadwal
-    Route::get('admin/jadwal/detail/{pendaftar}', [JadwalController::class, 'getJadwalByPendaftar']);
-    Route::post('/admin/jadwal/create-empty/{pendaftarId}', [JadwalController::class, 'createEmptyJadwal'])->name('jadwal.create-empty');
-    Route::put('admin/jadwal/bulk-update/{pendaftar}', [JadwalController::class, 'bulkUpdate']);
-    Route::resource('admin/jadwal', JadwalController::class);
+    Route::get('jadwal/detail/{pendaftar}', [JadwalController::class, 'getJadwalByPendaftar']);
+    Route::post('/jadwal/create-empty/{pendaftarId}', [JadwalController::class, 'createEmptyJadwal'])->name('jadwal.create-empty');
+    Route::put('jadwal/bulk-update/{pendaftar}', [JadwalController::class, 'bulkUpdate']);
+    Route::resource('jadwal', JadwalController::class);
     // Absensi
-    Route::get('admin/absensi', [AbsensiController::class, 'index'])->name('absensi.index');
-    Route::get('admin/absensi/create', [AbsensiController::class, 'create'])->name('absensi.create');
-    Route::post('admin/absensi/store', [AbsensiController::class, 'store'])->name('absensi.store');
-    Route::get('admin/absensi/{absensi}', [AbsensiController::class, 'show'])->name('absensi.show');
-    Route::get('admin/absensi/{absensi}/edit', [AbsensiController::class, 'edit'])->name('absensi.edit');
-    Route::put('admin/absensi/{absensi}', [AbsensiController::class, 'update'])->name('absensi.update');
-    Route::delete('admin/absensi/{absensi}', [AbsensiController::class, 'destroy'])->name('absensi.destroy');
-    Route::get('admin/absensi/jadwal/{pendaftar}', [AbsensiController::class, 'getJadwalByPendaftar']);
+    Route::get('absensi', [AbsensiController::class, 'index'])->name('absensi.index');
+    Route::get('absensi/create', [AbsensiController::class, 'create'])->name('absensi.create');
+    Route::post('absensi/store', [AbsensiController::class, 'store'])->name('absensi.store');
+    Route::get('absensi/{absensi}', [AbsensiController::class, 'show'])->name('absensi.show');
+    Route::get('absensi/{absensi}/edit', [AbsensiController::class, 'edit'])->name('absensi.edit');
+    Route::put('absensi/{absensi}', [AbsensiController::class, 'update'])->name('absensi.update');
+    Route::delete('absensi/{absensi}', [AbsensiController::class, 'destroy'])->name('absensi.destroy');
+    Route::get('absensi/jadwal/{pendaftar}', [AbsensiController::class, 'getJadwalByPendaftar']);
     // User
-    Route::resource('admin/users', UserController::class);
+    Route::resource('users', UserController::class);
 });
-
-
 
 // Fallback Route for Admin
 Route::get('/admin', function () {
@@ -92,6 +95,11 @@ Route::get('/admin', function () {
 // Home Route (Default Laravel Auth)
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::post('/siswa/store', [SiswaController::class, 'store'])
+    ->name('siswa.store')
+    ->middleware(['auth', 'web']);
+
 
 
 

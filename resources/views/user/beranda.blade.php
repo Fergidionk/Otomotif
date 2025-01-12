@@ -1,12 +1,40 @@
 @extends('user/components.app')
 @section('content')
+    <!-- Modal Login Alert -->
+    <div id="loginAlert" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3 text-center">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100">
+                    <i class="fas fa-exclamation-triangle text-yellow-600"></i>
+                </div>
+                <h3 class="text-lg leading-6 font-medium text-gray-900 mt-4">Autentikasi Diperlukan</h3>
+                <div class="mt-2 px-7 py-3">
+                    <p class="text-sm text-gray-500">
+                        Anda harus login atau register terlebih dahulu untuk mengakses halaman pendaftaran kursus.
+                    </p>
+                </div>
+                <div class="flex justify-center space-x-4 mt-4">
+                    <button onclick="closeLoginAlert()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
+                        Tutup
+                    </button>
+                    <a href="{{ route('login') }}" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                        Masuk
+                    </a>
+                    <a href="{{ route('register') }}" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
+                        Daftar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="p-8">
         <section id="hero" class="p-5 md:p-20 text-center">
             <h1 class="text-4xl font-bold bg-white inline-block"><span class="text-[#445FB5]">Latih</span> Kemampuan Menyetirmu</h1>
             <h2 class="text-3xl mt-4">Dengan <span class="text-[#445FB5]">OTOMOTIF</span> Kursus Mengemudi Wlingi</h2>
             <p class="mt-4">Belajar dari para ahli untuk meningkatkan keterampilan mengemudi Anda.</p>
             <div class="mt-10 flex justify-center space-x-4">
-                <a href="/daftar" class="bg-[#445FB5] hover:bg-[#364b8f] text-white py-2 px-4 rounded-[8px]">Daftar Sekarang</a>
+                <a href="#" onclick="handleDaftarKursusClick(event)" class="bg-[#445FB5] hover:bg-[#364b8f] text-white py-2 px-4 rounded-[8px]">Daftar Sekarang</a>
                 <button class="bg-white hover:bg-gray-200 text-gray-800 py-2 px-4 rounded-[8px]">Selengkapnya</button>
             </div>
 
@@ -217,7 +245,7 @@
                             </div>
                         </div>
                         
-                        <button class="w-full bg-[#445FB5] hover:bg-[#364b8f] text-white py-2 px-4 rounded-lg mt-4 font-medium">
+                        <button onclick="handleDaftarClick()" class="w-full bg-[#445FB5] hover:bg-[#364b8f] text-white py-2 px-4 rounded-lg mt-4 font-medium">
                             Daftar
                         </button>
                     </div>
@@ -282,7 +310,7 @@
                             </div>
                         </div>
                         
-                        <button class="w-full bg-[#445FB5] hover:bg-[#364b8f] text-white py-2 px-4 rounded-lg mt-4 font-medium">
+                        <button onclick="handleDaftarClick()" class="w-full bg-[#445FB5] hover:bg-[#364b8f] text-white py-2 px-4 rounded-lg mt-4 font-medium">
                             Daftar
                         </button>
                     </div>
@@ -347,7 +375,7 @@
                             </div>
                         </div>
                         
-                        <button class="w-full bg-[#445FB5] hover:bg-[#364b8f] text-white py-2 px-4 rounded-lg mt-4 font-medium">
+                        <button onclick="handleDaftarClick()" class="w-full bg-[#445FB5] hover:bg-[#364b8f] text-white py-2 px-4 rounded-lg mt-4 font-medium">
                             Daftar
                         </button>
                     </div>
@@ -355,4 +383,18 @@
             </div>
         </section>
     </div>
+
+    <script>
+        function handleDaftarClick() {
+            @auth
+                window.location.href = "{{ route('daftar.kursus') }}";
+            @else
+                document.getElementById('loginAlert').classList.remove('hidden');
+            @endauth
+        }
+
+        function closeLoginAlert() {
+            document.getElementById('loginAlert').classList.add('hidden');
+        }
+    </script>
 @endsection

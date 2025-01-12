@@ -34,21 +34,16 @@ class Siswa extends Model
 
     public function pendaftaran()
     {
-        return $this->hasMany(Pendaftaran::class, 'siswa_id');
+        return $this->hasOne(Pendaftaran::class, 'siswa_id');
     }
 
     public function jadwal()
     {
-        return $this->hasManyThrough(Jadwal::class, Pendaftaran::class);
+        return $this->hasManyThrough(Jadwal::class, Pendaftaran::class, 'siswa_id', 'pendaftar_id');
     }
 
     public function absensi()
     {
         return $this->hasManyThrough(Absensi::class, Jadwal::class);
-    }
-
-    public function paket()
-    {
-        return $this->belongsTo(Paket::class, 'paket_id');
     }
 }

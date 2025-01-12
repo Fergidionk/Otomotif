@@ -18,9 +18,10 @@
                         class="px-3 py-2 rounded-md hover:bg-[#F1F1F3] {{ request()->is('kontak') ? 'bg-[#F1F1F3]' : '' }}">Kontak</a>
                 </li>
                 <li>
-                    <a href="/daftar-kursus"
-                        class="px-3 py-2 rounded-md hover:bg-[#F1F1F3] {{ request()->is('daftar-kursus') ? 'bg-[#F1F1F3]' : '' }}">Daftar
-                        Kursus</a>
+                    <a href="{{ route('daftar.kursus') }}" 
+                        class="px-3 py-2 rounded-md hover:bg-[#F1F1F3] {{ request()->is('daftar-kursus') ? 'bg-[#F1F1F3]' : '' }}">
+                        Daftar Kursus
+                    </a>
                 </li>
             </ul>
         </div>
@@ -32,9 +33,11 @@
                     <a href="{{ route('profil.siswa') }}" class="bg-[#F1F1F3] hover:bg-[#E1E1E3] text-black py-2 px-4 rounded-full w-10 h-10 flex items-center justify-center">
                         <i class="fas fa-user"></i>
                     </a>
-                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                    <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="hover:bg-[#F1F1F3] text-gray-800 py-2 px-4 rounded-md">Keluar</button>
+                        <button type="submit" class="hover:bg-[#F1F1F3] text-gray-800 py-2 px-4 rounded-md">
+                            Keluar
+                        </button>
                     </form>
                 @else
                     <a href="{{ route('register') }}" class="hover:bg-[#F1F1F3] text-gray-800 py-2 px-4 rounded-md">Daftar</a>
@@ -61,9 +64,11 @@
                     </a>
                 </li>
                 <li>
-                    <form action="{{ route('logout') }}" method="POST">
+                    <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="block w-full text-left px-3 py-2 rounded-md hover:bg-[#F1F1F3]">Keluar</button>
+                        <button type="submit" class="w-full text-left px-3 py-2 rounded-md hover:bg-[#F1F1F3]">
+                            Keluar
+                        </button>
                     </form>
                 </li>
             @else
@@ -75,10 +80,7 @@
 </nav>
 
 <script>
-    const menuToggle = document.getElementById('menu-toggle');
-    const mobileMenu = document.getElementById('mobile-menu');
-
-    menuToggle.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
+    document.getElementById('menu-toggle')?.addEventListener('click', function() {
+        document.getElementById('mobile-menu')?.classList.toggle('hidden');
     });
 </script>

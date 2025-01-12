@@ -31,58 +31,94 @@ class SiswaController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            $validated = $request->validate([
-                'nama_siswa' => 'required|string|max:255',
-                'email' => 'required|email|exists:users,email',
-                'alamat_siswa' => 'required|string',
-                'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-                'tempat_lahir' => 'required|string',
-                'tanggal_lahir' => 'required|date',
-                'no_hp' => 'required|string',
-                'pendidikan_terakhir' => 'required|in:TidakBersekolah,SD,SMP,SMA,PerguruanTinggi',
-                'berkas_pdf' => 'required|file|mimes:pdf|max:5120',
-            ]);
-
-            // Ambil user_id berdasarkan email
-            $user = User::where('email', $validated['email'])->first();
-
-            // Upload file
-            if ($request->hasFile('berkas_pdf')) {
-                $pdfPath = $request->file('berkas_pdf')->store('berkas', 'public');
-                $validated['berkas_pdf'] = $pdfPath;
-            }
-
-            // Pastikan nilai pendidikan_terakhir sesuai
-            $validated['pendidikan_terakhir'] = trim($validated['pendidikan_terakhir']);
-            
-            // Tambahkan user_id ke data yang akan disimpan
-            $validated['user_id'] = $user->id;
-            
-            // Hapus email dari array validated
-            unset($validated['email']);
-
-            // Debug data sebelum disimpan
-            \Log::info('Data yang akan disimpan:', $validated);
-
-            // Simpan data
-            $siswa = Siswa::create($validated);
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Data siswa berhasil ditambahkan',
-                'data' => $siswa
-            ]);
-
-        } catch (\Exception $e) {
-            \Log::error('Error in SiswaController@store: ' . $e->getMessage());
-            \Log::error('Stack trace: ' . $e->getTraceAsString());
-            
+        // Pastikan request menerima response JSON
+        if (!$request->wantsJson()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Terjadi kesalahan saat menyimpan data',
-                'error' => $e->getMessage(),
-                'trace' => config('app.debug') ? $e->getTraceAsString() : null
+                'message' => 'Hanya menerima request JSON'
+            ], 406);
+        }
+
+        try {
+            // Jika request dari user biasa
+            if (auth()->user()->role !== 'admin') {
+                $validated = $request->validate([
+                    'nama_lengkap' => 'required|string|max:255',
+                    'alamat' => 'required|string',
+                    'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+                    'tempat_lahir' => 'required|string',
+                    'tanggal_lahir' => 'required|date',
+                    'no_telepon' => 'required|string',
+                    'pendidikan_terakhir' => 'required|in:TidakBersekolah,SD,SMP,SMA,PerguruanTinggi',
+                    'dokumen' => 'required|file|mimes:pdf|max:5120',
+                ]);
+
+                if ($request->hasFile('dokumen')) {
+                    $pdfPath = $request->file('dokumen')->store('berkas', 'public');
+                }
+
+                $siswa = Siswa::create([
+                    'user_id' => auth()->id(),
+                    'nama_siswa' => $validated['nama_lengkap'],
+                    'alamat_siswa' => $validated['alamat'],
+                    'jenis_kelamin' => $validated['jenis_kelamin'],
+                    'tempat_lahir' => $validated['tempat_lahir'],
+                    'tanggal_lahir' => $validated['tanggal_lahir'],
+                    'no_hp' => $validated['no_telepon'],
+                    'pendidikan_terakhir' => $validated['pendidikan_terakhir'],
+                    'berkas_pdf' => $pdfPath ?? null,
+                ]);
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Data diri berhasil disimpan',
+                    'data' => $siswa
+                ]);
+            } 
+            // Jika request dari admin (kode yang sudah ada)
+            else {
+                $validated = $request->validate([
+                    'nama_siswa' => 'required|string|max:255',
+                    'email' => 'required|email|exists:users,email',
+                    'alamat_siswa' => 'required|string',
+                    'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+                    'tempat_lahir' => 'required|string',
+                    'tanggal_lahir' => 'required|date',
+                    'no_hp' => 'required|string',
+                    'pendidikan_terakhir' => 'required|in:TidakBersekolah,SD,SMP,SMA,PerguruanTinggi',
+                    'berkas_pdf' => 'required|file|mimes:pdf|max:5120',
+                ]);
+
+                // Proses seperti sebelumnya untuk admin
+                $user = User::where('email', $validated['email'])->first();
+                if ($request->hasFile('berkas_pdf')) {
+                    $pdfPath = $request->file('berkas_pdf')->store('berkas', 'public');
+                    $validated['berkas_pdf'] = $pdfPath;
+                }
+                $validated['user_id'] = $user->id;
+                unset($validated['email']);
+
+                $siswa = Siswa::create($validated);
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Data siswa berhasil ditambahkan',
+                    'data' => $siswa
+                ]);
+            }
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Error in SiswaController@store: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan server',
+                'error' => $e->getMessage()
             ], 500);
         }
     }
