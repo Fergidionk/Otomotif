@@ -5,16 +5,16 @@
             <div class="hidden md:block">
                 <h2 class="text-2xl font-bold mb-4">Testimoni Siswa</h2>
                 <p class="mb-4 text-sm text-gray-600">Pengalaman nyata dari siswa-siswi kami yang telah berhasil menguasai
-                    ketrampilan IT
-                    yang mereka inginkan. Mulai dari yang awalnya ragu hingga akhirnya percaya diri di jalan yang mereka
-                    pilih, testimoni ini adalah bukti nyata dedikasi kami dalam memberikan layanan karir yang
-                    menjanjikan untuk lebih baik.</p>
+                    keterampilan mengemudi dengan baik dan benar. Dari yang awalnya belum pernah menyetir hingga akhirnya
+                    mahir di jalan raya, testimoni ini adalah bukti nyata dedikasi kami dalam memberikan pelatihan mengemudi
+                    yang berkualitas.</p>
                 <div class="bg-white p-8 rounded-lg shadow-md">
-                    <p class="text-gray-600">"Saya tadinya takut karena nggak pernah tau model sama sekali. Tapi,
-                        alhamdulillah, berkat Kursus Online ini saya bisa belajar dengan tenang.
-                        Instruktur-instrukturnya ramah dan ngasih arahan yang jelas."</p>
+                    <p class="text-gray-600">"Saya awalnya sangat takut untuk menyetir mobil. Tapi berkat kursus mengemudi
+                        ini,
+                        saya jadi lebih percaya diri. Instrukturnya sangat profesional dan sabar dalam mengajarkan teknik
+                        mengemudi yang aman. Sekarang saya sudah bisa menyetir sendiri dengan lancar."</p>
                     <div class="flex items-center mt-4">
-                        <img src="https://via.placeholder.com/40" alt="Profile Picture" class="w-10 h-10 rounded-full mr-2">
+                        <img src="../images/FotoTestimoni.png" alt="Profile Picture" class="w-10 h-10 rounded-full mr-2">
                         <p class="font-medium">Reedy Prasetio</p>
                     </div>
                 </div>
@@ -22,14 +22,13 @@
             <div class="bg-white p-6 md:p-8 rounded-lg shadow-md md:col-span-1 col-span-1 max-w-md mx-auto w-full">
                 <h2 class="text-2xl md:text-3xl font-bold text-center mb-3">Masuk</h2>
                 <div class="text-center text-sm text-[#4C4C4D] mb-6">Masukkan akun yang sudah di daftarkan</div>
-                
-                <form action="{{ route('login') }}" method="POST">
+
+                <form method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="space-y-4">
                         <div>
                             <label for="email" class="block mb-1.5 text-sm font-semibold">Email</label>
-                            <input type="email" name="email" id="email" required
-                                value="{{ old('email') }}"
+                            <input type="email" name="email" id="email" required value="{{ old('email') }}"
                                 class="w-full p-3 text-sm text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('email') border-red-500 @enderror"
                                 placeholder="Masukkan Email">
                             @error('email')
@@ -43,6 +42,9 @@
                                 <input type="password" name="password" id="password" required
                                     class="w-full p-3 text-sm text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('password') border-red-500 @enderror"
                                     placeholder="Password">
+                                @error('email')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
                                 <button type="button" id="togglePassword"
                                     class="absolute right-3 top-1/2 transform -translate-y-1/2">
                                     <i id="eyeIcon" class="fas fa-eye text-gray-400"></i>
@@ -70,7 +72,7 @@
                 </button>
 
                 <p class="text-gray-600 text-sm text-center mt-6">
-                    Belum mempunyai akun? 
+                    Belum mempunyai akun?
                     <a href="/register" class="text-[#445FB5] hover:text-[#354a8f] font-medium">Daftar</a>
                 </p>
             </div>

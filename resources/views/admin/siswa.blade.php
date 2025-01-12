@@ -1,3 +1,7 @@
+@if(isset($users))
+    <!-- {{ count($users) }} users available -->
+@endif
+
 @extends('admin/components.app')
 @section('content')
     <div class="container">
@@ -59,10 +63,10 @@
                                         data-nama="{{ $s->nama_siswa }}" data-alamat="{{ $s->alamat_siswa }}"
                                         data-jenis_kelamin="{{ $s->jenis_kelamin }}" data-tempat="{{ $s->tempat_lahir }}"
                                         data-tanggal="{{ $s->tanggal_lahir }}" data-no_hp="{{ $s->no_hp }}"
-                                        data-pendidikan="{{ $s->pendidikan_terakhir }}">
+                                        data-pendidikan="{{ $s->pendidikan_terakhir }}" data-email="{{ $s->user->email }}">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
-                                    <button class="btn btn-sm btn-danger delete-btn" data-id="{{ $s->id }}">
+                                    <button class="btn btn-sm btn-danger delete-btn" data-id="{{ $s->id }}" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
                                         <i class="fa-solid fa-trash-can"></i>
                                     </button>
                                 </td>
@@ -120,20 +124,29 @@
     </div>
 
     <!-- Modal untuk Tambah Siswa -->
-    <div class="modal fade" id="addSiswaModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="addSiswaModal" tabindex="-1" role="dialog" aria-labelledby="addModalTitle">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addModalTitle">Tambah Siswa</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <form action="{{ route('siswa.store') }}" method="POST">
+                <form id="addSiswaForm" action="{{ route('siswa.store') }}" method="POST" enctype="multipart/form-data">
+                    <div class="modal-body">
                         @csrf
                         <div class="mb-3">
                             <label for="addNamaSiswa" class="form-label">Nama</label>
                             <input type="text" id="addNamaSiswa" name="nama_siswa" class="form-control"
                                 placeholder="Masukkan Nama" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addEmailUser" class="form-label">Email User</label>
+                            <select id="addEmailUser" name="email" class="form-control" required>
+                                <option class="text-muted" disabled selected>Pilih Email User</option>
+                                @foreach($users as $user)
+                                    <option value="{{ $user->email }}">{{ $user->email }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="addAlamatSiswa" class="form-label">Alamat</label>
@@ -164,11 +177,12 @@
                         <div class="mb-3">
                             <label for="addPendidikan" class="form-label">Pendidikan Terakhir</label>
                             <select id="addPendidikan" name="pendidikan_terakhir" class="form-control" required>
+                                <option value="">Pilih Pendidikan Terakhir</option>
                                 <option value="TidakBersekolah">Tidak Bersekolah</option>
-                                <option value="SD">SD</option>
-                                <option value="SMP">SMP</option>
+                                <option value="SD">SD/MI</option>
+                                <option value="SMP">SMP/MTs</option>
                                 <option value="SMA">SMA/SMK</option>
-                                <option value="PerguruanTinggi">Perguruan Tinggi</option>
+                                <option value="PerguruanTinggi">Perguruan Tinggi/Universitas</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -180,11 +194,11 @@
                         <div class="alert alert-info">
                             Pastikan Anda mengisi semua field dengan benar.
                         </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary">Simpan Siswa</button>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">Simpan Siswa</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -206,6 +220,15 @@
                             <label for="editNamaSiswa" class="form-label">Nama</label>
                             <input type="text" id="editNamaSiswa" name="nama_siswa" class="form-control"
                                 placeholder="Masukkan Nama" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editEmailUser" class="form-label">Email User</label>
+                            <select id="editEmailUser" name="email" class="form-control" required>
+                                <option value="">Pilih Email User</option>
+                                @foreach($users as $user)
+                                    <option value="{{ $user->email }}">{{ $user->email }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="editAlamatSiswa" class="form-label">Alamat</label>
@@ -238,10 +261,10 @@
                             <label for="editPendidikan" class="form-label">Pendidikan Terakhir</label>
                             <select id="editPendidikan" name="pendidikan_terakhir" class="form-control" required>
                                 <option value="TidakBersekolah">Tidak Bersekolah</option>
-                                <option value="SD">SD</option>
-                                <option value="SMP">SMP</option>
-                                <option value="SMA">SMA</option>
-                                <option value="PerguruanTinggi">Perguruan Tinggi</option>
+                                <option value="SD">SD/MI</option>
+                                <option value="SMP">SMP/MTs</option>
+                                <option value="SMA">SMA/SMK</option>
+                                <option value="PerguruanTinggi">Perguruan Tinggi/Universitas</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -259,6 +282,53 @@
                     <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                 </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Konfirmasi Hapus -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content rounded-lg shadow-lg">
+                <div class="modal-header border-b border-gray-200">
+                    <h5 class="modal-title text-lg font-semibold" id="confirmDeleteModalLabel">Konfirmasi Hapus</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <p class="text-gray-700">Apakah Anda yakin ingin menghapus data ini? Data yang dihapus tidak dapat dikembalikan.</p>
+                </div>
+                <div class="modal-footer border-t border-gray-200">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Hapus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Notifikasi dengan Tailwind -->
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-white rounded-xl shadow-2xl transform transition-all">
+                <div class="modal-header flex items-center justify-between p-4 border-b border-gray-200">
+                    <h5 class="modal-title text-xl font-semibold text-gray-800" id="notifTitle"></h5>
+                    <button type="button" class="text-gray-400 hover:text-gray-500 focus:outline-none" data-bs-dismiss="modal" aria-label="Close">
+                        <span class="sr-only">Close</span>
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-body p-6">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex-shrink-0" id="notifIcon">
+                            <!-- Icon akan diisi melalui JavaScript -->
+                        </div>
+                        <p class="text-gray-600 text-base" id="notifMessage"></p>
+                    </div>
+                </div>
+                <div class="modal-footer bg-gray-50 px-6 py-3 flex justify-end space-x-2 rounded-b-xl">
+                    <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500" data-bs-dismiss="modal">OK</button>
+                </div>
             </div>
         </div>
     </div>
@@ -308,6 +378,7 @@
             const no_hp = button.getAttribute('data-no_hp');
             const pendidikan = button.getAttribute('data-pendidikan');
             const berkas = button.getAttribute('data-berkas');
+            const email = button.getAttribute('data-email');
 
             // Populate the form with existing data
             const editForm = document.getElementById('editSiswaForm');
@@ -327,42 +398,214 @@
                 berkasInfo.textContent = `Berkas saat ini: ${berkas}`;
                 document.getElementById('editBerkasPDF').parentNode.appendChild(berkasInfo);
             }
+
+            document.getElementById('editEmailUser').value = email;
         });
 
-        // Delete button functionality with confirmation
-        const deleteButtons = document.querySelectorAll('.delete-btn');
-        deleteButtons.forEach(button => {
+        let deleteId;
+
+        document.querySelectorAll('.delete-btn').forEach(button => {
             button.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                Swal.fire({
-                    title: 'Yakin ingin menghapus?',
-                    text: 'Data yang dihapus tidak dapat dikembalikan!',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya, hapus!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Send delete request
-                        fetch(`/admin/siswa/${id}`, {
-                            method: 'DELETE',
-                            headers: {
-                                'X-CSRF-TOKEN': document.querySelector(
-                                    'meta[name="csrf-token"]').content
-                            }
-                        }).then(response => {
-                            if (response.ok) {
-                                Swal.fire('Berhasil!', 'Data telah dihapus.', 'success')
-                                    .then(() => location.reload());
-                            } else {
-                                Swal.fire('Gagal!',
-                                    'Terjadi kesalahan saat menghapus data.', 'error');
-                            }
-                        });
+                deleteId = this.getAttribute('data-id');
+            });
+        });
+
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/admin/siswa/' + deleteId;
+            form.innerHTML = `
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="_method" value="DELETE">
+            `;
+            document.body.appendChild(form);
+            form.submit();
+        });
+
+        $(document).ready(function() {
+            const modal = $('#addSiswaModal');
+            const form = $('#addSiswaForm');
+            const submitBtn = $('#submitBtn');
+
+            // Hapus pesan error saat input berubah
+            form.find('input, select').on('change', function() {
+                $(this).removeClass('is-invalid');
+                $(this).siblings('.invalid-feedback').remove();
+            });
+
+            // Handler untuk form tambah siswa
+            $('#addSiswaForm').on('submit', function(e) {
+                e.preventDefault();
+                const form = $(this);
+                const submitBtn = $('#submitBtn');
+                submitBtn.prop('disabled', true);
+
+                $.ajax({
+                    url: form.attr('action'),
+                    type: 'POST',
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.success) {
+                            $('#addSiswaModal').modal('hide');
+                            form[0].reset();
+                            // Langsung reload setelah modal tertutup
+                            $('#addSiswaModal').on('hidden.bs.modal', function () {
+                                window.location.reload();
+                            });
+                        }
+                    },
+                    error: function(xhr) {
+                        submitBtn.prop('disabled', false);
+                        
+                        if (xhr.status === 422) {
+                            const errors = xhr.responseJSON.errors;
+                            Object.keys(errors).forEach(function(key) {
+                                const input = $(`[name="${key}"]`);
+                                input.addClass('is-invalid');
+                                const feedback = $('<div>')
+                                    .addClass('invalid-feedback')
+                                    .text(errors[key][0]);
+                                input.after(feedback);
+                            });
+                            showNotification('Error', 'Mohon periksa kembali input Anda');
+                        } else if (xhr.status === 500) {
+                            const response = xhr.responseJSON;
+                            console.error('Server Error:', response.error);
+                            showNotification('Error', response.message);
+                        } else {
+                            showNotification('Error', 'Terjadi kesalahan saat menyimpan data');
+                        }
+                    },
+                    complete: function() {
+                        submitBtn.prop('disabled', false);
                     }
                 });
             });
+
+            // Reset form dan error messages saat modal dibuka/ditutup
+            modal.on('show.bs.modal', function() {
+                form[0].reset();
+                submitBtn.prop('disabled', false);
+                $('.is-invalid').removeClass('is-invalid');
+                $('.invalid-feedback').remove();
+            });
+
+            modal.on('hidden.bs.modal', function() {
+                form[0].reset();
+                submitBtn.prop('disabled', false);
+                $('.is-invalid').removeClass('is-invalid');
+                $('.invalid-feedback').remove();
+            });
+
+            // Handler untuk form edit siswa
+            $('#editSiswaForm').on('submit', function(e) {
+                e.preventDefault();
+                const form = $(this);
+                
+                $.ajax({
+                    url: form.attr('action'),
+                    type: 'POST',
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.success) {
+                            $('#editSiswaModal').modal('hide');
+                            // Langsung reload setelah modal tertutup
+                            $('#editSiswaModal').on('hidden.bs.modal', function () {
+                                window.location.reload();
+                            });
+                        }
+                    },
+                    error: function(xhr) {
+                        showNotification('Error', 'Gagal memperbarui data siswa');
+                    }
+                });
+            });
+
+            // Handler untuk hapus siswa
+            $('#confirmDeleteBtn').click(function() {
+                if (deleteId) {
+                    $.ajax({
+                        url: `/admin/siswa/${deleteId}`,
+                        type: 'DELETE',
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                $('#confirmDeleteModal').modal('hide');
+                                // Langsung reload setelah modal tertutup
+                                $('#confirmDeleteModal').on('hidden.bs.modal', function () {
+                                    window.location.reload();
+                                });
+                            }
+                        },
+                        error: function(xhr) {
+                            $('#confirmDeleteModal').modal('hide');
+                            showNotification('Error', 'Gagal menghapus data siswa');
+                        }
+                    });
+                }
+            });
+
+            // Tambahkan validasi input nomor HP untuk hanya menerima angka
+            $('#addNoHP, #editNoHP').on('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+
+            // Inisialisasi modal notifikasi
+            const notifModal = new bootstrap.Modal(document.getElementById('notificationModal'));
+            
+            // Fungsi untuk menampilkan notifikasi
+            function showNotification(title, message) {
+                $('#notifTitle').text(title);
+                $('#notifMessage').text(message);
+                
+                const isSuccess = !title.toLowerCase().includes('error');
+                const icon = isSuccess ? `
+                    <div class="flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                        <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                ` : `
+                    <div class="flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+                        <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </div>
+                `;
+                
+                $('#notifIcon').html(icon);
+                notifModal.show();
+            }
         });
     </script>
+
+    <style>
+        select.form-control {
+            appearance: auto !important;
+            -webkit-appearance: auto !important;
+            -moz-appearance: auto !important;
+            background-repeat: no-repeat !important;
+            background-position: right 0.75rem center !important;
+            background-size: 16px 12px !important;
+            padding-right: 2rem !important;
+        }
+
+        .invalid-feedback {
+            display: block;
+            width: 100%;
+            margin-top: 0.25rem;
+            font-size: 0.875em;
+            color: #dc3545;
+        }
+
+        .is-invalid {
+            border-color: #dc3545;
+        }
+    </style>
 @endsection

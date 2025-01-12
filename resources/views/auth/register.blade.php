@@ -6,16 +6,15 @@
             <div class="hidden md:block">
                 <h2 class="text-2xl font-bold mb-4">Testimoni Siswa</h2>
                 <p class="mb-4 text-sm text-gray-600">Pengalaman nyata dari siswa-siswi kami yang telah berhasil menguasai
-                    ketrampilan IT
-                    yang mereka inginkan. Mulai dari yang awalnya ragu hingga akhirnya percaya diri di jalan yang mereka
-                    pilih, testimoni ini adalah bukti nyata dedikasi kami dalam memberikan layanan karir yang
-                    menjanjikan untuk lebih baik.</p>
+                    keterampilan mengemudi dengan baik dan benar. Dari yang awalnya belum pernah menyetir hingga akhirnya 
+                    mahir di jalan raya, testimoni ini adalah bukti nyata dedikasi kami dalam memberikan pelatihan mengemudi
+                    yang berkualitas.</p>
                 <div class="bg-white p-8 rounded-lg shadow-md">
-                    <p class="text-gray-600">"Saya tadinya takut karena nggak pernah tau model sama sekali. Tapi,
-                        alhamdulillah, berkat Kursus Online ini saya bisa belajar dengan tenang.
-                        Instruktur-instrukturnya ramah dan ngasih arahan yang jelas."</p>
+                    <p class="text-gray-600">"Saya awalnya sangat takut untuk menyetir mobil. Tapi berkat kursus mengemudi ini,
+                        saya jadi lebih percaya diri. Instrukturnya sangat profesional dan sabar dalam mengajarkan teknik 
+                        mengemudi yang aman. Sekarang saya sudah bisa menyetir sendiri dengan lancar."</p>
                     <div class="flex items-center mt-4">
-                        <img src="https://via.placeholder.com/40" alt="Profile Picture" class="w-10 h-10 rounded-full mr-2">
+                        <img src="../images/FotoTestimoni.png" alt="Profile Picture" class="w-10 h-10 rounded-full mr-2">
                         <p class="font-medium">Reedy Prasetio</p>
                     </div>
                 </div>

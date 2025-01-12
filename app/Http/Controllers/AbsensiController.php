@@ -4,62 +4,89 @@ namespace App\Http\Controllers;
 
 use App\Models\Absensi;
 use App\Models\Jadwal;
+use App\Models\Pendaftaran;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class AbsensiController extends Controller
 {
     public function index()
     {
-        $absensi = Absensi::with('jadwal')->get();
-        return view('admin.absensi', compact('absensi'));
+        $pendaftaran = Pendaftaran::with(['siswa', 'paket', 'jadwal'])->get();
+        return view('admin.absensi', compact('pendaftaran'));
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'jadwal_id' => 'required|exists:tb_jadwal,id',
-            'pertemuan_ke' => 'required|integer|min:1',
-            'hadir' => 'required|boolean',
-            'tanggal' => 'required|date',
-            'keterangan' => 'nullable|string|max:255',
-        ]);
+        try {
+            $request->validate([
+                'pendaftar_id' => 'required|exists:tb_pendaftar,id',
+                'absensi' => 'required|array',
+                'absensi.*.jadwal_id' => 'required|exists:tb_jadwal,id',
+                'absensi.*.hadir' => 'required|in:hadir,tidak_hadir',
+                'absensi.*.keterangan' => 'nullable|string'
+            ]);
 
-        $jadwal = Jadwal::findOrFail($validated['jadwal_id']);
-        $paket = $jadwal->pendaftar->paket;
+            foreach ($request->absensi as $data) {
+                // Cek apakah absensi sudah ada
+                $absensi = Absensi::where('jadwal_id', $data['jadwal_id'])->first();
+                
+                if ($absensi) {
+                    // Update jika sudah ada
+                    $absensi->update([
+                        'hadir' => $data['hadir'],
+                        'keterangan' => $data['keterangan']
+                    ]);
+                } else {
+                    // Buat baru jika belum ada
+                    Absensi::create([
+                        'jadwal_id' => $data['jadwal_id'],
+                        'pendaftar_id' => $request->pendaftar_id,
+                        'hadir' => $data['hadir'],
+                        'keterangan' => $data['keterangan']
+                    ]);
+                }
+            }
 
-        // Validasi jumlah pertemuan tidak melebihi paket
-        if ($validated['pertemuan_ke'] > $paket->jumlah_pertemuan) {
-            return back()->with('error', 'Pertemuan melebihi jumlah yang ada di paket');
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Data absensi berhasil disimpan'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Gagal menyimpan absensi: ' . $e->getMessage()
+            ], 500);
         }
-
-        Absensi::create($validated);
-        return redirect()->route('absensi.index')->with('success', 'Absensi berhasil ditambahkan!');
     }
 
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'jadwal_id' => 'required|exists:jadwal,id',
-            'tanggal' => 'required|date',
-            'status' => 'required|string',
-            'keterangan' => 'required|string',
+            'hadir' => 'required|in:hadir,tidak_hadir',
+            'keterangan' => 'nullable|string',
         ]);
 
         $absensi = Absensi::findOrFail($id);
         $absensi->update($validated);
-        return redirect()->route('absensi.index')->with('success', 'Absensi berhasil diperbarui!');
+
+        return response()->json(['success' => true, 'message' => 'Data absensi berhasil diperbarui']);
     }
 
-    public function show($id)
+    public function getJadwalByPendaftar($pendaftarId)
     {
-        $absensi = Absensi::with(['jadwal.pendaftar'])->findOrFail($id);
-        return view('admin.absensi-detail', compact('absensi'));
-    }
+        try {
+            $jadwal = Jadwal::where('pendaftar_id', $pendaftarId)
+                ->with(['absensi'])
+                ->get();
 
-    public function destroy($id)
-    {
-        $absensi = Absensi::findOrFail($id);
-        $absensi->delete();
-        return redirect()->route('absensi.index')->with('success', 'Absensi berhasil dihapus!');
+            return response()->json($jadwal);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat mengambil data jadwal',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

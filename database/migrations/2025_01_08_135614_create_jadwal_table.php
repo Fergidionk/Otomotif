@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('tb_jadwal', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('pendaftar_id');
-            $table->date('tanggal');
-            $table->time('jam_pelatihan');
+            $table->date('tanggal')->nullable();
+            $table->time('jam_pelatihan')->nullable();
             $table->timestamps();
         
             $table->foreign('pendaftar_id')->references('id')->on('tb_pendaftar')->onUpdate('restrict')->onDelete('restrict');

@@ -30,34 +30,58 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
 // User Pages
+
+// Beranda
 Route::get('/', function () {
     return view('user.beranda'); // Perbaikan path view
 })->name('beranda');
 
+// Daftar Kursus
 Route::get('/daftar-kursus', [App\Http\Controllers\PendaftaranController::class, 'create'])->name('daftar.kursus');
 
+// Tentang Kami
 Route::get('/tentang-kami', function () {
     return view('user.tentang-kami');
 })->name('tentang.kami');
 
+// Kontak
 Route::get('/kontak', function () {
     return view('user.kontak');
 })->name('kontak');
 
+// Profil Siswa
 Route::middleware(['auth'])->group(function () {
     Route::get('/profil-siswa', [ProfilSiswaController::class, 'index'])->name('profil.siswa');
 });
 
 // Admin Pages (Protected by 'auth' and 'admin' middleware)
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'index']);
+    // Dashboard
+    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');  
+    // Siswa
     Route::resource('admin/siswa', SiswaController::class);
+    // Pendaftaran
     Route::resource('admin/pendaftaran', PendaftaranController::class);
+    // Paket
     Route::resource('admin/paket', PaketController::class);
+    // Jadwal
+    Route::get('admin/jadwal/detail/{pendaftar}', [JadwalController::class, 'getJadwalByPendaftar']);
+    Route::post('/admin/jadwal/create-empty/{pendaftarId}', [JadwalController::class, 'createEmptyJadwal'])->name('jadwal.create-empty');
+    Route::put('admin/jadwal/bulk-update/{pendaftar}', [JadwalController::class, 'bulkUpdate']);
     Route::resource('admin/jadwal', JadwalController::class);
-    Route::resource('admin/absensi', AbsensiController::class);
+    // Absensi
+    Route::get('admin/absensi', [AbsensiController::class, 'index'])->name('absensi.index');
+    Route::get('admin/absensi/create', [AbsensiController::class, 'create'])->name('absensi.create');
+    Route::post('admin/absensi/store', [AbsensiController::class, 'store'])->name('absensi.store');
+    Route::get('admin/absensi/{absensi}', [AbsensiController::class, 'show'])->name('absensi.show');
+    Route::get('admin/absensi/{absensi}/edit', [AbsensiController::class, 'edit'])->name('absensi.edit');
+    Route::put('admin/absensi/{absensi}', [AbsensiController::class, 'update'])->name('absensi.update');
+    Route::delete('admin/absensi/{absensi}', [AbsensiController::class, 'destroy'])->name('absensi.destroy');
+    Route::get('admin/absensi/jadwal/{pendaftar}', [AbsensiController::class, 'getJadwalByPendaftar']);
+    // User
     Route::resource('admin/users', UserController::class);
 });
+
 
 
 // Fallback Route for Admin
@@ -68,3 +92,8 @@ Route::get('/admin', function () {
 // Home Route (Default Laravel Auth)
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+
+
+

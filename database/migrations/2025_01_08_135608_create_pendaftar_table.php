@@ -16,10 +16,11 @@ return new class extends Migration
             $table->unsignedBigInteger('siswa_id');
             $table->date('tanggal_daftar');
             $table->unsignedBigInteger('paket_id');
-            $table->enum('metode_pembayaran', ['UangTunai', 'Transfer']);
-            $table->enum('status_pembayaran', ['SudahDIbayar', 'BelumDibayar']);
+            $table->enum('metode_pembayaran', ['Uang Tunai', 'Transfer Bank']);
+            $table->enum('status_pembayaran', ['Sudah Dibayar', 'Belum Dibayar']);
             $table->timestamps();
 
+            // Pastikan tabel tb_siswa dan tb_paket sudah dibuat sebelum menambahkan foreign key
             $table->foreign('siswa_id')->references('id')->on('tb_siswa')->onUpdate('restrict')->onDelete('restrict');
             $table->foreign('paket_id')->references('id')->on('tb_paket')->onUpdate('restrict')->onDelete('restrict');
         });

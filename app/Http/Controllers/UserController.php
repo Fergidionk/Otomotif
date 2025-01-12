@@ -67,7 +67,27 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        $user->delete();
-        return redirect()->route('users.index')->with('success', 'User berhasil dihapus.');
+        try {
+            $user->delete();
+            return response()->json(['success' => true, 'message' => 'User berhasil dihapus']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Gagal menghapus user'], 500);
+        }
+    }
+
+    public function show($id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            return response()->json([
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'User tidak ditemukan'
+            ], 404);
+        }
     }
 }

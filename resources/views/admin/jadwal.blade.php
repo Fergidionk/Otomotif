@@ -4,62 +4,65 @@
     <div class="container">
         <h4 class="fw-bold my-4 text-xl"><span class="text-muted fw-light">Data</span> Jadwal</h4>
 
-        <div class="my-4">
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addJadwalModal">Tambah
-                Jadwal</button>
-        </div>
-
         <div class="card p-8">
             <div class="table-responsive text-nowrap">
-                <table id="pendaftaranTable" class="table table-striped table-bordered">
+                <table id="jadwalTable" class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Data Siswa</th>
-                            <th>Data Paket</th>
-                            <th>Tanggal Daftar</th>
-                            <th>Metode Pembayaran</th>
-                            <th>Status Pembayaran</th>
-                            <th>Hari Pelatihan</th>
-                            <th>Jam Pelatihan</th>
+                            <th>Nama Siswa</th>
+                            <th>Paket</th>
+                            <th>Jumlah Pertemuan</th>
+                            <th>Status Jadwal</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="table-border-bottom-0">
-                        @foreach ($jadwal as $j)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $j->pendaftaran->siswa->nama_lengkap }}</td>
-                                <td>{{ $j->pendaftaran->paket->nama_paket }}</td>
-                                <td>{{ $j->pendaftaran->tanggal_daftar }}</td>
-                                <td>{{ $j->pendaftaran->metode_pembayaran }}</td>
-                                <td>{{ $j->pendaftaran->status_pembayaran }}</td>
-                                <td>{{ $j->hari }}</td>
-                                <td>{{ $j->jam_pelatihan }}</td>
-                                <td>
-                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal"
-                                        data-bs-target="#detailJadwalModal" data-id="{{ $j->id }}"
-                                        data-siswa="{{ $j->pendaftaran->siswa->nama_lengkap }}"
-                                        data-paket="{{ $j->pendaftaran->paket->nama_paket }}"
-                                        data-tanggal="{{ $j->pendaftaran->tanggal_daftar }}"
-                                        data-metode="{{ $j->pendaftaran->metode_pembayaran }}"
-                                        data-status="{{ $j->pendaftaran->status_pembayaran }}"
-                                        data-hari="{{ $j->hari }}"
-                                        data-jam="{{ $j->jam_pelatihan }}">
-                                        <i class="fa-solid fa-eye"></i>
+                    <tbody>
+                        @foreach($pendaftaran as $p)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $p->siswa->nama_siswa }}</td>
+                            <td>{{ $p->paket->nama_paket }}</td>
+                            <td>{{ $p->paket->jumlah_pertemuan }}</td>
+                            <td>
+                                @if($p->jadwal && $p->jadwal->count() > 0)
+                                    <span class="badge bg-success">Jadwal Tersedia</span>
+                                @else
+                                    <span class="badge bg-warning">Belum Diatur</span>
+                                @endif
+                            </td>
+                            <td>
+                                @if($p->jadwal && $p->jadwal->count() > 0)
+                                    @php
+                                        $hasSchedule = $p->jadwal->whereNotNull('tanggal')->whereNotNull('jam_pelatihan')->count() > 0;
+                                    @endphp
+                                    
+                                    @if($hasSchedule)
+                                        <button class="btn btn-sm btn-info" data-bs-toggle="modal"
+                                            data-bs-target="#detailJadwalModal" 
+                                            data-pendaftar-id="{{ $p->id }}">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#editJadwalModal" 
+                                            data-pendaftar-id="{{ $p->id }}">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                    @else
+                                        <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                            data-bs-target="#editJadwalModal" 
+                                            data-pendaftar-id="{{ $p->id }}">
+                                            Atur Jadwal
+                                        </button>
+                                    @endif
+                                @else
+                                    <button class="btn btn-sm btn-warning create-jadwal-btn" 
+                                        data-pendaftar-id="{{ $p->id }}">
+                                        Buat Jadwal
                                     </button>
-                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#editJadwalModal" data-id="{{ $j->id }}"
-                                        data-pendaftaran_id="{{ $j->pendaftaran_id }}"
-                                        data-tanggal="{{ $j->tanggal }}"
-                                        data-jam_pelatihan="{{ $j->jam_pelatihan }}">
-                                        <i class="fa-solid fa-pen-to-square"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger delete-btn" data-id="{{ $j->id }}">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                                @endif
+                            </td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -68,41 +71,27 @@
     </div>
 
     <!-- Detail Jadwal Modal -->
-    <div class="modal fade" id="detailJadwalModal" tabindex="-1" aria-labelledby="detailJadwalModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <div class="modal fade" id="detailJadwalModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="detailJadwalModalLabel">Detail Jadwal</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title">Detail Jadwal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Nama Siswa</label>
-                        <p id="detailSiswa"></p>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Nama Paket</label>
-                        <p id="detailPaket"></p>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Tanggal Daftar</label>
-                        <p id="detailTanggal"></p>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Metode Pembayaran</label>
-                        <p id="detailMetode"></p>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Status Pembayaran</label>
-                        <p id="detailStatus"></p>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Hari Pelatihan</label>
-                        <p id="detailHari"></p>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Jam Pelatihan</label>
-                        <p id="detailJam"></p>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width: 80px">Pertemuan</th>
+                                    <th>Hari</th>
+                                    <th>Tanggal</th>
+                                    <th>Jam</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detailJadwalBody">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -112,83 +101,59 @@
         </div>
     </div>
 
-    <!-- Add Jadwal Modal -->
-    <div class="modal fade" id="addJadwalModal" tabindex="-1" aria-labelledby="addJadwalModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form action="{{ route('jadwal.store') }}" method="POST">
+    <!-- Edit Jadwal Modal -->
+    <div class="modal fade" id="editJadwalModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content rounded-lg shadow-xl">
+                <form id="editJadwalForm" method="POST">
                     @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addJadwalModalLabel">Tambah Jadwal</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    @method('PUT')
+                    <div class="modal-header bg-blue-600 text-white rounded-t-lg">
+                        <h5 class="modal-title text-lg font-semibold text-white">  
+                            <i class="fa-regular fa-calendar-check mr-2"></i>
+                            Atur Jadwal Pelatihan
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="pendaftaran_id" class="form-label">Data Pendaftaran</label>
-                            <select name="pendaftaran_id" id="pendaftaran_id" class="form-select">
-                                @foreach ($pendaftaran as $p)
-                                    <option value="{{ $p->id }}">{{ $p->siswa->nama_siswa }} - {{ $p->paket->nama_paket }} - {{ date('Y-m-d', strtotime($p->tanggal_daftar)) }}</option>
-                                @endforeach
-                            </select>
+                    <div class="modal-body p-6">
+                        <div class="bg-blue-50 text-blue-700 p-4 rounded-lg mb-6">
+                            <i class="fa-solid fa-circle-info mr-2"></i>
+                            Silakan atur jadwal untuk setiap pertemuan pelatihan
                         </div>
-
-                        <div class="mb-3">
-                            <label for="tanggal" class="form-label">Tanggal Pelatihan</label>
-                            <input type="date" name="tanggal" id="tanggal" class="form-control">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="jam_pelatihan" class="form-label">Jam Pelatihan</label>
-                            <input type="time" name="jam_pelatihan" id="jam_pelatihan" class="form-control">
+                        <div id="editJadwalList" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Jadwal inputs will be inserted here -->
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    <div class="modal-footer border-t border-gray-200 p-4">
+                        <button type="button" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors" data-bs-dismiss="modal">
+                            <i class="fa-solid fa-xmark mr-2"></i>
+                            Tutup
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors ml-3">
+                            <i class="fa-solid fa-save mr-2"></i>
+                            Simpan Perubahan
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Edit Jadwal Modal -->
-    <div class="modal fade" id="editJadwalModal" tabindex="-1" aria-labelledby="editJadwalModalLabel"
-        aria-hidden="true">
+    <!-- Modal Konfirmasi Hapus -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="{{ route('jadwal.update', '') }}" method="POST" id="editJadwalForm">
-                    @csrf
-                    @method('PUT')
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editJadwalModalLabel">Edit Jadwal</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="edit_pendaftaran_id" class="form-label">Data Pendaftaran</label>
-                            <select name="pendaftaran_id" id="edit_pendaftaran_id" class="form-select">
-                                @foreach ($jadwal as $j)
-                                    <option value="{{ $j->pendaftaran->id }}">{{ $j->pendaftaran->siswa->nama_lengkap }} - {{ $j->pendaftaran->paket->nama_paket }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="edit_tanggal" class="form-label">Tanggal Pelatihan</label>
-                            <input type="date" name="tanggal" id="edit_tanggal" class="form-control">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="edit_jam_pelatihan" class="form-label">Jam Pelatihan</label>
-                            <input type="time" name="jam_pelatihan" id="edit_jam_pelatihan" class="form-control">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-primary">Update</button>
-                    </div>
-                </form>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Konfirmasi Hapus</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Apakah Anda yakin ingin menghapus data ini? Data yang dihapus tidak dapat dikembalikan.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Hapus</button>
+                </div>
             </div>
         </div>
     </div>
@@ -199,80 +164,241 @@
     <script src="https://cdn.datatables.net/2.2.0/js/dataTables.tailwindcss.js"></script>
 
     <script>
-        new DataTable('#pendaftaranTable');
-    </script>
+        new DataTable('#jadwalTable');
 
-    <script>
         // Detail Modal
         const detailJadwalModal = document.getElementById('detailJadwalModal');
-        detailJadwalModal.addEventListener('show.bs.modal', function(event) {
-            const button = event.relatedTarget;
-            const siswa = button.getAttribute('data-siswa');
-            const paket = button.getAttribute('data-paket');
-            const tanggal = button.getAttribute('data-tanggal');
-            const metode = button.getAttribute('data-metode');
-            const status = button.getAttribute('data-status');
-            const hari = button.getAttribute('data-hari');
-            const jam = button.getAttribute('data-jam');
+        detailJadwalModal.addEventListener('show.bs.modal', async function(event) {
+            try {
+                const button = event.relatedTarget;
+                const pendaftarId = button.getAttribute('data-pendaftar-id');
+                const tableBody = document.getElementById('detailJadwalBody');
+                tableBody.innerHTML = '';
 
-            document.getElementById('detailSiswa').textContent = siswa;
-            document.getElementById('detailPaket').textContent = paket;
-            document.getElementById('detailTanggal').textContent = tanggal;
-            document.getElementById('detailMetode').textContent = metode;
-            document.getElementById('detailStatus').textContent = status;
-            document.getElementById('detailHari').textContent = hari;
-            document.getElementById('detailJam').textContent = jam;
+                // Ambil data jadwal
+                const jadwalResponse = await fetch(`/admin/jadwal/detail/${pendaftarId}`);
+                if (!jadwalResponse.ok) {
+                    throw new Error('Gagal mengambil data jadwal');
+                }
+                const jadwals = await jadwalResponse.json();
+
+                jadwals.forEach((jadwal, index) => {
+                    const date = new Date(jadwal.tanggal);
+                    const formattedDate = date.toLocaleDateString('id-ID', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+
+                    const hari = new Date(jadwal.tanggal).toLocaleDateString('id-ID', { weekday: 'long' });
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="text-center">${index + 1}</td>
+                        <td>${hari}</td>
+                        <td>${formattedDate}</td>
+                        <td>${jadwal.jam_pelatihan}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat memuat detail jadwal: ' + error.message);
+            }
         });
 
         // Edit Modal
         const editJadwalModal = document.getElementById('editJadwalModal');
-        editJadwalModal.addEventListener('show.bs.modal', function(event) {
-            const button = event.relatedTarget;
-            const id = button.getAttribute('data-id');
-            const pendaftaran_id = button.getAttribute('data-pendaftaran_id');
-            const tanggal = button.getAttribute('data-tanggal');
-            const jam_pelatihan = button.getAttribute('data-jam_pelatihan');
+        editJadwalModal.addEventListener('show.bs.modal', async function(event) {
+            try {
+                const button = event.relatedTarget;
+                const pendaftarId = button.getAttribute('data-pendaftar-id');
+                const editJadwalList = document.getElementById('editJadwalList');
+                editJadwalList.innerHTML = '';
 
-            const modalTitle = editJadwalModal.querySelector('.modal-title');
-            modalTitle.textContent = 'Edit Jadwal';
+                console.log('Pendaftar ID:', pendaftarId);
 
-            const editPendaftaranId = document.getElementById('edit_pendaftaran_id');
-            const editTanggal = document.getElementById('edit_tanggal');
-            const editJamPelatihan = document.getElementById('edit_jam_pelatihan');
+                // Ambil data pendaftar
+                const pendaftarResponse = await fetch(`/admin/pendaftaran/${pendaftarId}`, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                
+                if (!pendaftarResponse.ok) {
+                    throw new Error('Gagal mengambil data pendaftar');
+                }
+                
+                const result = await pendaftarResponse.json();
+                const pendaftar = result.data; // Karena kita mengirim data dalam wrapper 'data'
+                console.log('Data Pendaftar:', pendaftar);
 
-            editPendaftaranId.value = pendaftaran_id;
-            editTanggal.value = tanggal;
-            editJamPelatihan.value = jam_pelatihan;
+                if (!pendaftar || !pendaftar.paket) {
+                    throw new Error('Data paket tidak ditemukan');
+                }
 
-            const form = document.getElementById('editJadwalForm');
-            form.action = '/admin/jadwal/' + id;
+                const jadwalResponse = await fetch(`/admin/jadwal/detail/${pendaftarId}`, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                
+                if (!jadwalResponse.ok) {
+                    throw new Error('Gagal mengambil data jadwal');
+                }
+                
+                const jadwalResult = await jadwalResponse.json();
+                const jadwals = jadwalResult || []; // Hapus .data karena mungkin response langsung berupa array
+                console.log('Raw Jadwals:', jadwals);
+
+                const form = document.getElementById('editJadwalForm');
+                form.action = `/admin/jadwal/bulk-update/${pendaftarId}`;
+
+                // Generate form untuk setiap pertemuan
+                const jumlahPertemuan = pendaftar.paket.jumlah_pertemuan || 0;
+                for (let i = 0; i < jumlahPertemuan; i++) {
+                    const jadwal = jadwals[i] || {};
+                    console.log(`Jadwal ${i + 1}:`, jadwal);
+                    
+                    // Format tanggal ke YYYY-MM-DD untuk input date
+                    let formattedDate = '';
+                    if (jadwal.tanggal) {
+                        formattedDate = jadwal.tanggal.split('T')[0]; // Langsung ambil bagian tanggal saja
+                        console.log(`Formatted Date ${i + 1}:`, formattedDate);
+                    }
+                    
+                    // Format jam ke HH:mm untuk input time
+                    let formattedTime = '';
+                    if (jadwal.jam_pelatihan) {
+                        formattedTime = jadwal.jam_pelatihan.slice(0, 5); // Gunakan slice untuk konsistensi
+                        console.log(`Formatted Time ${i + 1}:`, formattedTime);
+                    }
+
+                    const formHtml = `
+                        <div class="w-full">
+                            <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-200">
+                                <div class="px-6 py-4 bg-gray-50 rounded-t-xl border-b border-gray-200">
+                                    <h6 class="font-bold text-gray-700 flex items-center">
+                                        <i class="fa-solid fa-calendar-day text-blue-600 mr-2"></i>
+                                        Pertemuan ${i + 1}
+                                    </h6>
+                                </div>
+                                <div class="p-6">
+                                    <div class="mb-6">
+                                        <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
+                                            <i class="fa-regular fa-calendar text-blue-600 mr-2"></i>
+                                            Tanggal Pertemuan
+                                        </label>
+                                        <input type="date" 
+                                            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" 
+                                            name="jadwal[${i}][tanggal]" 
+                                            value="${formattedDate}" 
+                                            required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
+                                            <i class="fa-regular fa-clock text-blue-600 mr-2"></i>
+                                            Jam Pelatihan
+                                        </label>
+                                        <input type="time" 
+                                            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" 
+                                            name="jadwal[${i}][jam_pelatihan]" 
+                                            value="${formattedTime}" 
+                                            required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    editJadwalList.insertAdjacentHTML('beforeend', formHtml);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan: ' + error.message);
+            }
         });
+
+        // Form submission
+        document.getElementById('editJadwalForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            try {
+                const formData = new FormData(this);
+                const response = await fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Gagal menyimpan jadwal');
+                }
+
+                const result = await response.json();
+                if (result.success) {
+                    window.location.reload();
+                } else {
+                    throw new Error(result.message || 'Gagal menyimpan jadwal');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan: ' + error.message);
+            }
+        });
+
+        let deleteId;
 
         document.querySelectorAll('.delete-btn').forEach(button => {
             button.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                Swal.fire({
-                    title: 'Apakah Anda yakin?',
-                    text: "Anda tidak akan dapat mengembalikan ini!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#6a11cb',
-                    cancelButtonColor: '#6c757d',
-                    confirmButtonText: 'Ya, hapus!',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        const form = document.createElement('form');
-                        form.method = 'POST';
-                        form.action = '/admin/jadwal/' + id;
-                        form.innerHTML = `
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <input type="hidden" name="_method" value="DELETE">
-                        `;
-                        document.body.appendChild(form);
-                        form.submit();
+                deleteId = this.getAttribute('data-id');
+            });
+        });
+
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/admin/jadwal/' + deleteId;
+            form.innerHTML = `
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="_method" value="DELETE">
+            `;
+            document.body.appendChild(form);
+            form.submit();
+        });
+
+        // Tambahkan event listener untuk tombol Buat Jadwal
+        document.querySelectorAll('.create-jadwal-btn').forEach(button => {
+            button.addEventListener('click', async function() {
+                const pendaftarId = this.getAttribute('data-pendaftar-id');
+                try {
+                    const response = await fetch(`/admin/jadwal/create-empty/${pendaftarId}`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    const result = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(result.message || 'Gagal membuat jadwal kosong');
                     }
-                });
+
+                    if (result.success) {
+                        alert('Jadwal berhasil dibuat');
+                        window.location.reload();
+                    } else {
+                        throw new Error(result.message);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan: ' + error.message);
+                }
             });
         });
     </script>

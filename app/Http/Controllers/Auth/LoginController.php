@@ -69,4 +69,21 @@ class LoginController extends Controller
             'email' => 'Email atau password yang Anda masukkan salah.',
         ])->withInput(); // Ini penting untuk mempertahankan input sebelumnya
     }
+
+    public function authenticate(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended('dashboard');
+        }
+
+        return back()->withErrors([
+            'email' => 'Email atau password salah.',
+        ])->withInput();
+    }
 }

@@ -106,29 +106,29 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
-        ]);
-        // Validasi input login
-        $request->validate([
             'email' => 'required|email',
-            'password' => 'required|min:6',
+            'password' => 'required',
         ]);
-    
-        if (Auth::attempt($credentials)) {
+
+        // Coba login
+        if (Auth::attempt([
+            'email' => $credentials['email'],
+            'password' => $credentials['password']
+        ])) {
             $request->session()->regenerate();
-    
-            // Redirect berdasarkan role
-            if ($request->email === 'admin@example.com') {
-                return redirect()->intended('admin/dashboard');
-            }
-    
-            return redirect()->intended('/');
+            return redirect()->intended('/admin');
         }
-    
-        return back()->withErrors([
-            'email' => 'Email atau password yang dimasukkan salah.',
-        ])->onlyInput('email');
+
+        // Jika gagal, tambahkan dd() untuk debugging
+        dd([
+            'email' => $credentials['email'],
+            'password' => $credentials['password'],
+            'user_exists' => User::where('email', $credentials['email'])->exists(),
+        ]);
+
+        return back()
+            ->withErrors(['email' => 'Email atau password salah.'])
+            ->withInput();
     }
 
     // Admin Login

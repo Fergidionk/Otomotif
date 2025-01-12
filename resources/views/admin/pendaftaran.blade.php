@@ -29,29 +29,29 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $p->siswa->nama_siswa }}</td>
                                 <td>{{ $p->paket->nama_paket }}</td>
-                                <td>{{ $p->tanggal_daftar }}</td>
+                                <td>{{ date('Y-m-d', strtotime($p->tanggal_daftar)) }}</td>
                                 <td>{{ $p->metode_pembayaran }}</td>
                                 <td>{{ $p->status_pembayaran }}</td>
                                 <td>
                                     <button class="btn btn-sm btn-info" data-bs-toggle="modal"
                                         data-bs-target="#detailPendaftaranModal" data-id="{{ $p->id }}"
-                                        data-siswa_id="{{ $p->siswa_id }}"
-                                        data-paket_id="{{ $p->paket_id }}"
-                                        data-tanggal_daftar="{{ $p->tanggal_daftar }}"
+                                        data-siswa_id="{{ $p->siswa->nama_siswa }}"
+                                        data-paket_id="{{ $p->paket->nama_paket }}"
+                                        data-tanggal_daftar="{{ date('Y-m-d', strtotime($p->tanggal_daftar)) }}"
                                         data-metode_pembayaran="{{ $p->metode_pembayaran }}"
                                         data-status_pembayaran="{{ $p->status_pembayaran }}">
                                         <i class="fa-solid fa-eye"></i>
                                     </button>
                                     <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#editPendaftaranModal" data-id="{{ $p->id }}"
-                                        data-siswa_id="{{ $p->siswa_id }}" 
-                                        data-paket_id="{{ $p->paket_id }}"
-                                        data-tanggal_daftar="{{ $p->tanggal_daftar }}"
+                                        data-siswa_id="{{ $p->siswa_id }}" data-paket_id="{{ $p->paket_id }}"
+                                        data-tanggal_daftar="{{ date('Y-m-d', strtotime($p->tanggal_daftar)) }}"
                                         data-metode_pembayaran="{{ $p->metode_pembayaran }}"
                                         data-status_pembayaran="{{ $p->status_pembayaran }}">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
-                                    <button class="btn btn-sm btn-danger delete-btn" data-id="{{ $p->id }}">
+                                    <button class="btn btn-sm btn-danger delete-btn" data-id="{{ $p->id }}"
+                                        data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
                                         <i class="fa-solid fa-trash-can"></i>
                                     </button>
                                 </td>
@@ -101,16 +101,16 @@
                         <div class="mb-3">
                             <label for="metode_pembayaran" class="form-label">Metode Pembayaran</label>
                             <select name="metode_pembayaran" id="metode_pembayaran" class="form-select">
-                                <option value="UangTunai">Uang Tunai</option>
-                                <option value="Transfer">Transfer</option>
+                                <option value="Uang Tunai">Uang Tunai</option>
+                                <option value="Transfer Bank">Transfer Bank</option>
                             </select>
                         </div>
 
                         <div class="mb-3">
                             <label for="status_pembayaran" class="form-label">Status Pembayaran</label>
                             <select name="status_pembayaran" id="status_pembayaran" class="form-select">
-                                <option value="SudahDibayar">Sudah Dibayar</option>
-                                <option value="BelumDibayar">Belum Dibayar</option>
+                                <option value="Belum Dibayar">Belum Dibayar</option>
+                                <option value="Sudah Dibayar">Sudah Dibayar</option>
                             </select>
                         </div>
                     </div>
@@ -182,7 +182,7 @@
                             <label for="edit_siswa_id" class="form-label">Nama Siswa</label>
                             <select name="siswa_id" id="edit_siswa_id" class="form-select">
                                 @foreach ($siswa as $s)
-                                    <option value="{{ $s->id }}">{{ $s->nama_lengkap }}</option>
+                                    <option value="{{ $s->id }}">{{ $s->nama_siswa }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -204,16 +204,16 @@
                         <div class="mb-3">
                             <label for="edit_metode_pembayaran" class="form-label">Metode Pembayaran</label>
                             <select name="metode_pembayaran" id="edit_metode_pembayaran" class="form-select">
-                                <option value="UangTunai">Uang Tunai</option>
-                                <option value="Transfer">Transfer</option>
+                                <option value="Uang Tunai">Uang Tunai</option>
+                                <option value="Transfer Bank">Transfer Bank</option>
                             </select>
                         </div>
 
                         <div class="mb-3">
                             <label for="edit_status_pembayaran" class="form-label">Status Pembayaran</label>
                             <select name="status_pembayaran" id="edit_status_pembayaran" class="form-select">
-                                <option value="SudahDibayar">Sudah Dibayar</option>
-                                <option value="BelumDibayar">Belum Dibayar</option>
+                                <option value="Belum Dibayar">Belum Dibayar</option>
+                                <option value="Sudah Dibayar">Sudah Dibayar</option>
                             </select>
                         </div>
                     </div>
@@ -222,6 +222,27 @@
                         <button type="submit" class="btn btn-primary">Update</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Konfirmasi Hapus -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content rounded-lg shadow-lg">
+                <div class="modal-header border-b border-gray-200">
+                    <h5 class="modal-title text-lg font-semibold" id="confirmDeleteModalLabel">Konfirmasi Hapus</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <p class="text-gray-700">Apakah Anda yakin ingin menghapus data ini? Data yang dihapus tidak dapat
+                        dikembalikan.</p>
+                </div>
+                <div class="modal-footer border-t border-gray-200">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Hapus</button>
+                </div>
             </div>
         </div>
     </div>
@@ -247,8 +268,7 @@
             const status_pembayaran = button.getAttribute('data-status_pembayaran');
 
             const modalTitle = editPendaftaranModal.querySelector('.modal-title');
-            modalTitle.textContent = 'Edit Pendaftaran - ' +
-                siswa_id;
+            modalTitle.textContent = 'Edit Pendaftaran - ' + siswa_id;
 
             const editSiswaName = document.getElementById('edit_siswa_id');
             const editPaketName = document.getElementById('edit_paket_id');
@@ -256,11 +276,21 @@
             const editMetodePembayaran = document.getElementById('edit_metode_pembayaran');
             const editStatusPembayaran = document.getElementById('edit_status_pembayaran');
 
+            Array.from(editMetodePembayaran.options).forEach(option => {
+                if (option.value === metode_pembayaran) {
+                    option.selected = true;
+                }
+            });
+
+            Array.from(editStatusPembayaran.options).forEach(option => {
+                if (option.value === status_pembayaran) {
+                    option.selected = true;
+                }
+            });
+
             editSiswaName.value = siswa_id;
             editPaketName.value = paket_id;
             editTanggalDaftar.value = tanggal_daftar;
-            editMetodePembayaran.value = metode_pembayaran;
-            editStatusPembayaran.value = status_pembayaran;
 
             const form = document.getElementById('editPendaftaranForm');
             form.action = '/admin/pendaftaran/' + id;
@@ -282,32 +312,36 @@
             document.getElementById('detail_status_pembayaran').textContent = status_pembayaran;
         });
 
+        let deleteId;
+
         document.querySelectorAll('.delete-btn').forEach(button => {
             button.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                Swal.fire({
-                    title: 'Apakah Anda yakin?',
-                    text: "Anda tidak akan dapat mengembalikan ini!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#6a11cb',
-                    cancelButtonColor: '#6c757d',
-                    confirmButtonText: 'Ya, hapus!',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        const form = document.createElement('form');
-                        form.method = 'POST';
-                        form.action = '/admin/pendaftaran/' + id;
-                        form.innerHTML = `
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="hidden" name="_method" value="DELETE">
-                    `;
-                        document.body.appendChild(form);
-                        form.submit();
-                    }
-                });
+                deleteId = this.getAttribute('data-id');
             });
         });
+
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/admin/pendaftaran/' + deleteId;
+            form.innerHTML = `
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="_method" value="DELETE">
+            `;
+            document.body.appendChild(form);
+            form.submit();
+        });
     </script>
+
+    <style>
+        select.form-control {
+            appearance: auto !important;
+            -webkit-appearance: auto !important;
+            -moz-appearance: auto !important;
+            background-repeat: no-repeat !important;
+            background-position: right 0.75rem center !important;
+            background-size: 16px 12px !important;
+            padding-right: 2rem !important;
+        }
+    </style>
 @endsection

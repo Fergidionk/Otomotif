@@ -39,7 +39,7 @@
                                         data-jumlah="{{ $p->jumlah_pertemuan }}"> 
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
-                                    <button class="btn btn-sm btn-danger delete-btn" data-id="{{ $p->id }}">
+                                    <button class="btn btn-sm btn-danger delete-btn" data-id="{{ $p->id }}" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
                                         <i class="fa-solid fa-trash-can"></i>
                                     </button>
                                 </td>
@@ -153,6 +153,25 @@
         </div>
     </div>
 
+    <!-- Modal Konfirmasi Hapus -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content rounded-lg shadow-lg">
+                <div class="modal-header border-b border-gray-200">
+                    <h5 class="modal-title text-lg font-semibold" id="confirmDeleteModalLabel">Konfirmasi Hapus</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <p class="text-gray-700">Apakah Anda yakin ingin menghapus data ini? Data yang dihapus tidak dapat dikembalikan.</p>
+                </div>
+                <div class="modal-footer border-t border-gray-200">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Hapus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.tailwindcss.com/"></script>
     <script src="https://cdn.datatables.net/2.2.0/js/dataTables.js"></script>
@@ -197,32 +216,24 @@
             form.action = '/admin/paket/' + id;
         });
 
+        let deleteId;
+
         document.querySelectorAll('.delete-btn').forEach(button => {
             button.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                Swal.fire({
-                    title: 'Apakah Anda yakin?',
-                    text: "Anda tidak akan dapat mengembalikan ini!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#6a11cb',
-                    cancelButtonColor: '#6c757d',
-                    confirmButtonText: 'Ya, hapus!',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        const form = document.createElement('form');
-                        form.method = 'POST';
-                        form.action = '/admin/paket/' + id;
-                        form.innerHTML = `
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <input type="hidden" name="_method" value="DELETE">
-                        `;
-                        document.body.appendChild(form);
-                        form.submit();
-                    }
-                });
+                deleteId = this.getAttribute('data-id');
             });
+        });
+
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/admin/paket/' + deleteId;
+            form.innerHTML = `
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="_method" value="DELETE">
+            `;
+            document.body.appendChild(form);
+            form.submit();
         });
     </script>
 @endsection

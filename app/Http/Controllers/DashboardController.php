@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Paket;
 use App\Models\Pendaftaran;
 use App\Models\Siswa;
+use App\Models\Absensi;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -15,6 +17,8 @@ class DashboardController extends Controller
         $totalSiswa = Siswa::count();
         $totalPaket = Paket::count();
         $totalPendaftaran = Pendaftaran::count();
+        $totalAbsensi = Absensi::count();
+        $totalUser = User::count();
 
         // Mengambil 5 pendaftaran terbaru
         $pendaftaranTerbaru = Pendaftaran::with(['siswa', 'paket'])
@@ -26,7 +30,9 @@ class DashboardController extends Controller
             'totalSiswa',
             'totalPaket',
             'totalPendaftaran',
-            'pendaftaranTerbaru'
+            'totalAbsensi',
+            'pendaftaranTerbaru',
+            'totalUser'
         ));
     }
 }

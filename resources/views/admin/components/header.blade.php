@@ -88,21 +88,24 @@
                     <i class="bx bx-search fs-4 lh-0"></i>
                     <input type="text" id="searchInput" class="form-control border-0 shadow-none" placeholder="Cari..."
                         aria-label="Search..." autocomplete="off"/>
-                    <div id="searchResults" class="dropdown-menu" style="display: none; position: absolute; top: 100%; width: 100%;">
+                    <div id="searchResults" class="dropdown-menu" style="display: none; position: absolute; top: 100%; width: 96%;">
                         <a href="/admin/siswa" class="dropdown-item search-item" data-table="siswa">
-                            <i class="bx bx-user me-2"></i>Data Siswa
+                            <i class="bx bx-user me-2"></i> Siswa
                         </a>
                         <a href="/admin/pendaftaran" class="dropdown-item search-item" data-table="pendaftaran">
-                            <i class="bx bx-file me-2"></i>Data Pendaftaran
+                            <i class="bx bx-file me-2"></i> Pendaftaran
                         </a>
                         <a href="/admin/paket" class="dropdown-item search-item" data-table="paket">
-                            <i class="bx bx-package me-2"></i>Data Paket
+                            <i class="bx bx-package me-2"></i> Paket
                         </a>
                         <a href="/admin/jadwal" class="dropdown-item search-item" data-table="jadwal">
-                            <i class="bx bx-calendar me-2"></i>Data Jadwal
+                            <i class="bx bx-calendar me-2"></i> Jadwal
                         </a>
                         <a href="/admin/absensi" class="dropdown-item search-item" data-table="absensi">
-                            <i class="bx bx-calendar-check me-2"></i>Data Absensi
+                            <i class="bx bx-calendar-check me-2"></i> Absensi
+                        </a>
+                        <a href="/admin/users" class="dropdown-item search-item" data-table="absensi">
+                            <i class="bx bx-calendar-check me-2"></i> Users
                         </a>
                     </div>
                 </div>

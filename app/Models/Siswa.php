@@ -13,7 +13,17 @@ class Siswa extends Model
     protected $table = 'tb_siswa';
 
     // Tentukan kolom yang dapat diisi
-    protected $guarded = [];
+    protected $fillable = [
+        'user_id',
+        'nama_siswa',
+        'alamat_siswa',
+        'jenis_kelamin',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'no_hp',
+        'pendidikan_terakhir',
+        'berkas_pdf'
+    ];
 
     // Tambahkan relasi
 
