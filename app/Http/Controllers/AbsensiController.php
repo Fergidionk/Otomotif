@@ -6,6 +6,7 @@ use App\Models\Absensi;
 use App\Models\Jadwal;
 use App\Models\Pendaftaran;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class AbsensiController extends Controller
@@ -29,7 +30,9 @@ class AbsensiController extends Controller
 
             foreach ($request->absensi as $data) {
                 // Cek apakah absensi sudah ada
-                $absensi = Absensi::where('jadwal_id', $data['jadwal_id'])->first();
+                $absensi = Absensi::where('jadwal_id', $data['jadwal_id'])
+                                 ->where('pendaftar_id', $request->pendaftar_id)
+                                 ->first();
                 
                 if ($absensi) {
                     // Update jika sudah ada
@@ -48,11 +51,18 @@ class AbsensiController extends Controller
                 }
             }
 
+            // Log untuk debugging
+            Log::info('Absensi berhasil disimpan', [
+                'pendaftar_id' => $request->pendaftar_id,
+                'data' => $request->absensi
+            ]);
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Data absensi berhasil disimpan'
             ]);
         } catch (\Exception $e) {
+            Log::error('Error in AbsensiController@store: ' . $e->getMessage());
             return response()->json([
                 'status' => 'error',
                 'message' => 'Gagal menyimpan absensi: ' . $e->getMessage()
@@ -78,10 +88,21 @@ class AbsensiController extends Controller
         try {
             $jadwal = Jadwal::where('pendaftar_id', $pendaftarId)
                 ->with(['absensi'])
-                ->get();
+                ->get()
+                ->map(function ($j) {
+                    return [
+                        'id' => $j->id,
+                        'tanggal' => $j->tanggal,
+                        'jam_pelatihan' => $j->jam_pelatihan,
+                        'absensi' => $j->absensi
+                    ];
+                });
+
+            \Illuminate\Support\Facades\Log::info('Jadwal Response:', ['data' => $jadwal]);
 
             return response()->json($jadwal);
         } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Error in getJadwalByPendaftar: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan saat mengambil data jadwal',

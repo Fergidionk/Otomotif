@@ -37,11 +37,16 @@ Route::get('/', function () {
 })->name('beranda');
 
 // Daftar Kursus
-Route::post('/daftar-kursus', [SiswaController::class, 'store'])
-    ->name('siswa.store')
-    ->middleware(['auth', 'web']);
-
 Route::middleware(['auth'])->group(function () {
+    // Route untuk menyimpan data siswa
+    Route::post('/daftar-kursus/siswa', [SiswaController::class, 'store'])
+        ->name('siswa.store');
+    
+    // Route untuk menyimpan pendaftaran kursus
+    Route::post('/daftar-kursus/pendaftaran', [PendaftaranController::class, 'store'])
+        ->name('daftar.kursus.store');
+        
+    // Route untuk menampilkan form pendaftaran
     Route::get('/daftar-kursus', [PendaftaranController::class, 'create'])
         ->name('daftar.kursus');
 });
@@ -86,6 +91,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('pendaftaran.')->gro
     Route::get('/pendaftaran/{pendaftaran}', [PendaftaranController::class, 'show'])->name('show');
     Route::put('/pendaftaran/{pendaftaran}', [PendaftaranController::class, 'update'])->name('update');
     Route::delete('/pendaftaran/{pendaftaran}', [PendaftaranController::class, 'destroy'])->name('destroy');
+    Route::delete('/admin/pendaftaran/{id}', [PendaftaranController::class, 'destroy'])
+    ->name('pendaftaran.destroy');
 });
 
 // Paket Routes
@@ -127,3 +134,5 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('users.')->group(fun
     Route::put('/users/{user}', [UserController::class, 'update'])->name('update');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('destroy');
 });
+
+

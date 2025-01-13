@@ -208,10 +208,9 @@
         }
 
         function showAbsensiModal(pendaftarId) {
-            // Set pendaftarId ke input hidden
             document.getElementById('pendaftarId').value = pendaftarId;
             
-            fetch(`/admin/absensi/jadwal/${pendaftarId}`)
+            fetch(`{{ url('/admin/absensi/jadwal') }}/${pendaftarId}`)
                 .then(response => response.json())
                 .then(jadwal => {
                     console.log('Data Jadwal:', jadwal);
@@ -229,26 +228,24 @@
                             day: 'numeric'
                         });
 
-                        // Ambil status kehadiran dari data absensi yang sudah ada
-                        const statusHadir = j.absensi ? j.absensi.hadir : 'tidak_hadir';
-                        const keterangan = j.absensi && j.absensi.keterangan ? j.absensi.keterangan : '';
+                        const jamPelatihan = j.jam_pelatihan || '-';
 
                         pertemuanList.innerHTML += `
                             <tr>
                                 <td>Pertemuan ${pertemuanKe}</td>
                                 <td>${formattedDate}</td>
-                                <td>${j.jam_pelatihan}</td>
+                                <td>${jamPelatihan}</td>
                                 <td>
                                     <textarea class="form-control" 
                                         name="keterangan[${j.id}]"
-                                        rows="1">${keterangan}</textarea>
+                                        rows="1">${j.absensi?.keterangan || ''}</textarea>
                                 </td>
                                 <td class="text-center">
                                     <select class="form-select" name="hadir[${j.id}]" required>
-                                        <option value="tidak_hadir" ${statusHadir === 'tidak_hadir' ? 'selected' : ''} class="fw-bold text-danger">
+                                        <option value="tidak_hadir" ${j.absensi?.hadir === 'tidak_hadir' ? 'selected' : ''} class="fw-bold text-danger">
                                             Tidak Hadir
                                         </option>
-                                        <option value="hadir" ${statusHadir === 'hadir' ? 'selected' : ''} class="fw-bold text-primary">
+                                        <option value="hadir" ${j.absensi?.hadir === 'hadir' ? 'selected' : ''} class="fw-bold text-primary">
                                             Hadir
                                         </option>
                                     </select>

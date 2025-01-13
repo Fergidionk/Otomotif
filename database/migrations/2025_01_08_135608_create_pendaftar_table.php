@@ -20,7 +20,7 @@ return new class extends Migration
             $table->enum('status_pembayaran', ['Sudah Dibayar', 'Belum Dibayar']);
             $table->timestamps();
 
-            // Pastikan tabel tb_siswa dan tb_paket sudah dibuat sebelum menambahkan foreign key
+            // Foreign keys
             $table->foreign('siswa_id')->references('id')->on('tb_siswa')->onUpdate('restrict')->onDelete('restrict');
             $table->foreign('paket_id')->references('id')->on('tb_paket')->onUpdate('restrict')->onDelete('restrict');
         });
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pendaftar');
+        Schema::dropIfExists('tb_pendaftar');
     }
 };

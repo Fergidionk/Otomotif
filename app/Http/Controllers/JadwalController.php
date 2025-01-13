@@ -5,81 +5,125 @@ namespace App\Http\Controllers;
 use App\Models\Jadwal;
 use App\Models\Pendaftaran;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Route;
 
 class JadwalController extends Controller
 {
     public function index()
     {
-        $pendaftaran = Pendaftaran::with(['siswa', 'paket', 'jadwal'])->get();
-        return view('admin.jadwal', compact('pendaftaran'));
+        try {
+            $pendaftaran = Pendaftaran::with([
+                'siswa',
+                'paket',
+                'jadwal' => function($query) {
+                    $query->orderBy('tanggal', 'asc');
+                },
+                'jadwal.absensi'
+            ])->get();
+
+            return view('admin.jadwal', compact('pendaftaran'));
+        } catch (\Exception $e) {
+            Log::error('Error in JadwalController@index: ' . $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan saat memuat data jadwal');
+        }
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'pendaftar_id' => 'required|exists:pendaftar,id',
-            'tanggal' => 'required|date',
-            'jam_pelatihan' => 'required|date_format:H:i',
-        ]);
+        try {
+            $validated = $request->validate([
+                'pendaftar_id' => 'required|exists:tb_pendaftar,id',
+                'tanggal' => 'required|date',
+                'jam_pelatihan' => 'required',
+            ]);
 
-        Jadwal::create($validated);
-        return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil ditambahkan!');
+            Jadwal::create($validated);
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Jadwal berhasil ditambahkan!'
+                ]);
+            }
+
+            return redirect()->route('admin.jadwal.index')
+                ->with('success', 'Jadwal berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            Log::error('Error in JadwalController@store: ' . $e->getMessage());
+            
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal menambahkan jadwal: ' . $e->getMessage()
+                ], 500);
+            }
+
+            return back()->with('error', 'Gagal menambahkan jadwal: ' . $e->getMessage());
+        }
     }
 
     public function update(Request $request, $id)
     {
-        $validated = $request->validate([
-            'pendaftar_id' => 'required|exists:tb_pendaftar,id',
-            'tanggal' => 'required|date',
-            'jam_pelatihan' => 'required',
-        ]);
+        try {
+            $validated = $request->validate([
+                'pendaftar_id' => 'required|exists:tb_pendaftar,id',
+                'tanggal' => 'required|date',
+                'jam_pelatihan' => 'required',
+            ]);
 
-        $jadwal = Jadwal::findOrFail($id);
-        $jadwal->update($validated);
+            $jadwal = Jadwal::findOrFail($id);
+            $jadwal->update($validated);
 
-        return redirect()->route('jadwal.index')
-            ->with('success', 'Jadwal berhasil diperbarui.');
-    }
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Jadwal berhasil diperbarui'
+                ]);
+            }
 
-    public function show($id)
-    {
-        $jadwal = Jadwal::with(['pendaftar', 'absensi'])->findOrFail($id);
-        return view('admin.jadwal-detail', compact('jadwal'));
+            return redirect()->route('admin.jadwal.index')
+                ->with('success', 'Jadwal berhasil diperbarui');
+        } catch (\Exception $e) {
+            Log::error('Error in JadwalController@update: ' . $e->getMessage());
+            
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal memperbarui jadwal: ' . $e->getMessage()
+                ], 500);
+            }
+
+            return back()->with('error', 'Gagal memperbarui jadwal: ' . $e->getMessage());
+        }
     }
 
     public function destroy($id)
     {
-        $jadwal = Jadwal::findOrFail($id);
-        $jadwal->delete();
-        
-        return redirect()->route('jadwal.index')
-            ->with('success', 'Jadwal berhasil dihapus.');
-    }
-
-    public function bulkUpdate(Request $request, $pendaftarId)
-    {
         try {
-            $request->validate([
-                'jadwal' => 'required|array',
-                'jadwal.*.tanggal' => 'required|date',
-                'jadwal.*.jam_pelatihan' => 'required',
-            ]);
+            $jadwal = Jadwal::findOrFail($id);
+            $jadwal->delete();
 
-            // Hapus jadwal yang ada
-            Jadwal::where('pendaftar_id', $pendaftarId)->delete();
-
-            // Buat jadwal baru
-            foreach ($request->jadwal as $data) {
-                Jadwal::create([
-                    'pendaftar_id' => $pendaftarId,
-                    'tanggal' => $data['tanggal'],
-                    'jam_pelatihan' => $data['jam_pelatihan'],
+            if (request()->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Jadwal berhasil dihapus'
                 ]);
             }
 
-            return response()->json(['success' => true, 'message' => 'Jadwal berhasil diperbarui']);
+            return redirect()->route('admin.jadwal.index')
+                ->with('success', 'Jadwal berhasil dihapus');
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+            Log::error('Error in JadwalController@destroy: ' . $e->getMessage());
+            
+            if (request()->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal menghapus jadwal: ' . $e->getMessage()
+                ], 500);
+            }
+
+            return back()->with('error', 'Gagal menghapus jadwal: ' . $e->getMessage());
         }
     }
 
@@ -87,28 +131,30 @@ class JadwalController extends Controller
     {
         try {
             $jadwal = Jadwal::where('pendaftar_id', $pendaftarId)
-                ->orderBy('tanggal')
+                ->with('absensi')
+                ->orderBy('tanggal', 'asc')
                 ->get();
-            
+
             return response()->json($jadwal);
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Error in getJadwalByPendaftar: ' . $e->getMessage());
-            return response()->json(['error' => $e->getMessage()], 500);
+            Log::error('Error in JadwalController@getJadwalByPendaftar: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengambil data jadwal: ' . $e->getMessage()
+            ], 500);
         }
     }
 
     public function createEmptyJadwal($pendaftarId)
     {
         try {
-            $pendaftar = Pendaftaran::with('paket')->findOrFail($pendaftarId);
+            // Ambil data pendaftaran
+            $pendaftaran = Pendaftaran::with('paket')->findOrFail($pendaftarId);
             
-            if (!$pendaftar->paket) {
-                throw new \Exception('Paket tidak ditemukan untuk pendaftar ini');
-            }
-
-            $jumlahPertemuan = $pendaftar->paket->jumlah_pertemuan;
-
-            // Buat jadwal kosong sesuai jumlah pertemuan
+            // Hitung jumlah pertemuan dari paket
+            $jumlahPertemuan = $pendaftaran->paket->jumlah_pertemuan;
+            
+            // Buat jadwal kosong sejumlah pertemuan
             for ($i = 0; $i < $jumlahPertemuan; $i++) {
                 Jadwal::create([
                     'pendaftar_id' => $pendaftarId,
@@ -117,10 +163,73 @@ class JadwalController extends Controller
                 ]);
             }
 
-            return response()->json(['success' => true, 'message' => 'Jadwal kosong berhasil dibuat']);
+            return response()->json([
+                'success' => true,
+                'message' => 'Jadwal kosong berhasil dibuat'
+            ]);
         } catch (\Exception $e) {
-            \Log::error('Error in createEmptyJadwal: ' . $e->getMessage());
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+            Log::error('Error in createEmptyJadwal: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal membuat jadwal: ' . $e->getMessage()
+            ], 500);
         }
+    }
+
+    public function bulkUpdate(Request $request, $pendaftarId)
+    {
+        try {
+            // Validasi request
+            $request->validate([
+                'jadwal' => 'required|array',
+                'jadwal.*.tanggal' => 'required|date',
+                'jadwal.*.jam_pelatihan' => 'required'
+            ]);
+
+            // Ambil semua jadwal yang ada untuk pendaftar ini
+            $existingJadwals = Jadwal::where('pendaftar_id', $pendaftarId)->get();
+
+            // Update setiap jadwal
+            foreach ($request->jadwal as $index => $jadwalData) {
+                if (isset($existingJadwals[$index])) {
+                    $jadwal = $existingJadwals[$index];
+                    $jadwal->update([
+                        'tanggal' => $jadwalData['tanggal'],
+                        'jam_pelatihan' => $jadwalData['jam_pelatihan']
+                    ]);
+                } else {
+                    // Jika jadwal belum ada, buat baru
+                    Jadwal::create([
+                        'pendaftar_id' => $pendaftarId,
+                        'tanggal' => $jadwalData['tanggal'],
+                        'jam_pelatihan' => $jadwalData['jam_pelatihan']
+                    ]);
+                }
+            }
+
+            // Log untuk debugging
+            Log::info('Jadwal berhasil diupdate', [
+                'pendaftar_id' => $pendaftarId,
+                'data' => $request->jadwal
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Jadwal berhasil disimpan'
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error in JadwalController@bulkUpdate: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menyimpan jadwal: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // Tambahkan route untuk bulk update
+    public function routes()
+    {
+        Route::post('/admin/jadwal/bulk-update/{pendaftarId}', 'JadwalController@bulkUpdate')
+            ->name('admin.jadwal.bulk-update');
     }
 }

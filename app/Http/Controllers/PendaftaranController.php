@@ -8,6 +8,10 @@ use App\Models\Paket;
 use App\Models\Jadwal;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\DB;
+
 
 class PendaftaranController extends Controller
 {
@@ -38,39 +42,68 @@ class PendaftaranController extends Controller
     public function store(Request $request)
     {
         try {
-            // Debug request data
-            \Illuminate\Support\Facades\Log::info('Pendaftaran Request:', $request->all());
+            Log::info('Incoming pendaftaran request:', $request->all());
 
-            // Validasi request
             $validated = $request->validate([
                 'siswa_id' => 'required|exists:tb_siswa,id',
                 'paket_id' => 'required|exists:tb_paket,id',
-                'metode_pembayaran' => 'required|in:Uang Tunai,Transfer Bank'
+                'metode_pembayaran' => 'required|in:Uang Tunai,Transfer Bank',
+                'tanggal_daftar' => 'required|date'
             ]);
 
-            // Create pendaftaran dengan data yang sudah divalidasi
+            Log::info('Validated pendaftaran data:', $validated);
+
+            // Cek apakah siswa sudah terdaftar di paket yang sama
+            $existingPendaftaran = Pendaftaran::where('siswa_id', $validated['siswa_id'])
+                ->where('paket_id', $validated['paket_id'])
+                ->exists();
+
+            if ($existingPendaftaran) {
+                Log::warning('Duplicate registration attempt:', $validated);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Anda sudah terdaftar di paket ini'
+                ], 422);
+            }
+
+            // Buat pendaftaran baru
             $pendaftaran = Pendaftaran::create([
                 'siswa_id' => $validated['siswa_id'],
                 'paket_id' => $validated['paket_id'],
-                'tanggal_daftar' => now(),
+                'tanggal_daftar' => $validated['tanggal_daftar'],
                 'metode_pembayaran' => $validated['metode_pembayaran'],
                 'status_pembayaran' => 'Belum Dibayar'
             ]);
 
-            \Illuminate\Support\Facades\Log::info('Pendaftaran berhasil dibuat:', ['id' => $pendaftaran->id]);
+            Log::info('Pendaftaran created successfully:', $pendaftaran->toArray());
 
-            return redirect()->route('beranda')->with('success', 'Pendaftaran berhasil! Silakan datang ke kantor kami untuk melakukan pembayaran.');
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Pendaftaran berhasil'
+                ]);
+            }
 
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            \Illuminate\Support\Facades\Log::error('Validation error:', ['errors' => $e->errors()]);
-            return redirect()->route('daftar.kursus')->withErrors($e->errors());
+            return redirect()->route('profil.siswa')
+                ->with('success', 'Pendaftaran berhasil');
+
+        } catch (ValidationException $e) {
+            Log::error('Validation Error:', $e->errors());
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $e->errors()
+            ], 422);
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Pendaftaran error:', [
-                'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-            
-            return redirect()->route('daftar.kursus')->with('error', 'Terjadi kesalahan sistem. Silakan coba lagi.');
+            Log::error('Pendaftaran error: ' . $e->getMessage());
+            Log::error('Stack trace: ' . $e->getTraceAsString());
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                ], 500);
+            }
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 
@@ -90,6 +123,7 @@ class PendaftaranController extends Controller
             return redirect()->route('pendaftaran.index')
                 ->with('success', 'Pendaftaran berhasil diperbarui');
         } catch (\Exception $e) {
+            Log::error('Update pendaftaran error: ' . $e->getMessage());
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
@@ -108,6 +142,7 @@ class PendaftaranController extends Controller
             
             return view('admin.pendaftaran.show', compact('pendaftaran'));
         } catch (\Exception $e) {
+            Log::error('Show pendaftaran error: ' . $e->getMessage());
             if (request()->wantsJson()) {
                 return response()->json([
                     'success' => false,
@@ -119,20 +154,61 @@ class PendaftaranController extends Controller
         }
     }
 
-    public function destroy(Pendaftaran $pendaftaran)
+    public function destroy($id)
     {
         try {
+            DB::beginTransaction();
+            
+            $pendaftaran = Pendaftaran::findOrFail($id);
+            
+            // Hapus jadwal dan absensi terkait
+            $pendaftaran->jadwal()->each(function ($jadwal) {
+                $jadwal->absensi()->delete();
+            });
+            $pendaftaran->jadwal()->delete();
+            
+            // Hapus pendaftaran
             $pendaftaran->delete();
+            
+            DB::commit();
+
+            if (request()->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Pendaftaran berhasil dihapus'
+                ]);
+            }
+
             return redirect()->route('pendaftaran.index')
                 ->with('success', 'Pendaftaran berhasil dihapus');
+            
         } catch (\Exception $e) {
-            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            DB::rollback();
+            Log::error('Error in PendaftaranController@destroy: ' . $e->getMessage());
+            
+            if (request()->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal menghapus pendaftaran: ' . $e->getMessage()
+                ], 500);
+            }
+
+            return redirect()->back()
+                ->with('error', 'Gagal menghapus pendaftaran: ' . $e->getMessage());
         }
     }
 
     public function getPendaftar($id)
     {
-        $pendaftar = Pendaftaran::with(['paket'])->findOrFail($id);
-        return response()->json($pendaftar);
+        try {
+            $pendaftar = Pendaftaran::with(['paket'])->findOrFail($id);
+            return response()->json($pendaftar);
+        } catch (\Exception $e) {
+            Log::error('Get pendaftar error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

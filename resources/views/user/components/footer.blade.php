@@ -18,14 +18,35 @@
         <div class="md:col-span-2 px-4">
             <h3 class="text-base md:text-lg font-bold">Beranda</h3>
             <ul class="mt-4 space-y-2 text-sm md:text-base">
-                <li><a href="#" class="text-[#59595A] hover:underline">Informasi</a></li>
-                <li><a href="#" class="text-[#59595A] hover:underline">Testimoni</a></li>
-                <li><a href="#" class="text-[#59595A] hover:underline">Harga Paket</a></li>
+                <li>
+                    <a href="{{ url('/#fasilitas') }}" 
+                       class="text-[#59595A] hover:underline">
+                        Fasilitas
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url('/#testimoni') }}" 
+                       class="text-[#59595A] hover:underline">
+                        Testimoni
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url('/#paket-kursus') }}" 
+                       class="text-[#59595A] hover:underline">
+                        Harga Paket
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url('/kontak') }}" 
+                       class="text-[#59595A] hover:underline">
+                        Kontak
+                    </a>
+                </li>
             </ul>
         </div>
 
         <!-- Kolom Tentang Kami -->
-        <div class="md:col-span-2 px-4">
+        <div class="md:col-span-2 px-4 hidden">
             <h3 class="text-base md:text-lg font-bold">Tentang Kami</h3>
             <ul class="mt-4 space-y-2 text-sm md:text-base">
                 <li><a href="#" class="text-[#59595A] hover:underline">Company</a></li>
@@ -35,8 +56,8 @@
         </div>
 
         <!-- Kolom Sosial -->
-        <div class="md:col-span-3 px-4">
-            <h3 class="text-base md:text-lg font-bold">Sosial</h3>
+        <div class="md:col-span-3 px-4 ">
+            <h3 class="text-base md:text-lg font-bold text-center">Sosial</h3>
             <ul class="mt-4 flex justify-start md:justify-center space-x-4">
                 <li>
                     <a href="#"

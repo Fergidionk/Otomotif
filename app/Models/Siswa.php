@@ -14,7 +14,6 @@ class Siswa extends Model
 
     // Tentukan kolom yang dapat diisi
     protected $fillable = [
-        'user_id',
         'nama_siswa',
         'alamat_siswa',
         'jenis_kelamin',
@@ -22,7 +21,8 @@ class Siswa extends Model
         'tanggal_lahir',
         'no_hp',
         'pendidikan_terakhir',
-        'berkas_pdf'
+        'berkas_pdf',
+        'user_id'
     ];
 
     // Tambahkan relasi
@@ -34,7 +34,7 @@ class Siswa extends Model
 
     public function pendaftaran()
     {
-        return $this->hasOne(Pendaftaran::class, 'siswa_id');
+        return $this->hasMany(Pendaftaran::class, 'siswa_id');
     }
 
     public function jadwal()

@@ -50,9 +50,11 @@
                                         data-status_pembayaran="{{ $p->status_pembayaran }}">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
-                                    <button class="btn btn-sm btn-danger delete-btn" data-id="{{ $p->id }}"
-                                        data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
-                                        <i class="fa-solid fa-trash-can"></i>
+                                    <button class="btn btn-sm btn-danger delete-btn"
+                                        data-id="{{ $p->id }}"
+                                        data-siswa="{{ $p->siswa->nama_siswa }}"
+                                        data-paket="{{ $p->paket->nama_paket }}">
+                                        <i class="fas fa-trash"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -227,19 +229,17 @@
     </div>
 
     <!-- Modal Konfirmasi Hapus -->
-    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content rounded-lg shadow-lg">
-                <div class="modal-header border-b border-gray-200">
-                    <h5 class="modal-title text-lg font-semibold" id="confirmDeleteModalLabel">Konfirmasi Hapus</h5>
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Konfirmasi Hapus</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-4">
-                    <p class="text-gray-700">Apakah Anda yakin ingin menghapus data ini? Data yang dihapus tidak dapat
-                        dikembalikan.</p>
+                <div class="modal-body">
+                    <p id="deleteWarningText"></p>
                 </div>
-                <div class="modal-footer border-t border-gray-200">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Hapus</button>
                 </div>
@@ -330,6 +330,59 @@
             `;
             document.body.appendChild(form);
             form.submit();
+        });
+
+        // Tambahkan event listener untuk tombol hapus
+        $('.delete-btn').on('click', function(e) {
+            e.preventDefault();
+            const id = $(this).data('id');
+            const siswa = $(this).data('siswa');
+            const paket = $(this).data('paket');
+            
+            $('#confirmDeleteModal').modal('show');
+            $('#confirmDeleteBtn').data('id', id);
+            $('#deleteWarningText').text(
+                `Apakah Anda yakin ingin menghapus pendaftaran "${siswa}" untuk paket "${paket}"? ` +
+                'Semua data terkait termasuk jadwal dan absensi akan ikut terhapus.'
+            );
+        });
+
+        // Handle konfirmasi hapus
+        $('#confirmDeleteBtn').on('click', function() {
+            const id = $(this).data('id');
+            
+            $.ajax({
+                url: `/admin/pendaftaran/${id}`,
+                type: 'DELETE',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    if (response.success) {
+                        $('#confirmDeleteModal').modal('hide');
+                        // Tampilkan pesan sukses
+                        alert('Pendaftaran berhasil dihapus');
+                        // Reload halaman
+                        location.reload();
+                    } else {
+                        alert('Gagal menghapus data: ' + response.message);
+                    }
+                },
+                error: function(xhr) {
+                    alert('Terjadi kesalahan saat menghapus data');
+                    console.error(xhr);
+                }
+            });
+        });
+
+        // DataTables initialization
+        $(document).ready(function() {
+            $('#pendaftaranTable').DataTable({
+                responsive: true,
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/id.json',
+                }
+            });
         });
     </script>
 

@@ -14,6 +14,8 @@ class Jadwal extends Model
         'jam_pelatihan'
     ];
 
+    protected $dates = ['tanggal'];
+
     public function absensi()
     {
         return $this->hasOne(Absensi::class, 'jadwal_id');
