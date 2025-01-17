@@ -16,11 +16,16 @@ class Pendaftaran extends Model
         'paket_id',
         'tanggal_daftar',
         'metode_pembayaran',
-        'status_pembayaran'
+        'status_pembayaran',
+        'sertifikat',
+        'tanggal_lulus',
+        'keterangan_lulus',
+        'status'
     ];
 
     protected $casts = [
-        'tanggal_daftar' => 'date'
+        'tanggal_daftar' => 'date',
+        'tanggal_lulus' => 'date',
     ];
 
     public function siswa()
@@ -40,6 +45,6 @@ class Pendaftaran extends Model
 
     public function absensi()
     {
-        return $this->hasManyThrough(Absensi::class, Jadwal::class, 'pendaftar_id', 'jadwal_id');
+        return $this->hasMany(Absensi::class, 'pendaftar_id');
     }
 }

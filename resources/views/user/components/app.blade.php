@@ -23,7 +23,7 @@
     <header>
         @include('user/components.navbar')
     </header>
-    <div class="flex flex-col min-h-screen">
+    <div class="flex flex-col">
         <main class="flex-grow bg-[#F7F7F8]">
             @yield('content')
         </main>

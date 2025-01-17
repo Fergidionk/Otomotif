@@ -23,16 +23,20 @@
             </div>
 
             <!-- Informasi Paket -->
-            @if($siswa->pendaftaran->count() > 0)
+            @if ($siswa->pendaftaran->count() > 0)
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h2 class="text-2xl font-semibold mb-4">Informasi Paket</h2>
                     <div class="space-y-4">
-                        @foreach($siswa->pendaftaran as $pendaftaran)
+                        @foreach ($siswa->pendaftaran as $pendaftaran)
                             <div class="border-b pb-4 last:border-b-0 last:pb-0">
-                                <p class="text-gray-600"><strong>Nama Paket:</strong> {{ $pendaftaran->paket->nama_paket }}</p>
-                                <p class="text-gray-600"><strong>Jumlah Pertemuan:</strong> {{ $pendaftaran->paket->jumlah_pertemuan }} Kali</p>
-                                <p class="text-gray-600"><strong>Status Pembayaran:</strong> {{ $pendaftaran->status_pembayaran }}</p>
-                                <p class="text-gray-600"><strong>Tanggal Daftar:</strong> {{ $pendaftaran->tanggal_daftar->format('d/m/Y') }}</p>
+                                <p class="text-gray-600"><strong>Nama Paket:</strong> {{ $pendaftaran->paket->nama_paket }}
+                                </p>
+                                <p class="text-gray-600"><strong>Jumlah Pertemuan:</strong>
+                                    {{ $pendaftaran->paket->jumlah_pertemuan }} Kali</p>
+                                <p class="text-gray-600"><strong>Status Pembayaran:</strong>
+                                    {{ $pendaftaran->status_pembayaran }}</p>
+                                <p class="text-gray-600"><strong>Tanggal Daftar:</strong>
+                                    {{ $pendaftaran->tanggal_daftar->format('d/m/Y') }}</p>
                             </div>
                         @endforeach
                     </div>
@@ -41,10 +45,10 @@
                 <!-- Jadwal Kursus -->
                 <div class="bg-white p-6 rounded-lg shadow-md lg:col-span-2">
                     <h2 class="text-2xl font-semibold mb-4">Jadwal Kursus</h2>
-                    @foreach($siswa->pendaftaran as $pendaftaran)
+                    @foreach ($siswa->pendaftaran as $pendaftaran)
                         <div class="mb-6 last:mb-0">
                             <h3 class="text-xl font-medium mb-3">{{ $pendaftaran->paket->nama_paket }}</h3>
-                            @if($pendaftaran->jadwal->count() > 0)
+                            @if ($pendaftaran->jadwal->count() > 0)
                                 <div class="overflow-x-auto">
                                     <table class="min-w-full table-auto">
                                         <thead>
@@ -57,45 +61,50 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($pendaftaran->jadwal as $jadwal)
+                                            @foreach ($pendaftaran->jadwal as $jadwal)
                                                 @php
                                                     \Log::info('Data Jadwal:', [
                                                         'jadwal_id' => $jadwal->id,
                                                         'absensi' => $jadwal->absensi,
-                                                        'status' => $jadwal->absensi->hadir ?? 'tidak ada'
+                                                        'status' => $jadwal->absensi->hadir ?? 'tidak ada',
                                                     ]);
                                                 @endphp
-                                            <tr>
-                                                <td class="border px-4 py-2 text-center">{{ $loop->iteration }}</td>
-                                                <td class="border px-4 py-2 text-center">
-                                                    {{ \Carbon\Carbon::parse($jadwal->tanggal)->isoFormat('dddd, D MMMM Y') }}
-                                                </td>
-                                                <td class="border px-4 py-2 text-center">{{ $jadwal->jam_pelatihan }}</td>
-                                                <td class="border px-4 py-2">
-                                                    @if($jadwal->absensi)
-                                                        {{ $jadwal->absensi->keterangan ?: '-' }}
-                                                    @else
-                                                        -
-                                                    @endif
-                                                </td>
-                                                <td class="border px-4 py-2 text-center">
-                                                    @if($jadwal->absensi)
-                                                        @if($jadwal->absensi->hadir === 'hadir')
-                                                            <span class="px-2 py-1 rounded text-sm bg-blue-100 text-blue-800 fw-bold">
-                                                                Hadir
-                                                            </span>
-                                                        @elseif($jadwal->absensi->hadir === 'tidak_hadir')
-                                                            <span class="px-2 py-1 rounded text-sm bg-red-100 text-red-800 fw-bold">
-                                                                Tidak Hadir
+                                                <tr>
+                                                    <td class="border px-4 py-2 text-center">{{ $loop->iteration }}</td>
+                                                    <td class="border px-4 py-2 text-center">
+                                                        {{ \Carbon\Carbon::parse($jadwal->tanggal)->locale('id')->isoFormat('dddd, D MMMM Y') }}
+                                                    </td>
+                                                    <td class="border px-4 py-2 text-center">
+                                                        {{ \Carbon\Carbon::parse($jadwal->jam_pelatihan)->format('H:i') }}
+                                                    </td>
+                                                    <td class="border px-4 py-2 text-center">
+                                                        @if ($jadwal->absensi)
+                                                            {{ $jadwal->absensi->keterangan ?: '-' }}
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    </td>
+                                                    <td class="border px-4 py-2 text-center">
+                                                        @if ($jadwal->absensi)
+                                                            @if ($jadwal->absensi->hadir === 'hadir')
+                                                                <span
+                                                                    class="px-2 py-1 rounded text-sm bg-blue-100 text-blue-800 fw-bold">
+                                                                    Hadir
+                                                                </span>
+                                                            @elseif($jadwal->absensi->hadir === 'tidak_hadir')
+                                                                <span
+                                                                    class="px-2 py-1 rounded text-sm bg-red-100 text-red-800 fw-bold">
+                                                                    Tidak Hadir
+                                                                </span>
+                                                            @endif
+                                                        @else
+                                                            <span
+                                                                class="px-2 py-1 rounded text-sm bg-gray-100 text-gray-800">
+                                                                Belum ada status
                                                             </span>
                                                         @endif
-                                                    @else
-                                                        <span class="px-2 py-1 rounded text-sm bg-gray-100 text-gray-800">
-                                                            Belum ada status
-                                                        </span>
-                                                    @endif
-                                                </td>
-                                            </tr>
+                                                    </td>
+                                                </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -109,7 +118,8 @@
             @else
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <p class="text-gray-600">Anda belum mendaftar kursus.</p>
-                    <a href="{{ route('daftar.kursus') }}" class="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                    <a href="{{ route('daftar.kursus') }}"
+                        class="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
                         Daftar Kursus Sekarang
                     </a>
                 </div>

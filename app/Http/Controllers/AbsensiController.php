@@ -16,7 +16,7 @@ class AbsensiController extends Controller
         $pendaftaran = Pendaftaran::with(['siswa', 'paket', 'jadwal'])->get();
         return view('admin.absensi', compact('pendaftaran'));
     }
-
+    
     public function store(Request $request)
     {
         try {
@@ -98,11 +98,11 @@ class AbsensiController extends Controller
                     ];
                 });
 
-            \Illuminate\Support\Facades\Log::info('Jadwal Response:', ['data' => $jadwal]);
+            Log::info('Jadwal Response:', ['data' => $jadwal]);
 
             return response()->json($jadwal);
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Error in getJadwalByPendaftar: ' . $e->getMessage());
+            Log::error('Error in getJadwalByPendaftar: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan saat mengambil data jadwal',

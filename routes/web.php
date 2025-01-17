@@ -12,6 +12,7 @@ use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfilSiswaController;
+use App\Http\Controllers\KelulusanController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -134,5 +135,3 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('users.')->group(fun
     Route::put('/users/{user}', [UserController::class, 'update'])->name('update');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('destroy');
 });
-
-
